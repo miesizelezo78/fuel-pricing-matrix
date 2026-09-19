@@ -82,7 +82,7 @@
   },
   "pravidla": {
     "dvaKanaly": "Solo vrece ide Woo / e-shopovým košíkom. Paletová zostava od 100 kg je iný režim: záväzná objednávka mimo košíka, doklad SuperFaktúra.",
-    "soloMax": "Kuriér SDS: najviac 3 vrecia uhlia alebo antracitu, alebo 4 vrecia koksu. Viac = paletová objednávka mimo Woo košíka, nie piate vrece kuriérom.",
+    "soloMax": "Jedna kuriérska zásielka je balená ako balík: najviac 3 vrecia uhlia alebo antracitu, alebo 4 vrecia koksu. Viac vriec kuriérom by teoreticky ísť mohlo, ale cena prestáva dávať zmysel. Ďalej = paletová objednávka mimo Woo košíka.",
     "bulkMinKg": 100,
     "bulkKrokKg": 100,
     "bulkMaxKg": 10000,
@@ -310,7 +310,7 @@
       "nazov": "Kováčsky koks 20 kg",
       "slug": "koks-20kg",
       "eyebrow": "Solo vrece · kuriér SDS",
-      "lead": "Jedno 20 kg vrece s doručením. Kuriér unesie najviac štyri vrecia koksu.",
+      "lead": "Jedno 20 kg vrece s doručením. Jedna kuriérska zásielka má najviac štyri vrecia koksu.",
       "kategoriaId": "solo-kurier",
       "dopravnaTriedaId": "kurier-sds",
       "wooTyp": "simple",

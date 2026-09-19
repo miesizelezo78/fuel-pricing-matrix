@@ -87,8 +87,8 @@ export function CatalogGrid() {
             <h2 className="font-heading mt-1 text-3xl">Solo vrecia s doručením</h2>
           </div>
           <p className="max-w-md text-sm text-muted-foreground">
-            Cena už obsahuje balné aj dopravu SDS. Dobierka sa účtuje zvlášť.
-            Kuriér unesie najviac 3 vrecia uhlia/antracitu alebo 4 vrecia koksu.
+            Cena už obsahuje balné aj dopravu SDS. Jedna zásielka: 3 vrecia
+            uhlia alebo antracitu, 4 vrecia koksu. Viac kuriérom by vyšlo draho.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

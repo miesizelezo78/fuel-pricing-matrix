@@ -157,7 +157,7 @@ export const PRODUCTS: CatalogProduct[] = [
     fuelId: "koks",
     name: "Kováčsky koks 20 kg",
     eyebrow: "Solo vrece · kuriér SDS",
-    lead: "Jedno 20 kg vrece s doručením. Kuriér unesie najviac štyri vrecia koksu.",
+    lead: "Jedno 20 kg vrece s doručením. Jedna kuriérska zásielka má najviac štyri vrecia koksu.",
   },
   {
     id: "uhlie-bulk",

@@ -27,11 +27,13 @@ function SoloBuy({ product }: { product: CatalogProduct }) {
     <div className="space-y-5">
       <div className="rounded-xl bg-muted/60 p-4 text-sm leading-relaxed">
         Toto je e-shopové vrece. Cena <strong>{formatMoney(fuel.soloPrice)}</strong>{" "}
-        už obsahuje balné aj doručenie kuriérom SDS. Kuriér unesie najviac{" "}
+        už obsahuje balné aj doručenie kuriérom SDS. Jedna zásielka je balená
+        ako balík: najviac{" "}
         <strong>
           {fuel.soloMaxBags} vrecia {fuel.adjective}
         </strong>
-        — tu sa predaj v košíku láme. Ďalšie kilá idú ako tovar na objednávku.
+        . Desať vriec kuriérom by ísť mohlo, ale cena by prestala dávať zmysel —
+        od 100 kg je tovar na objednávku.
       </div>
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm font-medium">Počet vriec</p>

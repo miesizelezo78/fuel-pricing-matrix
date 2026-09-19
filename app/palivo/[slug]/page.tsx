@@ -47,7 +47,7 @@ export default async function ProductPage({ params }: PageProps) {
         <div className="mt-4 flex flex-wrap gap-2">
           <Badge variant="secondary">{fuel.bagKg} kg vrece</Badge>
           <Badge>Doprava v cene</Badge>
-          <Badge variant="outline">E-shop · max. {fuel.soloMaxBags} vrecia</Badge>
+          <Badge variant="outline">1 zásielka · max. {fuel.soloMaxBags} vrecia</Badge>
         </div>
         <div className="mx-auto mt-8 h-64 w-48 sm:h-72 sm:w-56">
           <BagMark fuelId={fuel.id} weight={fuel.bagKg} />

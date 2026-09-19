@@ -145,7 +145,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const fuel = product ? getFuel(product.fuelId) : null;
       toast.error(
         fuel
-          ? `Kuriér SDS unesie najviac ${fuel.soloMaxBags} vrecia ${fuel.adjective}. Na viac použite paletovú objednávku od 100 kg.`
+          ? `Jedna kuriérska zásielka má najviac ${fuel.soloMaxBags} vrecia ${fuel.adjective}. Viac kuriérom už cenovo nedáva zmysel — od 100 kg paletová objednávka.`
           : "Toto množstvo kuriér neprevezie.",
       );
     }

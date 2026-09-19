@@ -7,13 +7,13 @@ E-shopový náhľad predaja kováčskeho uhlia, antracitu a koksu.
 
 ## Čo je v katalógu
 
-| Tovar | Vrece | Solo (SDS, doprava v cene) | Paleta 110 × 120 cm |
+| Tovar | Vrece | Solo (1 zásielka SDS) | Paleta 110 × 120 cm |
 | --- | --- | --- | --- |
 | Kováčske uhlie | 25 kg | max. 3 vrecia | 40 vriec = 1 000 kg |
 | Kováčsky antracit | 25 kg | max. 3 vrecia | 40 vriec = 1 000 kg |
 | Kováčsky koks | 20 kg | max. 4 vrecia | 50 vriec = 1 000 kg |
 
-- Solo ceny už obsahujú balné a doručenie. Dobierka je zvlášť.
+- Solo ceny už obsahujú balné a doručenie. Jedna zásielka má 3 vrecia uhlia/antracitu alebo 4 vrecia koksu — nie že kuriér viac neunesie, ale že ďalšie vrecia by kuriérom vyšli draho. Dobierka je zvlášť.
 - Od 100 kg je to záväzná objednávka, nie košík. Cena/kg klesá na 100 / 250 (uhlie, antracit) resp. 200 (koks) / 500 / 1 000 kg.
 - Paletovú dopravu naceníte podľa adresy, alebo osobný odber. Do SuperFaktúry ide najprv tovar.
 

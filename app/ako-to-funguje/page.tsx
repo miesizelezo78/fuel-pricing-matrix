@@ -24,10 +24,12 @@ export default function HowItWorksPage() {
         <h2 className="font-heading text-3xl">Dve hranice, nie plynulý košík</h2>
         <ol className="list-decimal space-y-3 pl-5 text-muted-foreground">
           <li>
-            <strong className="text-foreground">Kuriér (fyzický strop).</strong>{" "}
-            SDS unesie 3 vrecia uhlia alebo antracitu (75 kg) a 4 vrecia koksu
-            (80 kg). Ďalšie vrece kuriérom nejde. Toto upozornenie je na
-            detaile 25 kg / 20 kg vreca — tam sa košík láme.
+            <strong className="text-foreground">Kuriér (jedna zásielka).</strong>{" "}
+            Nie že auto neunesie desať vriec. Balíme jednu zásielku: 3 vrecia
+            uhlia alebo antracitu, alebo 4 vrecia koksu. Doprava je v cene
+            vreca. Ďalšie vrecia kuriérom by teoreticky ísť mohli, ale cena by
+            prestala dávať zmysel. Toto upozornenie je na detaile 25 kg / 20 kg
+            vreca — tam sa košík láme.
           </li>
           <li>
             <strong className="text-foreground">Režim predaja (od 100 kg).</strong>{" "}
@@ -38,8 +40,9 @@ export default function HowItWorksPage() {
           </li>
         </ol>
         <p className="leading-relaxed text-muted-foreground">
-          Medzi 76 a 99 kg (uhlie) respektive 81 a 99 kg (koks) kuriér
-          nevozí a paletová zostava ešte nezačína. Cesta je objednávka od 100 kg.
+          Nad jednou zásielkou kuriérska cena prestáva dávať zmysel a paleta
+          začína od 100 kg. Cesta je teda objednávka, nie ďalšie vrecia v
+          košíku.
         </p>
       </section>
 
@@ -64,10 +67,11 @@ export default function HowItWorksPage() {
           platbu v nej nie sú.
         </p>
         <p className="leading-relaxed text-muted-foreground">
-          Kuriér má limit hmotnosti. Shop pustí najviac tri vrecia uhlia
-          alebo antracitu a štyri vrecia koksu. Kto príde zvonku na 25 kg
-          vrece (fotka, zdieľaný odkaz), v detaile vidí dlaždicu „od 100 kg
-          na objednávku“ — inak by o palete nevedel.
+          Jedna zásielka má strop tri vrecia uhlia alebo antracitu a štyri
+          vrecia koksu — nie preto, že kuriér viac neunesie, ale preto, že
+          balík aj cena sedia len dovtedy. Kto príde zvonku na 25 kg vrece
+          (fotka, zdieľaný odkaz), v detaile vidí dlaždicu „od 100 kg na
+          objednávku“ — inak by o palete nevedel.
         </p>
       </section>
 
