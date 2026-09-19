@@ -15,14 +15,14 @@ Ak súbory nie sú v prílohe, hľadaj ich na zdieľanom počítači v `/workspa
 
 ## Dva režimy (toto je jadro)
 
-1. **Solo vrecia = Woo / e-shopový košík.** Kuriér SDS, doprava v cene vreca, max. 3 / 4 ks. Toto importuj.
+1. **Solo vrecia = Woo / e-shopový košík.** Jedna kuriérska zásielka je balená ako balík: max. 3 vrecia uhlia/antracitu alebo 4 vrecia koksu. Nie že kuriér viac neunesie — ďalšie vrecia by kuriérom cenovo nedávali zmysel. Toto importuj.
 2. **Od 100 kg = nie Woo košík.** Záväzná paletová objednávka s rovnakým cenníkom (€/kg z celkových kíl), údaje mapované na SuperFaktúru (`Invoice.type = order`). Osobný odber vs. paletová preprava; dopravu nacení predajca neskôr, nie checkout Woo. Tento režim žije v náhľadovom shope na `/objednavka-paleta`. **Nevytváraj z neho Woo produkt, variáciu, grouped product ani položku košíka.**
 
 Cenník paliet v JSON je na kontrolu sadzieb a zákaz 250 kg koksu — nie návod na import do košíka.
 
 ## Cieľ (hotové = koncepty sola na schválenie, nie live)
 
-1. Prihlás sa do wp-admin tohto WooCommerce. URL e-shopu sa ťa spýtaj, ak ju nemáš. Ak treba login, **zastav sa a nechaj mňa prihlásiť** na tvojom počítači — heslá nehádaj, obchádzanie loginu neskúšaj.
+1. Prihlás sa do **staging** wp-admin tohto WooCommerce (nie produkcia). URL sa ťa spýtaj, ak ju nemáš. Ak treba login, **zastav sa a nechaj mňa prihlásiť** na tvojom počítači — heslá nehádaj, obchádzanie loginu neskúšaj.
 2. Vytvor **jednu predajnú kategóriu**:
    - Vzorky a hobby (kuriér)
    - Kategóriu „Palivá od 100 kg“ ako tovar v katalógu **nevytváraj**. Ak chceš informačnú stránku, daj do nej text, že paleta ide záväznou objednávkou mimo Woo košíka (SuperFaktúra) — **bez Add to cart**.
@@ -34,9 +34,9 @@ Cenník paliet v JSON je na kontrolu sadzieb a zákaz 250 kg koksu — nie návo
    - Kováčsky antracit 25 kg — 34,90 € — max. 3 ks — SKU `KP-ANTRACIT-SOLO`
    - Kováčsky koks 20 kg — 32,90 € — max. 4 ks — SKU `KP-KOKS-SOLO`
    Cena už obsahuje balné + SDS. Hmotnosť = kg vreca.
-   V popise uveď: viac ako limit kuriéra = paletová objednávka mimo tohto košíka, nie piate vrece.
+   V popise uveď: jedna zásielka má strop 3 / 4 vrecia, lebo ďalšie kuriérom už cena nezvládne. Od 100 kg = paletová objednávka mimo tohto košíka. Na detaile každého sola daj dlaždicu / tlačidlo „Od 100 kg na objednávku“ (kým nebude ostrá URL, daj koncept stránky).
 5. **NEVYTVÁRAJ** variable / simple paletové produkty. **NEIMPORTUJ** SKU `KP-*-PALETA`, `KP-UHLIE-100`, `KP-UHLIE-250`, `KP-KOKS-200` a podobné, aj keby sa objavili v starom CSV. Paleta nie je riadok košíka.
-6. **Max. množstvo** Woo samo nemá. Na solo daj min. 1 a max. 3 / 4 (plugin Min/Max Quantities, alebo malý snippet).
+6. **Max. množstvo** Woo samo nemá. Na solo daj min. 1 a max. 3 / 4 (plugin Min/Max Quantities, alebo malý snippet) — to je veľkosť jednej zásielky, nie fyzický strop auta.
 7. **Dobierka 2,90 €** = poplatok platobnej metódy (Cash on delivery + fee plugin / checkout fee) **len pre solo checkout**. **Nie** položka v katalógu, **nie** pripočítaná do 28,90 / 34,90 / 32,90.
 8. Texty ber zo JSON (slovenčina, skloňovanie vriec). Fotky zatiaľ nedávaj, kým ti nedám obrázky.
 9. Produkty nechaj **koncept / draft**. Katalog, košík, checkout naostro nespúšťaj.
