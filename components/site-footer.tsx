@@ -1,0 +1,39 @@
+import Link from "next/link";
+
+export function SiteFooter() {
+  return (
+    <footer className="mt-auto border-t border-foreground/10 bg-foreground text-background">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-[1.4fr_1fr_1fr] sm:px-6">
+        <div>
+          <p className="font-heading text-2xl">Kováčske palivá</p>
+          <p className="mt-2 max-w-sm text-sm leading-relaxed text-background/70">
+            Kováčske uhlie, antracit a koks. Solo vrecia kuriérom pre hobby
+            vyhne, od 100 kg paletou so zľavou za množstvo.
+          </p>
+        </div>
+        <div className="text-sm">
+          <p className="text-xs uppercase tracking-[0.18em] text-background/50">
+            Objednávky
+          </p>
+          <p className="mt-2">Vzorový e-shop</p>
+          <p className="text-background/70">Ceny upravíte v lib/catalog.ts</p>
+        </div>
+        <div className="text-sm">
+          <p className="text-xs uppercase tracking-[0.18em] text-background/50">
+            Doručenie
+          </p>
+          <p className="mt-2">SDS kuriér — solo vrecia, doprava v cene</p>
+          <p className="text-background/70">
+            Paleta 110 × 120 cm — 40 vriec uhlia / 50 vriec koksu = 1 t
+          </p>
+        </div>
+      </div>
+      <div className="border-t border-background/10 px-4 py-4 text-center text-xs text-background/50 sm:px-6">
+        Dobierka a poplatok za platbu nie sú v cene tovaru.{" "}
+        <Link href="/ako-to-funguje" className="underline decoration-background/30 underline-offset-4">
+          Ako je katalóg poskladaný
+        </Link>
+      </div>
+    </footer>
+  );
+}
