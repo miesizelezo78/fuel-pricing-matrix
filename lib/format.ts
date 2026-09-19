@@ -23,6 +23,12 @@ export function roundMoney(value: number) {
   return Math.round(value * 100) / 100;
 }
 
+export function formatBagCount(bags: number) {
+  if (bags === 1) return "1 vrece";
+  if (bags >= 2 && bags <= 4) return `${bags} vrecia`;
+  return `${bags} vriec`;
+}
+
 export function formatPercent(value: number) {
   return new Intl.NumberFormat("sk-SK", {
     style: "percent",

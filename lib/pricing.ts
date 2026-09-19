@@ -7,7 +7,7 @@ import {
   getProductById,
   palletKg,
 } from "@/lib/catalog";
-import { roundMoney } from "@/lib/format";
+import { formatBagCount, roundMoney } from "@/lib/format";
 
 export type PaymentMethod = "transfer" | "cod";
 
@@ -160,7 +160,7 @@ export function priceCart(cart: CartState) {
         kg: quote.kg,
         goods: quote.goods,
         fulfillment: "freight",
-        unitLabel: `${formatBags(quote.bags)} · ${quote.kg} kg`,
+        unitLabel: `${formatBagCount(quote.bags)} · ${quote.kg} kg`,
         detail: `${quote.tier.label} · ${quote.pricePerKg.toFixed(2).replace(".", ",")} €/kg`,
       });
     }
@@ -181,12 +181,6 @@ export function priceCart(cart: CartState) {
     hasFreight,
     itemCount: pricedLines.reduce((sum, line) => sum + line.bags, 0),
   };
-}
-
-function formatBags(bags: number) {
-  if (bags === 1) return "1 vrece";
-  if (bags >= 2 && bags <= 4) return `${bags} vrecia`;
-  return `${bags} vriec`;
 }
 
 function requireProduct(id: string) {

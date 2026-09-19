@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { formatKg, formatMoney } from "@/lib/format";
+import { formatBagCount, formatKg, formatMoney } from "@/lib/format";
 
 type StoredOrder = {
   orderId: string;
@@ -72,7 +72,7 @@ export function OrderDone() {
       <ul className="mt-6 space-y-2 text-sm">
         {order.lines.map((line) => (
           <li key={line.name}>
-            {line.name} · {line.bags} vriec · {formatKg(line.kg)}
+            {line.name} · {formatBagCount(line.bags)} · {formatKg(line.kg)}
           </li>
         ))}
       </ul>

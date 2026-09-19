@@ -20,10 +20,11 @@ Ceny upravíte v [`lib/catalog.ts`](lib/catalog.ts). Sú označené ako vzorové
 
 ```bash
 npm install
-npm run dev -- --port 43147
+npm run build
+npm run start
 ```
 
-Obchod: [http://127.0.0.1:43147](http://127.0.0.1:43147)
+Vývoj: `npm run dev` (port 43147). Obchod: [http://127.0.0.1:43147](http://127.0.0.1:43147)
 
 Objednávka je lokálna (košík v `localStorage`), bez platobnej brány a bez účtu.
 
