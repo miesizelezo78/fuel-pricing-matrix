@@ -31,7 +31,7 @@
       "nazov": "Palivá od 100 kg (paleta)",
       "slug": "paliva-od-100-kg-paleta",
       "kanal": "bulk",
-      "popis": "Zostavy od 100 kg na palete 110 × 120 cm. Cena je tovar + balné; paletová doprava zvlášť."
+      "popis": "Zostavy od 100 kg na palete 110 × 120 cm. Nie Woo košík — záväzná objednávka, SuperFaktúra. Cena je tovar + balné; paletová doprava zvlášť."
     }
   ],
   "dopravneTriedy": [
@@ -46,7 +46,7 @@
       "id": "paleta",
       "nazov": "Paleta",
       "kanal": "bulk",
-      "poznamka": "Paletová doprava sa nepripočítava do ceny tovaru. Vzorový odhad podľa hmotnosti je v odhadDopravy; pred ostrej prevádzkou ho nahraďte tarifou dopravcu."
+      "poznamka": "Paletová doprava sa nepripočítava do ceny tovaru a nejde cez Woo checkout. Vzorový odhad podľa hmotnosti je v odhadDopravy; pred ostrej prevádzkou ho nahraďte tarifou dopravcu. Do SuperFaktúry ide najprv tovar."
     }
   ],
   "odhadDopravyPaleta": {
@@ -81,25 +81,33 @@
     }
   },
   "pravidla": {
-    "dvaKanaly": "Solo vrece a paletová zostava sú iný predaj, nie ten istý tovar v inej gramáži.",
-    "soloMax": "Kuriér SDS: najviac 3 vrecia uhlia alebo antracitu, alebo 4 vrecia koksu. Viac = paletová zostava, nie piate vrece kuriérom.",
+    "dvaKanaly": "Solo vrece ide Woo / e-shopovým košíkom. Paletová zostava od 100 kg je iný režim: záväzná objednávka mimo košíka, doklad SuperFaktúra.",
+    "soloMax": "Kuriér SDS: najviac 3 vrecia uhlia alebo antracitu, alebo 4 vrecia koksu. Viac = paletová objednávka mimo Woo košíka, nie piate vrece kuriérom.",
     "bulkMinKg": 100,
     "bulkKrokKg": 100,
-    "cenaBulk": "Cena €/kg sa berie z celkových kíl ostávajúceho paliva v košíku, nie z počtu klikov na 100 kg.",
-    "zakazNasobeniaStovky": "Nikdy nevytvárajte simple product „100 kg“, ktorý zákazník násobí. Desať stoviek by stálo 10 × cenu stovky, nie tonovú sadzbu.",
+    "bulkMaxKg": 10000,
+    "cenaBulk": "Cena €/kg sa berie z celkových kíl paletovej objednávky, nie z počtu klikov na 100 kg a nie z Woo košíka.",
+    "zakazNasobeniaStovky": "Nikdy nevytvárajte Woo simple product „100 kg“, ktorý zákazník násobí. Desať stoviek by stálo 10 × cenu stovky, nie tonovú sadzbu. Paletu do Woo košíka nedávajte vôbec.",
     "koks250": "Koks je vo 20 kg vreciach. 250 kg nie je platná zostava (250 sa nedelí 20). Namiesto 250 kg použite 200 kg (10 vriec). Uhlie a antracit 250 kg majú (10 × 25 kg).",
-    "celeVrecia": "Hmotnosť musí sedieť na celé vrecia (násobok bagKg).",
+    "celeVrecia": "Hmotnosť musí sedieť na celé vrecia (násobok bagKg) a ísť po 100 kg od platnej zostavy.",
     "neschvaleneNepublikovat": "Produkty nechajte ako koncept (draft). Naostro až po výslovnom schválení majiteľa."
   },
   "woocommerce": {
-    "preferovanyModel": "variable-presets",
-    "preferovanyModelPopis": "Tri simple solo produkty + tri variable bulk produkty s variáciami zostáv. Ide to natívnym Woo importom, bez pluginu. Zákazník vyberie 100 / 250 (alebo 200 pri kokse) / 500 / 1 000 kg — nie ľubovoľné kilá.",
-    "lepsiModel": "bags-plus-tiered",
-    "lepsiModelPopis": "Bulk predávať po vreciach (min. 4×25 kg alebo 5×20 kg) a plugin Tiered Price Table / Dynamic Pricing / Wholesale Prices nech sadzbu berie z počtu vriec alebo kíl v košíku. To je model náhľadového shopu (300 kg uhlia berie sadzbu od 250 kg). Nerobiť oba modely naraz — zdvojilo by to katalóg.",
-    "maxMnozstvo": "Woo natívne nemá max. ks. Solo: plugin Min/Max Quantities (alebo snippet) — uhlie/antracit max 3, koks max 4, min 1. Bulk pri variáciách: množstvo 1 kus danej zostavy.",
+    "kosik": "len-solo",
+    "preferovanyModel": "solo-simple-only",
+    "preferovanyModelPopis": "Woo košík = tri simple solo produkty. Paletové objemy do Woo neimportovať — ani ako variable, ani ako simple 100 kg.",
+    "paletaNieJeKosik": "Od 100 kg je záväzná objednávka mimo e-shopu. Cenník ostáva, doklad ide do SuperFaktúry (type=order). Woo Add to cart na palety nezapínaj.",
+    "maxMnozstvo": "Woo natívne nemá max. ks. Solo: plugin Min/Max Quantities (alebo snippet) — uhlie/antracit max 3, koks max 4, min 1.",
     "csv": "woocommerce-produkty.csv",
+    "csvObsahuje": "len 3 simple solo produkty",
     "publishedHodnota": -1,
     "publishedVyznam": "Koncept. Importer: 1 = published, 0 = private, -1 = draft, 2 = pending."
+  },
+  "superfaktura": {
+    "doklad": "order",
+    "poznamka": "Paletový predaj nie je Woo košík. Záväzná objednávka ide POST /invoices/create s Invoice.type=order. Do prvého dokladu ide tovar; paletovú dopravu naceníte neskôr, alebo osobný odber.",
+    "poliaKlienta": ["name", "email", "phone", "address", "city", "zip", "ico", "dic", "ic_dph"],
+    "cestaNahladu": "/objednavka-paleta"
   },
   "paliva": [
     {
@@ -274,7 +282,7 @@
       "hmotnostKg": 25,
       "minKs": 1,
       "maxKs": 3,
-      "sisterSku": "KP-UHLIE-PALETA"
+      "paletovyRezim": "mimo-woo-kosika"
     },
     {
       "id": "antracit-solo",
@@ -292,7 +300,7 @@
       "hmotnostKg": 25,
       "minKs": 1,
       "maxKs": 3,
-      "sisterSku": "KP-ANTRACIT-PALETA"
+      "paletovyRezim": "mimo-woo-kosika"
     },
     {
       "id": "koks-solo",
@@ -310,7 +318,7 @@
       "hmotnostKg": 20,
       "minKs": 1,
       "maxKs": 4,
-      "sisterSku": "KP-KOKS-PALETA"
+      "paletovyRezim": "mimo-woo-kosika"
     },
     {
       "id": "uhlie-bulk",
@@ -323,10 +331,10 @@
       "lead": "Najmenšia zostava 100 kg (4 vrecia). Čím viac kíl, tým nižšia cena za kilogram.",
       "kategoriaId": "bulk-paleta",
       "dopravnaTriedaId": "paleta",
-      "wooTyp": "variable",
-      "atribut": "Zostava",
+      "wooTyp": "nie-woo-kosik",
+      "objednavka": "superfaktura-order",
       "defaultZostava": "100 kg",
-      "sisterSku": "KP-UHLIE-SOLO"
+      "sisterSoloSku": "KP-UHLIE-SOLO"
     },
     {
       "id": "antracit-bulk",
@@ -339,10 +347,10 @@
       "lead": "Najmenšia zostava 100 kg (4 vrecia). Plná paleta je 40 vriec, teda 1 000 kg.",
       "kategoriaId": "bulk-paleta",
       "dopravnaTriedaId": "paleta",
-      "wooTyp": "variable",
-      "atribut": "Zostava",
+      "wooTyp": "nie-woo-kosik",
+      "objednavka": "superfaktura-order",
       "defaultZostava": "100 kg",
-      "sisterSku": "KP-ANTRACIT-SOLO"
+      "sisterSoloSku": "KP-ANTRACIT-SOLO"
     },
     {
       "id": "koks-bulk",
@@ -355,10 +363,10 @@
       "lead": "Najmenšia zostava 100 kg (5 vriec). Plná paleta je 50 vriec, teda 1 000 kg.",
       "kategoriaId": "bulk-paleta",
       "dopravnaTriedaId": "paleta",
-      "wooTyp": "variable",
-      "atribut": "Zostava",
+      "wooTyp": "nie-woo-kosik",
+      "objednavka": "superfaktura-order",
       "defaultZostava": "100 kg",
-      "sisterSku": "KP-KOKS-SOLO"
+      "sisterSoloSku": "KP-KOKS-SOLO"
     }
   ],
   "prikladyOverenia": [
@@ -380,7 +388,12 @@
     {
       "id": "solo-limit",
       "zle": "5 vriec uhlia kuriérom",
-      "spravne": "Max 3 vrecia uhlia/antracitu alebo 4 vrecia koksu; inak paletová zostava."
+      "spravne": "Max 3 vrecia uhlia/antracitu alebo 4 vrecia koksu; inak paletová objednávka mimo Woo košíka."
+    },
+    {
+      "id": "paleta-nie-woo-kosik",
+      "zle": "Variable produkt palety v Woo košíku / simple 100 kg, ktoré sa násobí",
+      "spravne": "Paleta = záväzná objednávka SuperFaktúra type=order. Woo košík ostáva len pre solo vrecia."
     }
   ]
 }

@@ -126,8 +126,7 @@ export default function HowItWorksPage() {
               Nerobte simple product „100 kg“.
             </strong>{" "}
             Zákazník dá do košíka 10 kusov a Woo spočíta 10 × cenu stovky.
-            Paletová zľava sa neaplikuje, kým to plugin alebo variácia
-            nerieši.
+            Paleta do Woo nepatrí; cenník žije v objednávke, nie v košíku.
           </li>
         </ol>
       </section>

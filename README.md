@@ -37,21 +37,21 @@ Objednávka sola je lokálny košík. Paletová objednávka ide na `/objednavka-
 
 ## WooCommerce
 
-WooCommerce nemá natívne množstevné ceny. Postup, ktorý tento shop predvádza:
+Woo košík je **len pre solo vrecia**. Paleta od 100 kg do Woo nepatrí.
 
-1. Dve kategórie / dopravné triedy: kuriér vs. paleta.
-2. Solo = simple product, max. 3–4 ks, doprava 0 €.
-3. Palivo = jeden produkt. Buď variácie 100/250/500/1000 kg, alebo predaj po vreciach + plugin na tiered pricing, ktorý berie súčet v košíku.
+1. Jedna kategória / dopravná trieda: kuriér SDS, 0 €, doprava v cene vreca.
+2. Solo = simple product, max. 3–4 ks.
+3. Palivo od 100 kg = záväzná objednávka mimo Woo (`/objednavka-paleta` → SuperFaktúra `type=order`). Nie variable produkt, nie simple „100 kg“ v košíku.
 4. Nedávajte simple product „100 kg“, ktorý sa násobí — desať stoviek nedostane tonovú cenu.
 
 Viac na stránke **Ako to predávame**.
 
 ## Grok Bot → WooCommerce
 
-Balík na nahratie tohto katalógu do WooCommerce je v [`handoff/`](handoff/):
+Balík na nahratie **solo vriec** do WooCommerce je v [`handoff/`](handoff/):
 
-- [`katalog.json`](handoff/katalog.json) — kanonický katalóg, ceny, paleta, dobierka a zákazy
-- [`woocommerce-produkty.csv`](handoff/woocommerce-produkty.csv) — import (koncepty, `Published = -1`)
-- [`grokbot-prompt.md`](handoff/grokbot-prompt.md) — prompt, ktorý vložíte Botovi spolu s prílohami
+- [`katalog.json`](handoff/katalog.json) — kanonický katalóg; paletový cenník je v ňom na sadzby, nie na import do košíka
+- [`woocommerce-produkty.csv`](handoff/woocommerce-produkty.csv) — import **len 3 simple solo** (koncepty, `Published = -1`)
+- [`grokbot-prompt.md`](handoff/grokbot-prompt.md) — prompt: paleta nie je Woo košík
 
 Ceny sú dohodnuté vzorové sumy z [`lib/catalog.ts`](lib/catalog.ts). Pred ostrým spustením ich ešte môžete upraviť. Bot má čakať na schválenie, kým dá produkty live.
