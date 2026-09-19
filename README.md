@@ -46,12 +46,6 @@ Woo košík je **len pre solo vrecia**. Paleta od 100 kg do Woo nepatrí.
 
 Viac na stránke **Ako to predávame**.
 
-## Grok Bot → WooCommerce
+## Grok Bot (existujúci web)
 
-Balík na nahratie **solo vriec** do WooCommerce je v [`handoff/`](handoff/):
-
-- [`katalog.json`](handoff/katalog.json) — kanonický katalóg; paletový cenník je v ňom na sadzby, nie na import do košíka
-- [`woocommerce-produkty.csv`](handoff/woocommerce-produkty.csv) — import **len 3 simple solo** (koncepty, `Published = -1`)
-- [`grokbot-prompt.md`](handoff/grokbot-prompt.md) — prompt: paleta nie je Woo košík
-
-Ceny sú dohodnuté vzorové sumy z [`lib/catalog.ts`](lib/catalog.ts). Pred ostrým spustením ich ešte môžete upraviť. Bot má čakať na schválenie, kým dá produkty live.
+Tento Next náhľad **nie je** ostrý web. Ostrý / staging stavia Grok Bot. Tu je len logika palív. Balík pre neho: [`handoff/SPOLUPRACA.md`](handoff/SPOLUPRACA.md), [`katalog.json`](handoff/katalog.json), [`woocommerce-produkty.csv`](handoff/woocommerce-produkty.csv).

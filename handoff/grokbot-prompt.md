@@ -1,17 +1,20 @@
-# Prompt pre Grok Bot — WooCommerce len pre solo vrecia
+# Prompt pre Grok Bot — zapoj palivá do UŽ existujúceho webu
 
-Pripojte k správe súbory `katalog.json` a `woocommerce-produkty.csv` (prípadne aj tento prompt, ak ho nelepíte celý). V desktopovom composerovi Grok Botu je max. **6 príloh**. Potom vložte text **od čiary nižšie až do konca súboru**.
+Ty si **prvý**. Tento web už staviaš ty (Codex → ty). Cursor vyriešil len ťažkú logiku kováčskych palív. **Nestoji druhý e-shop. Netež dizajn webu.** Vezmi súbory a zapoj ich do svojho stagingu. Klient sa len prihlási a odobrí — REST, CSV, pluginy rieš ty.
+
+Najprv si prečítaj `SPOLUPRACA.md` v tomto balíku (alebo nižšie). Potom postupuj od čiary.
+
+Pripojte k správe `SPOLUPRACA.md`, `katalog.json` a `woocommerce-produkty.csv`. Max. **6 príloh**. Ak súbory nie sú v prílohe, hľadaj `/workspace/handoff/`.
 
 ---
 
-Ahoj. Si môj AI tímak na trvalom cloudovom počítači. Mám WooCommerce e-shop a chcem doň nahráť **len solo vrecia** kováčskych palív (uhlie, antracit, koks). Paletové objemy od 100 kg **do Woo košíka nedávaj**. Nič nepublikuj naostro, kým to výslovne neschválim.
+Ahoj. Si Grok Bot na trvalom cloudovom počítači. Web, na ktorom už dlho pracuješ, ostáva tvoj. Cursor ti posiela **iba obchodnú logiku palív** (uhlie, antracit, koks). Paletové objemy od 100 kg **do Woo košíka nedávaj**. Nič nepublikuj naostro, kým to klient neschváli.
 
-## Čo som pripojil
+## Čo je v balíku
 
-- `katalog.json` — jediný zdroj pravdy: tovar, vrecia, paleta, ceny, dva režimy predaja. Ceny sú **dohodnuté vzorové sumy s DPH**; štruktúru nemeň, sumy bez opýtania nemeň.
-- `woocommerce-produkty.csv` — UTF-8 CSV v schéme WooCommerce Product Importer. Obsahuje **iba 3 simple solo produkty**. `Published = -1` (koncept). Paletové SKU v ňom **nie sú**.
-
-Ak súbory nie sú v prílohe, hľadaj ich na zdieľanom počítači v `/workspace/handoff/`.
+- `SPOLUPRACA.md` — kto čo robí (ty = web, Cursor = logika, klient = súhlas)
+- `katalog.json` — zdroj pravdy: tovar, vrecia, ceny, dva režimy. Ceny sú **dohodnuté vzorové sumy s DPH**; štruktúru nemeň, sumy bez opýtania nemeň.
+- `woocommerce-produkty.csv` — len **3 simple solo produkty**. `Published = -1` (koncept). Paletové SKU v ňom **nie sú**.
 
 ## Dva režimy (toto je jadro)
 
