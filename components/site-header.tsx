@@ -9,6 +9,7 @@ import { usePricedCart } from "@/components/cart-provider";
 
 const links = [
   { href: "/", label: "Palivá" },
+  { href: "/objednavka-paleta", label: "Paleta" },
   { href: "/ako-to-funguje", label: "Ako to predávame" },
 ];
 
@@ -32,8 +33,9 @@ export function SiteHeader() {
           {links.map((link) => {
             const active =
               link.href === "/"
-                ? pathname === "/" || pathname.startsWith("/palivo")
-                : pathname === link.href;
+                ? pathname === "/" ||
+                  (pathname.startsWith("/palivo") && !pathname.includes("objednavka"))
+                : pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
               <Link
                 key={link.href}
@@ -52,7 +54,13 @@ export function SiteHeader() {
           <Button
             nativeButton={false}
             render={<Link href="/kosik" />}
-            variant={pathname === "/kosik" || pathname.startsWith("/objednavka") ? "default" : "outline"}
+            variant={
+              pathname === "/kosik" ||
+              (pathname.startsWith("/objednavka") &&
+                !pathname.startsWith("/objednavka-paleta"))
+                ? "default"
+                : "outline"
+            }
             className="ml-1"
           >
             <ShoppingBag />

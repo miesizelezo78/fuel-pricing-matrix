@@ -10,14 +10,38 @@ export default function HowItWorksPage() {
           Model katalógu
         </p>
         <h1 className="font-heading mt-2 text-4xl sm:text-5xl">
-          Dva predaje, nie šesť náhodných dlaždíc
+          Kde sa predaj láme
         </h1>
         <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-          Kuriér a paleta sa nesmú tváriť ako ten istý tovar. Solo vrece je
-          vzorka s dopravou v cene. Od 100 kg je to palivová zostava, kde sa
-          oplatí brať viac.
+          Solo vrece je e-shopový produkt. Od 100 kg to e-shopový produkt
+          nie je — je to tovar na objednávku. Rovnaký vzhľad dlaždíc, iné
+          tlačidlo, iná podstránka, iné pravidlá. Text záväzku pred ostrým
+          spustením overte s právnikom.
         </p>
       </header>
+
+      <section className="space-y-3 rounded-2xl bg-card p-6 ring-1 ring-foreground/10">
+        <h2 className="font-heading text-3xl">Dve hranice, nie plynulý košík</h2>
+        <ol className="list-decimal space-y-3 pl-5 text-muted-foreground">
+          <li>
+            <strong className="text-foreground">Kuriér (fyzický strop).</strong>{" "}
+            SDS unesie 3 vrecia uhlia alebo antracitu (75 kg) a 4 vrecia koksu
+            (80 kg). Ďalšie vrece kuriérom nejde. Toto upozornenie je na
+            detaile 25 kg / 20 kg vreca — tam sa košík láme.
+          </li>
+          <li>
+            <strong className="text-foreground">Režim predaja (od 100 kg).</strong>{" "}
+            Od stovky kíl to nie je položka e-shopu. Je to tovar na objednávku:
+            konfigurátor, formulár, doklad v SuperFaktúre. Preto nie „do
+            košíka“, ale „k objednávke“. Paleta, neprevzatie a odstúpenie počas
+            vychystania stoja peniaze.
+          </li>
+        </ol>
+        <p className="leading-relaxed text-muted-foreground">
+          Medzi 76 a 99 kg (uhlie) respektive 81 a 99 kg (koks) kuriér
+          nevozí a paletová zostava ešte nezačína. Cesta je objednávka od 100 kg.
+        </p>
+      </section>
 
       <section className="space-y-3">
         <h2 className="font-heading text-3xl">Čo je v jednom vreci</h2>
@@ -40,60 +64,62 @@ export default function HowItWorksPage() {
           platbu v nej nie sú.
         </p>
         <p className="leading-relaxed text-muted-foreground">
-          Kuriér má limit hmotnosti. Preto shop pustí najviac tri vrecia uhlia
-          alebo antracitu a štyri vrecia koksu. Kto chce viac, ide do paletovej
-          zostavy — nie do piateho vreca kuriérom.
+          Kuriér má limit hmotnosti. Shop pustí najviac tri vrecia uhlia
+          alebo antracitu a štyri vrecia koksu. Kto príde zvonku na 25 kg
+          vrece (fotka, zdieľaný odkaz), v detaile vidí dlaždicu „od 100 kg
+          na objednávku“ — inak by o palete nevedel.
         </p>
       </section>
 
       <section className="space-y-3">
-        <h2 className="font-heading text-3xl">Od 100 kg: cena z celkových kíl</h2>
+        <h2 className="font-heading text-3xl">Od 100 kg: záväzná objednávka</h2>
         <p className="leading-relaxed text-muted-foreground">
-          Najmenšia zostava je 100 kg — štyri 25 kg vrecia, alebo päť 20 kg
-          vriec koksu. V starom e-shope boli 100, 250, 500 a 1 000 kg ako
-          oddelené ceny. To ostáva ako rýchly výber.
+          V katalógu ostane e-shopová dlaždica „Kováčske uhlie od 100 kg“.
+          Nie je to produkt. Klik ide rovno na objednávkovú podstránku s
+          konfigurátorom. Cenník ostáva: 100 kg, sadzba z celkových kíl, koks
+          bez 250 kg. Tlačidlo je „k objednávke“.
         </p>
         <p className="leading-relaxed text-muted-foreground">
-          Klikanie „ešte jedna stovka“ za cenu stovky by zničilo zľavu: desať
-          krát 100 kg by stálo ako drahá stovka, nie ako tona. Preto sa cena
-          viaže na súčet kíl v košíku. 300 kg uhlia berie sadzbu od 250 kg, 1
-          200 kg sadzbu palety.
+          Formulár berie údaje, ktoré SuperFaktúra potrebuje na doklad (meno /
+          firma, adresa, IČO, DIČ, IČ DPH, e-mail, telefón). Zákazník zvolí
+          osobný odber alebo paletovú prepravu. Dopravu naceníte až podľa
+          miesta — do prvého dokladu ide tovar.
         </p>
         <p className="leading-relaxed text-muted-foreground">
-          Koks nemá 250 kg: 250 sa nedelí 20 kg vrecom. Namiesto toho je 200 kg
-          (10 vriec). Uhlie a antracit 250 kg majú, lebo 10 × 25 kg sedí.
+          Ostrá objednávka ide cez SuperFaktúra API (`type: order`). Bez kľúčov
+          ostane náhľad. Znenie záväzku a výnimky z odstúpenia nie sú právna
+          rada — pred spustením to dajte skontrolovať.
         </p>
       </section>
 
       <section className="space-y-3 rounded-2xl bg-card p-6 ring-1 ring-foreground/10">
         <h2 className="font-heading text-3xl">Čo na to WooCommerce</h2>
         <p className="leading-relaxed text-muted-foreground">
-          WooCommerce samo o sebe nevie „čím viac kíl, tým nižší €/kg“. Vie
-          jednoduchý tovar, variácie a košíkové kupóny. Množstevná cena je
-          plugin, alebo sa to nasimuluje variáciami.
+          WooCommerce ostáva pre tri solo vrecia. Paleta do jeho košíka
+          nepatrí — iné legislatívne pravidlá, drahá doprava, drahé
+          neprevzatie.
         </p>
         <ol className="list-decimal space-y-3 pl-5 text-muted-foreground">
           <li>
-            <strong className="text-foreground">Dve kategórie.</strong> „Vzorky
-            a hobby (kurier)“ a „Palivá od 100 kg (paleta)“. Iná dopravná
-            trieda, iný skladový príbeh.
+            <strong className="text-foreground">Dve plochy, nie dve Woo položky.</strong>{" "}
+            V katalógu sú solo dlaždice (e-shop) a dlaždice „od 100 kg“
+            (objednávka). Woo má držať len solo vrecia. Paleta do Woo košíka
+            nepatrí.
           </li>
           <li>
             <strong className="text-foreground">Solo = simple product.</strong>{" "}
             Max 3 / 4 kusy (Min/Max Quantities alebo vlastný snippet).
             Dopravná trieda s 0 €, lebo doprava je v cene. Dobierka ako
-            platobná metóda s poplatkom, nie ako súčasť produktu.
+            platobná metóda s poplatkom, nie ako súčasť produktu. V detaile
+            vreca musí byť dlaždica / tlačidlo na objednávku od 100 kg.
           </li>
           <li>
             <strong className="text-foreground">
-              Palivo = jeden produkt, nie štyri dlaždice.
+              Od 100 kg = tovar na objednávku, nie produkt Woo.
             </strong>{" "}
-            Buď variácie 100 / 250 / 500 / 1 000 kg — čisté Woo, bez pluginu,
-            ale 300 kg sa nedá poskladať. Alebo jeden tovar predávaný po
-            vreciach (min. 4 alebo 5) a plugin{" "}
-            <em>Tiered Price Table</em> / <em>Dynamic Pricing</em> /{" "}
-            <em>Wholesale Prices</em>, ktorý sadzbu berie z počtu vriec v
-            košíku. To je model, ktorý beží tu.
+            Cenník 100 / 250 / 500 / 1 000 kg (koks 200 namiesto 250) ostáva
+            v konfigurátore. Doklad ide do SuperFaktúry. Woo košík na palety
+            nepoužívame práve kvôli odstúpeniu a drahému neprevzatiu.
           </li>
           <li>
             <strong className="text-foreground">
@@ -113,8 +139,8 @@ export default function HowItWorksPage() {
           <code className="rounded bg-muted px-1.5 py-0.5 text-sm">
             lib/catalog.ts
           </code>
-          . Paletová doprava je hrubý odhad podľa hmotnosti — v ostrej verzii
-          ju nahraďte tarifou dopravcu.
+          . Paletovú dopravu na veľkých množstvách naceníte podľa adresy, nie
+          ju strhávať z košíka.
         </p>
       </section>
     </article>

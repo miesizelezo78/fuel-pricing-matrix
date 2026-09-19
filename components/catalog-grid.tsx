@@ -11,6 +11,7 @@ import {
   type CatalogProduct,
 } from "@/lib/catalog";
 import { formatMoney, formatPerKg } from "@/lib/format";
+import { palletOrderHref } from "@/lib/paths";
 import { bulkGoodsPrice } from "@/lib/pricing";
 
 function priceHint(product: CatalogProduct) {
@@ -32,13 +33,18 @@ export function ProductTile({ product }: { product: CatalogProduct }) {
   const fuel = getFuel(product.fuelId);
   const hint = priceHint(product);
 
+  const href =
+    product.channel === "solo"
+      ? `/palivo/${product.slug}`
+      : palletOrderHref(product.fuelId);
+
   return (
-    <Link href={`/palivo/${product.slug}`} className="group block h-full">
+    <Link href={href} className="group block h-full">
       <Card className="h-full transition-[transform,box-shadow] group-hover:-translate-y-0.5 group-hover:shadow-lg">
         <CardContent className="flex flex-col gap-4">
           <div className="flex items-start justify-between gap-3">
             <Badge variant={product.channel === "solo" ? "secondary" : "default"}>
-              {product.channel === "solo" ? "Solo vrece" : "Od 100 kg"}
+              {product.channel === "solo" ? "E-shop · kuriér" : "Na objednávku"}
             </Badge>
             <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
               {fuel.bagKg} kg / vrece
@@ -60,7 +66,7 @@ export function ProductTile({ product }: { product: CatalogProduct }) {
             <p className="text-xs text-muted-foreground">{hint.note}</p>
           </div>
           <span className="inline-flex items-center gap-1 text-sm font-medium">
-            Objednať
+            {product.channel === "solo" ? "Do košíka" : "K objednávke"}
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
           </span>
         </CardFooter>
@@ -97,11 +103,11 @@ export function CatalogGrid() {
             <p className="text-xs uppercase tracking-[0.2em] text-primary">
               Paleta 110 × 120 cm
             </p>
-            <h2 className="font-heading mt-1 text-3xl">Palivá od 100 kg</h2>
+            <h2 className="font-heading mt-1 text-3xl">Na objednávku od 100 kg</h2>
           </div>
           <p className="max-w-md text-sm text-muted-foreground">
-            Najmenšia zostava je 100 kg. Cena za kilogram klesá pri 250 / 200,
-            500 a 1 000 kg. Plná paleta je jedna tona.
+            Dlaždica vyzerá ako v e-shope, ale to nie je produkt do košíka.
+            Klik ide na konfigurátor a záväznú objednávku.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

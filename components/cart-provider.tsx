@@ -10,7 +10,6 @@ import {
 import { toast } from "sonner";
 import { getFuel, getProductById } from "@/lib/catalog";
 import {
-  clampBulkKg,
   clampSoloBags,
   priceCart,
   type CartLine,
@@ -66,14 +65,10 @@ function normalize(cart: CartState): CartState {
   for (const line of cart.lines) {
     const product = getProductById(line.productId);
     if (!product) continue;
+    if (product.channel !== "solo") continue;
     const fuel = getFuel(product.fuelId);
     const current = merged.get(line.productId) ?? 0;
-    if (product.channel === "solo") {
-      merged.set(line.productId, clampSoloBags(fuel, current + line.bags));
-    } else {
-      const kg = clampBulkKg(fuel, (current + line.bags) * fuel.bagKg);
-      merged.set(line.productId, kg / fuel.bagKg);
-    }
+    merged.set(line.productId, clampSoloBags(fuel, current + line.bags));
   }
   const lines: CartLine[] = [...merged.entries()]
     .filter(([, bags]) => bags > 0)
@@ -116,23 +111,20 @@ function writeCart(cart: CartState) {
 function applyLine(current: CartState, productId: string, bags: number) {
   const product = getProductById(productId);
   if (!product) return { cart: current, accepted: false as const };
+  if (product.channel !== "solo") {
+    return { cart: current, accepted: false as const };
+  }
   const fuel = getFuel(product.fuelId);
   let nextBags = bags;
   let accepted = true;
 
-  if (product.channel === "solo") {
-    if (bags > fuel.soloMaxBags) {
-      accepted = false;
-      nextBags = fuel.soloMaxBags;
-    } else if (bags <= 0) {
-      nextBags = 0;
-    } else {
-      nextBags = clampSoloBags(fuel, bags);
-    }
+  if (bags > fuel.soloMaxBags) {
+    accepted = false;
+    nextBags = fuel.soloMaxBags;
   } else if (bags <= 0) {
     nextBags = 0;
   } else {
-    nextBags = clampBulkKg(fuel, bags * fuel.bagKg) / fuel.bagKg;
+    nextBags = clampSoloBags(fuel, bags);
   }
 
   const lines = current.lines.filter((line) => line.productId !== productId);
@@ -153,7 +145,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const fuel = product ? getFuel(product.fuelId) : null;
       toast.error(
         fuel
-          ? `Kuriér SDS unesie najviac ${fuel.soloMaxBags} vrecia ${fuel.adjective}. Na viac použite paletovú zostavu od 100 kg.`
+          ? `Kuriér SDS unesie najviac ${fuel.soloMaxBags} vrecia ${fuel.adjective}. Na viac použite paletovú objednávku od 100 kg.`
           : "Toto množstvo kuriér neprevezie.",
       );
     }

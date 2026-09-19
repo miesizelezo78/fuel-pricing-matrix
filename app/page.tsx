@@ -14,13 +14,16 @@ export default function HomePage() {
             Uhlie, koks a antracit tak, ako sa skutočne balia.
           </h1>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Solo vrece kuriérom — s dopravou v cene — pre hobby kováčov a
-            nožiarov. Od 100 kg ide paleta 110 × 120 cm a cena za kilogram klesá
-            s hmotnosťou, nie s počtom klikov na stovku.
+            Solo vrece ide kuriérom, s dopravou v cene, ako e-shop. Od 100 kg
+            je to paletová objednávka — iný režim, iné pravidlá, dopravu
+            naceníme alebo si tovar vyzdvihnete.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
+            <Button nativeButton={false} render={<Link href="/objednavka-paleta" />}>
+              Paletová objednávka
+            </Button>
             <Button nativeButton={false} render={<Link href="/ako-to-funguje" />} variant="outline">
-              Prečo dva katalógy
+              Prečo dva režimy
             </Button>
           </div>
         </div>

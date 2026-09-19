@@ -8,15 +8,19 @@ export function SiteFooter() {
           <p className="font-heading text-2xl">Kováčske palivá</p>
           <p className="mt-2 max-w-sm text-sm leading-relaxed text-background/70">
             Kováčske uhlie, antracit a koks. Solo vrecia kuriérom pre hobby
-            vyhne, od 100 kg paletou so zľavou za množstvo.
+            vyhne. Od 100 kg záväzná paletová objednávka, nie košík.
           </p>
         </div>
         <div className="text-sm">
           <p className="text-xs uppercase tracking-[0.18em] text-background/50">
             Objednávky
           </p>
-          <p className="mt-2">Vzorový e-shop</p>
-          <p className="text-background/70">Ceny upravíte v lib/catalog.ts</p>
+          <p className="mt-2">
+            <Link href="/objednavka-paleta" className="underline decoration-background/30 underline-offset-4">
+              Paletová objednávka
+            </Link>
+          </p>
+          <p className="text-background/70">Solo vrecia — košík. Paleta — SuperFaktúra.</p>
         </div>
         <div className="text-sm">
           <p className="text-xs uppercase tracking-[0.18em] text-background/50">

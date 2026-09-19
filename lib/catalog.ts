@@ -41,6 +41,16 @@ export const PALLET_CM = { width: 110, depth: 120 } as const;
 /** Sample COD fee. Payment-method charges are never bundled into product prices. */
 export const COD_FEE_EUR = 2.9;
 
+/** Slovak standard VAT. SuperFaktúra items send net + this rate. */
+export const VAT_RATE = 23;
+
+/** Cap for one pallet order — ten full 1 t pallets. */
+export const BULK_MAX_KG = 10_000;
+
+export function isFuelId(value: unknown): value is FuelId {
+  return value === "uhlie" || value === "antracit" || value === "koks";
+}
+
 /**
  * Sample prices including VAT. Edit here — the shop reads this file only.
  * Solo prices already include packing and SDS courier delivery.
@@ -155,8 +165,8 @@ export const PRODUCTS: CatalogProduct[] = [
     channel: "bulk",
     fuelId: "uhlie",
     name: "Kováčske uhlie od 100 kg",
-    eyebrow: "Paletová zostava · 25 kg vrecia",
-    lead: "Najmenšia zostava 100 kg (4 vrecia). Čím viac kíl, tým nižšia cena za kilogram.",
+    eyebrow: "Na objednávku · 25 kg vrecia",
+    lead: "Tovar na objednávku, nie do košíka. Od 100 kg (4 vrecia). Čím viac kíl, tým nižšia cena za kilogram.",
   },
   {
     id: "antracit-bulk",
@@ -164,8 +174,8 @@ export const PRODUCTS: CatalogProduct[] = [
     channel: "bulk",
     fuelId: "antracit",
     name: "Kováčsky antracit od 100 kg",
-    eyebrow: "Paletová zostava · 25 kg vrecia",
-    lead: "Najmenšia zostava 100 kg (4 vrecia). Plná paleta je 40 vriec, teda 1 000 kg.",
+    eyebrow: "Na objednávku · 25 kg vrecia",
+    lead: "Tovar na objednávku, nie do košíka. Od 100 kg (4 vrecia). Plná paleta je 40 vriec, teda 1 000 kg.",
   },
   {
     id: "koks-bulk",
@@ -173,8 +183,8 @@ export const PRODUCTS: CatalogProduct[] = [
     channel: "bulk",
     fuelId: "koks",
     name: "Kováčsky koks od 100 kg",
-    eyebrow: "Paletová zostava · 20 kg vrecia",
-    lead: "Najmenšia zostava 100 kg (5 vriec). Plná paleta je 50 vriec, teda 1 000 kg.",
+    eyebrow: "Na objednávku · 20 kg vrecia",
+    lead: "Tovar na objednávku, nie do košíka. Od 100 kg (5 vriec). Plná paleta je 50 vriec, teda 1 000 kg.",
   },
 ];
 

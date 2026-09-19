@@ -1,4 +1,5 @@
 import {
+  BULK_MAX_KG,
   COD_FEE_EUR,
   type CatalogProduct,
   type Fuel,
@@ -20,10 +21,64 @@ export function tierForKg(tiers: PriceTier[], kg: number): PriceTier {
   return current;
 }
 
+/** Kilogram values reachable from a catalog preset by ±100 kg, in whole bags. */
+export function bulkKgOptions(fuel: Fuel): number[] {
+  const values = new Set<number>();
+  for (const preset of fuel.bulkPresetsKg) {
+    for (let kg = preset; kg <= BULK_MAX_KG; kg += fuel.bulkStepKg) {
+      if (kg >= fuel.bulkMinKg && kg % fuel.bagKg === 0) values.add(kg);
+    }
+    for (
+      let kg = preset - fuel.bulkStepKg;
+      kg >= fuel.bulkMinKg;
+      kg -= fuel.bulkStepKg
+    ) {
+      if (kg % fuel.bagKg === 0) values.add(kg);
+    }
+  }
+  return [...values].sort((a, b) => a - b);
+}
+
+export function isValidBulkKg(fuel: Fuel, kg: number) {
+  return Number.isInteger(kg) && bulkKgOptions(fuel).includes(kg);
+}
+
+export function bulkKgError(fuel: Fuel, kg: number) {
+  if (!Number.isFinite(kg) || !Number.isInteger(kg)) {
+    return "Zadajte hmotnosť v celých kilogramoch.";
+  }
+  if (kg < fuel.bulkMinKg) {
+    return "Paletová objednávka začína od 100 kg.";
+  }
+  if (kg > BULK_MAX_KG) {
+    return "Najviac 10 000 kg v jednej objednávke.";
+  }
+  if (fuel.id === "koks" && kg === 250) {
+    return "Koks 250 kg nie je platná zostava (20 kg vrecia). Dajte 200 kg alebo 300 kg.";
+  }
+  if (kg % fuel.bagKg !== 0) {
+    return `Hmotnosť musí sedieť na celé ${fuel.bagKg} kg vrecia.`;
+  }
+  if (!isValidBulkKg(fuel, kg)) {
+    return "Hmotnosť musí ísť po 100 kg od platnej zostavy.";
+  }
+  return undefined;
+}
+
 export function clampBulkKg(fuel: Fuel, kg: number) {
-  const minBags = fuel.bulkMinKg / fuel.bagKg;
-  const bags = Math.max(minBags, Math.round(kg / fuel.bagKg));
-  return bags * fuel.bagKg;
+  const options = bulkKgOptions(fuel);
+  const fallback = options[0] ?? fuel.bulkMinKg;
+  if (!Number.isFinite(kg)) return fallback;
+  let best = fallback;
+  let bestDist = Math.abs(kg - best);
+  for (const option of options) {
+    const dist = Math.abs(kg - option);
+    if (dist < bestDist) {
+      best = option;
+      bestDist = dist;
+    }
+  }
+  return best;
 }
 
 export function clampSoloBags(fuel: Fuel, bags: number) {

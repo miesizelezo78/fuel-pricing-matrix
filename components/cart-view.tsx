@@ -26,12 +26,21 @@ export function CartView() {
       <div className="rounded-2xl border border-dashed border-foreground/20 bg-card px-6 py-16 text-center">
         <p className="font-heading text-3xl">Košík je prázdny</p>
         <p className="mx-auto mt-2 max-w-md text-muted-foreground">
-          Solo vrece s kuriérom, alebo paletová zostava od 100 kg. Cena za
-          kilogram klesá s hmotnosťou.
+          Solo vrece s kuriérom. Paleta od 100 kg ide ako záväzná objednávka,
+          nie touto cestou.
         </p>
-        <Button nativeButton={false} render={<Link href="/" />} className="mt-6">
-          Do katalógu
-        </Button>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <Button nativeButton={false} render={<Link href="/" />}>
+            Do katalógu
+          </Button>
+          <Button
+            nativeButton={false}
+            render={<Link href="/objednavka-paleta" />}
+            variant="outline"
+          >
+            Paletová objednávka
+          </Button>
+        </div>
       </div>
     );
   }
@@ -39,16 +48,8 @@ export function CartView() {
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.8fr)]">
       <div className="space-y-4">
-        {priced.hasCourier && priced.hasFreight ? (
-          <p className="rounded-xl bg-primary/10 px-4 py-3 text-sm">
-            V košíku sú dva typy zásielky: kuriér SDS (solo vrecia, doprava v
-            cene) a paletová doprava (odhad zvlášť). Pôjdu oddelene.
-          </p>
-        ) : null}
         {priced.pricedLines.map((line) => {
           const fuel = getFuel(line.fuel.id);
-          const stepBags =
-            line.product.channel === "solo" ? 1 : fuel.bulkStepKg / fuel.bagKg;
           return (
             <article
               key={line.product.id}
@@ -75,7 +76,7 @@ export function CartView() {
                   <Button
                     variant="outline"
                     size="icon-sm"
-                    onClick={() => setBags(line.product.id, line.bags - stepBags)}
+                    onClick={() => setBags(line.product.id, line.bags - 1)}
                     aria-label="Znížiť množstvo"
                   >
                     −
@@ -84,11 +85,8 @@ export function CartView() {
                   <Button
                     variant="outline"
                     size="icon-sm"
-                    disabled={
-                      line.product.channel === "solo" &&
-                      line.bags >= fuel.soloMaxBags
-                    }
-                    onClick={() => setBags(line.product.id, line.bags + stepBags)}
+                    disabled={line.bags >= fuel.soloMaxBags}
+                    onClick={() => setBags(line.product.id, line.bags + 1)}
                     aria-label="Zvýšiť množstvo"
                   >
                     +
@@ -115,20 +113,9 @@ export function CartView() {
             <dd className="tabular-nums">{formatMoney(priced.goods)}</dd>
           </div>
           <div className="flex justify-between gap-4">
-            <dt>
-              {priced.hasFreight
-                ? "Paletová doprava (odhad)"
-                : "Doprava kuriérom"}
-            </dt>
-            <dd className="tabular-nums">
-              {priced.hasFreight ? formatMoney(priced.freight) : "v cene"}
-            </dd>
+            <dt>Doprava kuriérom</dt>
+            <dd className="tabular-nums">v cene</dd>
           </div>
-          {priced.hasCourier && priced.hasFreight ? (
-            <p className="text-xs text-muted-foreground">
-              Solo vrecia majú kuriéra v cene vreca.
-            </p>
-          ) : null}
         </dl>
         <Separator className="my-4" />
         <p className="text-sm font-medium">Platba</p>
@@ -174,6 +161,12 @@ export function CartView() {
         >
           Pokračovať k objednávke
         </Button>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Od 100 kg to nie je tento košík.{" "}
+          <Link href="/objednavka-paleta" className="underline underline-offset-4">
+            Paletová objednávka
+          </Link>
+        </p>
       </aside>
     </div>
   );

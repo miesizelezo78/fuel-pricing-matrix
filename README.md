@@ -1,6 +1,9 @@
 # Kováčske palivá
 
-E-shopový náhľad predaja kováčskeho uhlia, antracitu a koksu. Rieši to, čo WooCommerce samo od seba nechce: **solo vrecia s kuriérom** vs. **paletové zostavy od 100 kg s cenou podľa celkových kíl**.
+E-shopový náhľad predaja kováčskeho uhlia, antracitu a koksu.
+
+- **Solo vrecia** — e-shopový košík, kuriér SDS, doprava v cene.
+- **Od 100 kg** — záväzná paletová objednávka (nie košík), cenník podľa kíl, doklad do SuperFaktúry.
 
 ## Čo je v katalógu
 
@@ -11,10 +14,14 @@ E-shopový náhľad predaja kováčskeho uhlia, antracitu a koksu. Rieši to, č
 | Kováčsky koks | 20 kg | max. 4 vrecia | 50 vriec = 1 000 kg |
 
 - Solo ceny už obsahujú balné a doručenie. Dobierka je zvlášť.
-- Od 100 kg sa predáva ako zostava. Cena/kg klesá na 100 / 250 (uhlie, antracit) resp. 200 (koks) / 500 / 1 000 kg.
-- 250 kg koksu v katalógu nie je — 250 sa nedelí 20 kg vrecom.
+- Od 100 kg je to záväzná objednávka, nie košík. Cena/kg klesá na 100 / 250 (uhlie, antracit) resp. 200 (koks) / 500 / 1 000 kg.
+- Paletovú dopravu naceníte podľa adresy, alebo osobný odber. Do SuperFaktúry ide najprv tovar.
 
 Ceny upravíte v [`lib/catalog.ts`](lib/catalog.ts). Sú označené ako vzorové.
+
+## SuperFaktúra
+
+Skopírujte [`.env.example`](.env.example) na `.env.local` a doplňte e-mail a API kľúč. Bez nich formulár objednávku uloží ako náhľad. Ostrý doklad ide `POST /invoices/create` s `Invoice.type = order`.
 
 ## Spustenie
 
@@ -26,7 +33,7 @@ npm run start
 
 Vývoj: `npm run dev` (port 43147). Obchod: [http://127.0.0.1:43147](http://127.0.0.1:43147)
 
-Objednávka je lokálna (košík v `localStorage`), bez platobnej brány a bez účtu.
+Objednávka sola je lokálny košík. Paletová objednávka ide na `/objednavka-paleta` a do SuperFaktúry (alebo náhľad bez kľúčov).
 
 ## WooCommerce
 
