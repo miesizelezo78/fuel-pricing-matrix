@@ -38,3 +38,13 @@ WooCommerce nemá natívne množstevné ceny. Postup, ktorý tento shop predvád
 4. Nedávajte simple product „100 kg“, ktorý sa násobí — desať stoviek nedostane tonovú cenu.
 
 Viac na stránke **Ako to predávame**.
+
+## Grok Bot → WooCommerce
+
+Balík na nahratie tohto katalógu do WooCommerce je v [`handoff/`](handoff/):
+
+- [`katalog.json`](handoff/katalog.json) — kanonický katalóg, ceny, paleta, dobierka a zákazy
+- [`woocommerce-produkty.csv`](handoff/woocommerce-produkty.csv) — import (koncepty, `Published = -1`)
+- [`grokbot-prompt.md`](handoff/grokbot-prompt.md) — prompt, ktorý vložíte Botovi spolu s prílohami
+
+Ceny sú dohodnuté vzorové sumy z [`lib/catalog.ts`](lib/catalog.ts). Pred ostrým spustením ich ešte môžete upraviť. Bot má čakať na schválenie, kým dá produkty live.
