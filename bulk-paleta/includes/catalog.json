@@ -1,0 +1,56 @@
+{
+  "vatPercent": 23,
+  "bulkMinKg": 100,
+  "bulkMaxKg": 10000,
+  "bulkStepKg": 100,
+  "fuels": {
+    "uhlie": {
+      "id": "uhlie",
+      "name": "Kováčske uhlie",
+      "shortName": "Uhlie",
+      "bagKg": 25,
+      "palletBags": 40,
+      "presetsKg": [100, 250, 500, 1000],
+      "tiers": [
+        { "minKg": 100, "pricePerKg": 0.89, "label": "100 kg" },
+        { "minKg": 250, "pricePerKg": 0.82, "label": "250 kg" },
+        { "minKg": 500, "pricePerKg": 0.75, "label": "500 kg" },
+        { "minKg": 1000, "pricePerKg": 0.68, "label": "1 t / paleta" }
+      ]
+    },
+    "antracit": {
+      "id": "antracit",
+      "name": "Kováčsky antracit",
+      "shortName": "Antracit",
+      "bagKg": 25,
+      "palletBags": 40,
+      "presetsKg": [100, 250, 500, 1000],
+      "tiers": [
+        { "minKg": 100, "pricePerKg": 1.12, "label": "100 kg" },
+        { "minKg": 250, "pricePerKg": 1.04, "label": "250 kg" },
+        { "minKg": 500, "pricePerKg": 0.96, "label": "500 kg" },
+        { "minKg": 1000, "pricePerKg": 0.88, "label": "1 t / paleta" }
+      ]
+    },
+    "koks": {
+      "id": "koks",
+      "name": "Kováčsky koks",
+      "shortName": "Koks",
+      "bagKg": 20,
+      "palletBags": 50,
+      "presetsKg": [100, 200, 500, 1000],
+      "tiers": [
+        { "minKg": 100, "pricePerKg": 1.25, "label": "100 kg" },
+        { "minKg": 200, "pricePerKg": 1.15, "label": "200 kg" },
+        { "minKg": 500, "pricePerKg": 1.05, "label": "500 kg" },
+        { "minKg": 1000, "pricePerKg": 0.95, "label": "1 t / paleta" }
+      ]
+    }
+  },
+  "freightPerPalletEur": [
+    { "belowKg": 250, "eur": 39 },
+    { "belowKg": 500, "eur": 55 },
+    { "belowKg": 1000, "eur": 72 },
+    { "belowKg": null, "eur": 89 }
+  ]
+}

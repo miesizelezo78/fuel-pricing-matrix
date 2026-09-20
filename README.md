@@ -1,6 +1,29 @@
-# Kováčske palivá
+# Kováčske palivá — logika + PHP modul pre VULCANUS
 
-E-shopový náhľad predaja kováčskeho uhlia, antracitu a koksu.
+Vetva: **main**
+
+Tento Next.js náhľad ostáva laboratórium výpočtov. Ostrý konfigurátor pre existujúci web je priečinok **`bulk-paleta/`** (WordPress plugin, drop-in do `vulcanus-shop-demo/bulk-paleta/`).
+
+Solo Woo produkty **nemeniť**. Od 100 kg je záväzná objednávka mimo košíka, so **živým prepočtom** pri každom kliknutí.
+
+Inštalácia a smoke test: [`HOTOVO.md`](HOTOVO.md).
+
+
+## Clone URL
+
+```
+git clone --branch main https://origin.cursor.com/git/miesizelezo/tmp-3f6e5b2c21c09414.git
+```
+
+Ak `git clone` žiada credentials: na tom istom Cursor účte ako Grok Bot
+
+```
+origin repo clone miesizelezo/tmp-3f6e5b2c21c09414
+```
+
+Potom vymeň `vulcanus-shop-demo/bulk-paleta/` súbormi z `bulk-paleta/` (pozri HOTOVO.md).
+
+## E-shopový náhľad (Next.js)
 
 - **Solo vrecia** — e-shopový košík, kuriér SDS, doprava v cene.
 - **Od 100 kg** — záväzná paletová objednávka (nie košík), cenník podľa kíl, doklad do SuperFaktúry.
