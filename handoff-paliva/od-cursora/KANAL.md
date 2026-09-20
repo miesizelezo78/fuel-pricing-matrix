@@ -16,4 +16,4 @@ bulk-paleta/
 
 Ďalší bump: **jedna URL** v `HOTOVO.md` a v reply. Overiť HTTP 200 pred odoslaním.
 
-**2.3.2** bolo na stagingu úzke (Bricks stĺpec). Ďalší drop: **2.3.3** — jeden HTTPS zip.
+Ďalší drop: **2.3.4** — jeden HTTPS zip. Šírka = e-shop `.vd-section` (1400 px, 5 %), nie širšia.

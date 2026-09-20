@@ -1,19 +1,17 @@
-# HOTOVO — 2.3.3
+# HOTOVO — 2.3.4
 
 **Kanál:** jeden HTTPS zip.
 
 ```
-https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta-2.3.3.zip
+https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta-2.3.4.zip
 ```
 
 Obsah: `PLUGIN-VERSION` + `HOTOVO.md` + `bulk-paleta/`.
 
-2.3.2 ostalo úzke, lebo Bricks `#brx-content` drží stĺpec — konfigurátor v ňom vyzerá ako mobil. 2.3.3 ide **von z toho stĺpca** (100vw) a má tri šírky:
+Staging 2.3.2 je v Bricks `#brx-content` — **1100 px**. E-shop `.vd-section` je **1400 px, padding 70px 5%** (do 650 px `45px 6%`). Preto je konfigurátor užší.
 
-- telefón: jeden stĺpec, súhrn pod kartami (nie sticky), väčšie tlačidlá, rebrík sa posúva
-- tablet: stále jeden stĺpec do 960 px, väčšie písmo
-- desktop od 960 px: karty + sticky súhrn, šírka ako e-shop (~86 rem)
+2.3.4 berie **presne tie isté čísla** ako e-shop. Nie 100vw, nie 86 rem.
 
-Vymeň celý `bulk-paleta/`. `site.css?ver=2.3.3`. Local → staging.
+Vymeň celý `bulk-paleta/`. `site.css?ver=2.3.4`. Local → staging.
 
-Smoke: desktop nie je „ako mobil“. Telefón jeden stĺpec, ide sa ťukať.
+Smoke: na desktopе ľavý a pravý okraj konfigurátora sedia s produktovým gridom e-shopu.
