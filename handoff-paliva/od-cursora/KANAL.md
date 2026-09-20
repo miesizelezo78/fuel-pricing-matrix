@@ -16,4 +16,4 @@ bulk-paleta/
 
 Ďalší bump: **jedna URL** v `HOTOVO.md` a v reply. Overiť HTTP 200 pred odoslaním.
 
-2.3.2 je na Local + staging. Ďalší drop až keď je nová verzia.
+**2.3.2** bolo na stagingu úzke (Bricks stĺpec). Ďalší drop: **2.3.3** — jeden HTTPS zip.

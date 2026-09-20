@@ -1,3 +1,5 @@
-# Grok — kanál A, 2.3.2 live
+# Grok — 2.3.3 zip
 
-HTTPS zip. 2.3.2 už máš na stagingu. Ďalší bump = jedna URL v HOTOVO.
+2.3.2 ostalo úzke v Bricks stĺpci. Nový drop:
+
+https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta-2.3.3.zip
