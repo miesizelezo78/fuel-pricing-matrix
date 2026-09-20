@@ -19,6 +19,21 @@
     return catalog.fuels[state.fuelId];
   }
 
+  function kgSteps() {
+    const values = {};
+    fuel().presetsKg.forEach(function (kg) {
+      values[kg] = true;
+    });
+    for (let kg = 100; kg <= 1000; kg += 100) {
+      if (clampKg(kg) === kg) values[kg] = true;
+    }
+    return Object.keys(values)
+      .map(Number)
+      .sort(function (a, b) {
+        return a - b;
+      });
+  }
+
   function clampKg(next) {
     const f = fuel();
     const bag = f.bagKg;
@@ -79,10 +94,11 @@
       btn.classList.toggle("is-on", btn.getAttribute("data-fuel-btn") === state.fuelId);
     });
     const presets = root.querySelector("[data-presets]");
-    presets.innerHTML = fuel()
-      .presetsKg.map(function (kg) {
+    const steps = kgSteps();
+    presets.innerHTML = steps
+      .map(function (kg) {
         const on = q.kg === kg ? " is-on" : "";
-        const label = kg === 1000 ? "1 000 kg" : kg + " kg";
+        const label = kg >= 1000 ? new Intl.NumberFormat("sk-SK").format(kg) + " kg" : kg + " kg";
         return '<button type="button" class="' + on + '" data-kg="' + kg + '">' + label + "</button>";
       })
       .join("");
@@ -93,6 +109,8 @@
     root.querySelector("[data-live-freight]").textContent =
       state.fulfillment === "pickup" ? "0,00 € (osobný odber)" : money.format(q.freight) + " (odhad)";
     root.querySelector("[data-live-total]").textContent = money.format(q.total);
+    const totalRow = root.querySelector("[data-live-total-row]");
+    if (totalRow) totalRow.textContent = money.format(q.total);
     root.querySelector("[name=fuelId]").value = state.fuelId;
     root.querySelector("[name=kg]").value = String(q.kg);
     root.querySelector("[name=fulfillment]").value = state.fulfillment;

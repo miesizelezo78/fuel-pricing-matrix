@@ -2,7 +2,7 @@
 /**
  * Plugin Name: VULCANUS Bulk Paleta
  * Description: Paletový konfigurátor od 100 kg so živým prepočtom. Nie Woo košík. Solo produkty nemení.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: VULCANUS
  * Text Domain: vulcanus-bulk-paleta
  */

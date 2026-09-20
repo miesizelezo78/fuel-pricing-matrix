@@ -44,3 +44,6 @@ next-env.d.ts
 # local agent scratch
 /agent-tools
 
+# download zip of the same handoff files
+/Pre-Grok-Bota.zip
+

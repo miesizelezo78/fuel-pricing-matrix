@@ -39,7 +39,7 @@ $asset_js = htmlspecialchars($asset_js, ENT_QUOTES, 'UTF-8');
             </button>
           <?php endforeach; ?>
         </div>
-        <h2>Hmotnosť</h2>
+        <h2>Hmotnosť — kliknite kg</h2>
         <div class="vulcanus-kg" data-presets></div>
         <div class="vulcanus-stepper">
           <button type="button" data-kg-minus aria-label="Menej o 100 kg">−</button>
@@ -79,13 +79,14 @@ $asset_js = htmlspecialchars($asset_js, ENT_QUOTES, 'UTF-8');
         </form>
       </section>
     </div>
-    <aside class="vulcanus-card vulcanus-live">
+    <aside class="vulcanus-card vulcanus-live" aria-live="polite">
       <h2>Živý prepočet</h2>
       <p data-live-fuel><?php echo htmlspecialchars($quote['fuelName'], ENT_QUOTES, 'UTF-8'); ?></p>
       <dl>
         <div class="row"><dt>€/kg (s DPH)</dt><dd data-live-perkg><?php echo number_format($quote['pricePerKg'], 2, ',', ' '); ?> €</dd></div>
         <div class="row"><dt>Tovar s DPH</dt><dd data-live-goods><?php echo number_format($quote['goods'], 2, ',', ' '); ?> €</dd></div>
         <div class="row"><dt>Odhad dopravy</dt><dd data-live-freight><?php echo number_format($quote['freight'], 2, ',', ' '); ?> €</dd></div>
+        <div class="row"><dt>Spolu</dt><dd data-live-total-row><?php echo number_format($quote['total'], 2, ',', ' '); ?> €</dd></div>
       </dl>
       <p class="total" data-live-total><?php echo number_format($quote['total'], 2, ',', ' '); ?> €</p>
       <p class="hint">Spolu = tovar + odhad dopravy. Pri osobnom odbere je doprava 0 €. Do SuperFaktúry ide najprv tovar.</p>
