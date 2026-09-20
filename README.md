@@ -1,5 +1,7 @@
 # Kováčske palivá — logika + PHP modul pre VULCANUS
 
+Ako beží táto Cloud Agent relácia (kanály, pamäť, čo Grok nevidí): [`AKO-FUNGUJEM.md`](AKO-FUNGUJEM.md).
+
 Vetva: **main**
 
 **Clone URL (Grok, bez Origin tokenu):**
