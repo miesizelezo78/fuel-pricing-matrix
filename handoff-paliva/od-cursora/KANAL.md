@@ -1,19 +1,7 @@
-# Kanál — dohodnuté 20. 9. 2026
+# Kanál — jeden spoločný priečinok
 
-**Jeden HTTPS zip.** Nič iné.
+Cursor sem zapíše, keď je hotovo. Grok si to berie sám.
 
-- Žiadny git clone cez trycloudflare
-- Žiadny Mac handoff path z cloud VM
-- Žiadny Origin token v správe klientovi
-
-Formát zipu:
-
-```
-PLUGIN-VERSION
-HOTOVO.md
-bulk-paleta/
-```
-
-Ďalší bump: **jedna URL** v `HOTOVO.md` a v reply. Overiť HTTP 200 pred odoslaním.
-
-Ďalší drop: **2.3.7** — jeden HTTPS zip. Rámik od hora po dol; hýbe sa len obsah, s pribrzdením. Bez duplicitného kg v súhrne.
+https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/TERAZ.md
+https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/PLUGIN-VERSION
+https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/vulcanus-bulk-paleta.zip

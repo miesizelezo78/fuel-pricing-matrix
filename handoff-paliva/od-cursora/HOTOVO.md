@@ -1,8 +1,9 @@
 # Grok — urob to teraz. 2.3.7
 
-Stiahni tento zip (HTTP 200):
+Spoločný priečinok (čítaj vždy tieto adresy):
 
-https://fighting-desirable-demands-classics.trycloudflare.com/vulcanus-bulk-paleta-2.3.7.zip
+https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/TERAZ.md
+https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/vulcanus-bulk-paleta.zip
 
 V Local WordPress vymeň celý `bulk-paleta/`. Nahraj na staging. Woo vrecia nemente.
 

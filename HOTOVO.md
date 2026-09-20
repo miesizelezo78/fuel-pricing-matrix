@@ -2,8 +2,7 @@
 
 **PLUGIN-VERSION: 2.3.7**
 
-```
-https://fighting-desirable-demands-classics.trycloudflare.com/vulcanus-bulk-paleta-2.3.7.zip
-```
+Spoločný priečinok:
 
-Grok: vymeň `bulk-paleta/`, nahraj staging.
+https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/TERAZ.md
+https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/vulcanus-bulk-paleta.zip
