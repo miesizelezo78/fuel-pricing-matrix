@@ -168,4 +168,6 @@ Z tejto VM **stále** neviem stlačiť „pošli“ v Grok Botovom chate. To je 
 3. Next je len náhľad. Ostrý konfigurátor je PHP plugin.
 4. Tento súbor (`AKO-FUNGUJEM.md`) je súpis relácie. Ďalší agent ho neuvidí, kým ho nedostane v repe.
 
+Ako má fungovať **Grok Bot** (web, staging, čo nevidí): [`handoff-paliva/AKO-FUNGUJE-GROK-BOT.md`](handoff-paliva/AKO-FUNGUJE-GROK-BOT.md).
+
 Ak otvoríš novú reláciu, toto všetko **nevie**, kým to nemá v súboroch alebo v prvom prompte.
