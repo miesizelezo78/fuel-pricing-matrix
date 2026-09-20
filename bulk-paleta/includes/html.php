@@ -55,16 +55,16 @@ function vulcanus_render_document($page, $title, $content) {
     header('Cache-Control: no-store');
     echo '<!doctype html><html lang="sk"><head>';
     echo '<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">';
-    echo '<title>' . vulcanus_e($title) . ' · Kováčske palivá</title>';
+    echo '<title>' . vulcanus_e($title) . ' · VULCANUS</title>';
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
-    echo '<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">';
-    echo '<link rel="stylesheet" href="' . vulcanus_e(vulcanus_asset('site.css')) . '?ver=2.2.4">';
+    echo '<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">';
+    echo '<link rel="stylesheet" href="' . vulcanus_e(vulcanus_asset('site.css')) . '?ver=2.2.5">';
     echo '</head><body class="vulcanus-site">';
     echo '<header class="vulcanus-header"><div class="vulcanus-wrap vulcanus-header-inner">';
     echo '<a class="vulcanus-brand" href="' . vulcanus_e(vulcanus_url('paliva')) . '">';
-    echo '<span class="vulcanus-brand-name">Kováčske palivá</span>';
-    echo '<span class="vulcanus-brand-sub">Uhlie · koks · antracit</span></a>';
+    echo '<img class="vulcanus-logo" src="' . vulcanus_e(vulcanus_asset('vulcanus-logo-white.png')) . '" alt="VULCANUS" width="252" height="28">';
+    echo '</a>';
     echo '<nav class="vulcanus-nav">';
     foreach ($nav as $link) {
         $on = $link['id'] === $page ? ' is-on' : '';
@@ -73,15 +73,18 @@ function vulcanus_render_document($page, $title, $content) {
     echo '</nav></div></header>';
     echo '<main class="vulcanus-wrap vulcanus-main">' . $content . '</main>';
     echo '<footer class="vulcanus-footer"><div class="vulcanus-wrap vulcanus-footer-grid">';
-    echo '<div><p class="vulcanus-brand-name">Kováčske palivá</p>';
-    echo '<p class="muted">Kováčske uhlie, antracit a koks. Solo vrecia kuriérom pre hobby vyhne. Od 100 kg záväzná paletová objednávka, nie košík.</p></div>';
+    echo '<div><p class="eyebrow light">Kde nás nájdete</p>';
+    echo '<p><strong>Office a sklad povrchových úprav</strong><br>VULCANUS, s.r.o.<br>Smaragdová 619/7<br>010 09 Žilina</p>';
+    echo '<p><strong>Sklad cortenu a uhlia</strong><br>VULCANUS, s.r.o.<br>Hollého 1174/18<br>014 01 Bytča</p></div>';
     echo '<div><p class="eyebrow light">Objednávky</p><p><a href="' . vulcanus_e(vulcanus_url('objednavka-paleta')) . '">Paletová objednávka</a></p>';
-    echo '<p class="muted">Tieto tri podstránky nie sú Woo. Solo vrecia v e-shope sa nemenia.</p></div>';
-    echo '<div><p class="eyebrow light">Doručenie</p><p>SDS kuriér — solo vrecia, doprava v cene</p>';
-    echo '<p class="muted">100 a 200 kg na palete 80 × 120 cm. Tona na 110 × 120 cm, niekedy 110 × 110. Paleta je jednorazová, nevratná a v cene tovaru.</p></div>';
+    echo '<p class="muted">Solo vrecia — košík. Od 100 kg — záväzná objednávka, nie košík.</p>';
+    echo '<p class="muted">Paleta je jednorazová, nevratná a v cene tovaru.</p></div>';
+    echo '<div><p class="eyebrow light">Kontakty</p><p class="muted">Info a podpora: 09:00 – 17:30<br>Osobný odber treba dohodnúť vopred telefonicky.</p>';
+    echo '<p><a href="tel:+421911365598">+421 911 36 55 98</a></p>';
+    echo '<p><a href="mailto:office@vulcanus.sk">office@vulcanus.sk</a></p></div>';
     echo '</div><p class="vulcanus-copy">Dobierka nie je v cene tovaru. <a href="' . vulcanus_e(vulcanus_url('ako-to-predavame')) . '">Ako je katalóg poskladaný</a></p>';
     echo '</footer>';
-    echo '<script src="' . vulcanus_e(vulcanus_asset('configurator.js')) . '?ver=2.2.4"></script>';
+    echo '<script src="' . vulcanus_e(vulcanus_asset('configurator.js')) . '?ver=2.2.5"></script>';
     echo '</body></html>';
 }
 
@@ -90,13 +93,13 @@ function vulcanus_bulk_enqueue_assets() {
         'vulcanus-bulk-site',
         vulcanus_asset('site.css'),
         array(),
-        '2.2.4'
+        '2.2.5'
     );
     wp_enqueue_script(
         'vulcanus-bulk-configurator',
         vulcanus_asset('configurator.js'),
         array(),
-        '2.2.4',
+        '2.2.5',
         true
     );
 }

@@ -8,7 +8,7 @@ Vetva: **main**
 git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
 ```
 
-Ostré podstránky pre existujúci web sú v **`bulk-paleta/`** (plugin 2.2.4): Palivá, Paleta, Ako to predávame. Na WordPresse idú **do existujúcej hlavičky a pätičky** témy. Nie Woo. Solo Woo produkty **nemeniť**.
+Ostré podstránky pre existujúci web sú v **`bulk-paleta/`** (plugin 2.2.5): Palivá, Paleta, Ako to predávame. Na WordPresse idú **do existujúcej hlavičky a pätičky** témy. Nie Woo. Solo Woo produkty **nemeniť**.
 
 Inštalácia a smoke test: [`HOTOVO.md`](HOTOVO.md).
 

@@ -2,40 +2,81 @@ import Link from "next/link";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto border-t border-foreground/10 bg-foreground text-background">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-[1.4fr_1fr_1fr] sm:px-6">
+    <footer className="mt-auto bg-[#383838] text-white">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-3">
         <div>
-          <p className="font-heading text-2xl">Kováčske palivá</p>
-          <p className="mt-2 max-w-sm text-sm leading-relaxed text-background/70">
-            Kováčske uhlie, antracit a koks. Solo vrecia kuriérom pre hobby
-            vyhne. Od 100 kg záväzná paletová objednávka, nie košík.
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-white/55">
+            Kde nás nájdete
           </p>
+          <div className="mt-4 grid gap-5 text-sm leading-relaxed text-white/85">
+            <address className="not-italic">
+              <span className="block font-medium text-white">
+                Office a sklad povrchových úprav
+              </span>
+              VULCANUS, s.r.o.
+              <br />
+              Smaragdová 619/7
+              <br />
+              010 09 Žilina
+            </address>
+            <address className="not-italic">
+              <span className="block font-medium text-white">
+                Sklad cortenu a uhlia
+              </span>
+              VULCANUS, s.r.o.
+              <br />
+              Hollého 1174/18
+              <br />
+              014 01 Bytča
+            </address>
+          </div>
         </div>
         <div className="text-sm">
-          <p className="text-xs uppercase tracking-[0.18em] text-background/50">
+          <p className="font-semibold uppercase tracking-[0.14em] text-white/55">
             Objednávky
           </p>
-          <p className="mt-2">
-            <Link href="/objednavka-paleta" className="underline decoration-background/30 underline-offset-4">
+          <p className="mt-4">
+            <Link
+              href="/objednavka-paleta"
+              className="underline decoration-white/30 underline-offset-4"
+            >
               Paletová objednávka
             </Link>
           </p>
-          <p className="text-background/70">Solo vrecia — košík. Paleta — SuperFaktúra.</p>
+          <p className="mt-2 text-white/75">
+            Solo vrecia — košík. Od 100 kg — záväzná objednávka, nie košík.
+          </p>
+          <p className="mt-3 text-white/75">
+            Paleta je jednorazová, nevratná a v cene tovaru.
+          </p>
         </div>
         <div className="text-sm">
-          <p className="text-xs uppercase tracking-[0.18em] text-background/50">
-            Doručenie
+          <p className="font-semibold uppercase tracking-[0.14em] text-white/55">
+            Kontakty
           </p>
-          <p className="mt-2">SDS kuriér — solo vrecia, doprava v cene</p>
-          <p className="text-background/70">
-            100 a 200 kg na palete 80 × 120 cm. Tona na 110 × 120 cm, niekedy
-            110 × 110. Paleta je jednorazová, nevratná a v cene tovaru.
+          <p className="mt-4 text-white/75">
+            Info a podpora: 09:00 – 17:30
+            <br />
+            Osobný odber treba dohodnúť vopred telefonicky.
+          </p>
+          <p className="mt-3">
+            <a href="tel:+421911365598" className="hover:underline">
+              +421 911 36 55 98
+            </a>
+          </p>
+          <p>
+            <a href="mailto:office@vulcanus.sk" className="hover:underline">
+              office@vulcanus.sk
+            </a>
           </p>
         </div>
       </div>
-      <div className="border-t border-background/10 px-4 py-4 text-center text-xs text-background/50 sm:px-6">
+      <div className="border-t border-white/10 px-4 py-4 text-center text-xs text-white/50 sm:px-6">
         Dobierka a poplatok za platbu nie sú v cene tovaru.{" "}
-        <Link href="/ako-to-predavame" className="underline decoration-background/30 underline-offset-4">
+        <Link
+          href="/ako-to-predavame"
+          className="underline decoration-white/30 underline-offset-4"
+        >
           Ako je katalóg poskladaný
         </Link>
       </div>

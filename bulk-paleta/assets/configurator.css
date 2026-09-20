@@ -1,12 +1,12 @@
 .vulcanus-bulk {
-  font-family: Figtree, ui-sans-serif, system-ui, sans-serif;
-  color: #3a3228;
+  font-family: Poppins, "Open Sans", ui-sans-serif, system-ui, sans-serif;
+  color: #020b05;
   max-width: 72rem;
   margin: 0 auto;
   padding: 1.5rem 1rem 3rem;
 }
 .vulcanus-bulk h1 {
-  font-family: Fraunces, Georgia, serif;
+  font-family: Poppins, "Open Sans", ui-sans-serif, sans-serif;
   font-size: clamp(2rem, 4vw, 3rem);
   line-height: 1.1;
   margin: 0.25rem 0 0.75rem;
@@ -15,7 +15,7 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-size: 0.72rem;
-  color: #b4532a;
+  color: #c83533;
 }
 .vulcanus-bulk .lead {
   color: #6b6258;
@@ -57,9 +57,9 @@
 }
 .vulcanus-bulk button.is-on,
 .vulcanus-bulk button[aria-pressed="true"] {
-  background: #b4532a;
+  background: #c83533;
   color: #fff;
-  border-color: #b4532a;
+  border-color: #c83533;
 }
 .vulcanus-stepper {
   display: flex;
@@ -67,7 +67,7 @@
   gap: 0.6rem;
 }
 .vulcanus-stepper span {
-  font-family: Fraunces, Georgia, serif;
+  font-family: Poppins, "Open Sans", ui-sans-serif, sans-serif;
   font-size: 1.6rem;
   min-width: 7rem;
   text-align: center;
@@ -87,7 +87,7 @@
   border-bottom: 1px solid rgba(42, 34, 24, 0.08);
 }
 .vulcanus-live .total {
-  font-family: Fraunces, Georgia, serif;
+  font-family: Poppins, "Open Sans", ui-sans-serif, sans-serif;
   font-size: 2rem;
   margin-top: 0.75rem;
 }

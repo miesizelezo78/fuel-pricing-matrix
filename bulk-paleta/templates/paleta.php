@@ -98,25 +98,28 @@ ob_start();
         </p>
         <input type="hidden" name="lines" value="">
         <input type="hidden" name="fulfillment" value="pallet">
-        <div class="radio">
+        <div className="radio">
           <label><input type="radio" name="buyerType" value="person" checked> Fyzická osoba</label>
           <label><input type="radio" name="buyerType" value="company"> Firma / živnosť</label>
         </div>
+        <p class="muted" data-buyer-hint style="font-size:.8rem;margin:-.35rem 0 .7rem">
+          Fyzická osoba: meno a priezvisko. IČO sa tu nezobrazuje.
+        </p>
         <div class="fields">
-          <label><span data-name-label>Meno a priezvisko</span> <input name="name" required></label>
+          <label><span data-name-label>Meno a priezvisko</span> <input name="name" required autocomplete="name"></label>
           <div class="fields-2">
-            <label>E-mail <input type="email" name="email" required></label>
-            <label>Telefón <input name="phone" required></label>
+            <label>E-mail <input type="email" name="email" required autocomplete="email"></label>
+            <label>Telefón <input name="phone" required autocomplete="tel"></label>
           </div>
           <div data-company-fields class="hidden fields-3">
-            <label>IČO <input name="ico"></label>
-            <label>DIČ <input name="dic"></label>
-            <label>IČ DPH <input name="icDph"></label>
+            <label>IČO <input name="ico" autocomplete="off"></label>
+            <label>DIČ <input name="dic" autocomplete="off"></label>
+            <label>IČ DPH <input name="icDph" autocomplete="off"></label>
           </div>
-          <label>Ulica a číslo <input name="street" required></label>
+          <label>Ulica a číslo <input name="street" required autocomplete="street-address"></label>
           <div class="fields-city">
-            <label>Mesto <input name="city" required></label>
-            <label>PSČ <input name="zip" placeholder="000 00" required></label>
+            <label>Mesto <input name="city" required autocomplete="address-level2"></label>
+            <label>PSČ <input name="zip" placeholder="000 00" required autocomplete="postal-code" inputmode="numeric" maxlength="6"></label>
           </div>
           <label>Poznámka k vykládke / odberu <textarea name="note" rows="3" placeholder="Vysokozdvižný vozík, čas, vjazd…"></textarea></label>
         </div>

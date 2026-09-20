@@ -373,6 +373,20 @@
       nameLabel.textContent =
         state.buyerType === "company" ? "Názov firmy" : "Meno a priezvisko";
     }
+    const nameInput = root.querySelector("[name=name]");
+    if (nameInput) {
+      nameInput.setAttribute(
+        "autocomplete",
+        state.buyerType === "company" ? "organization" : "name"
+      );
+    }
+    const hint = root.querySelector("[data-buyer-hint]");
+    if (hint) {
+      hint.textContent =
+        state.buyerType === "company"
+          ? "Firma alebo živnosť: názov firmy a IČO. DIČ a IČ DPH sú voliteľné."
+          : "Fyzická osoba: meno a priezvisko. IČO sa tu nezobrazuje.";
+    }
   }
 
   root.addEventListener("click", function (event) {

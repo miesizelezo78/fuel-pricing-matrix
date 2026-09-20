@@ -136,7 +136,7 @@ export function CheckoutForm() {
           error={errors.street}
           onChange={(value) => update("street", value)}
         />
-        <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,9.5rem)]">
+        <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,11rem)]">
           <Field
             label="Mesto"
             value={form.city}
@@ -225,6 +225,7 @@ function Field({
         type={type}
         value={value}
         aria-invalid={Boolean(error)}
+        className="w-full min-w-0 max-w-full"
         onChange={(event) => onChange(event.target.value)}
       />
       {error ? <p className="text-xs text-destructive">{error}</p> : null}

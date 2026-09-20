@@ -200,7 +200,15 @@ export function PalletOrderForm({
           </p>
           <RadioGroup
             value={buyerType}
-            onValueChange={(value) => setBuyerType(value as BuyerType)}
+            onValueChange={(value) => {
+              setBuyerType(value as BuyerType);
+              setFieldErrors((current) => {
+                const next = { ...current };
+                delete next.ico;
+                delete next.name;
+                return next;
+              });
+            }}
           >
             <label className="flex cursor-pointer items-center gap-3">
               <RadioGroupItem value="person" />
@@ -211,9 +219,15 @@ export function PalletOrderForm({
               <Label className="cursor-pointer">Firma / živnosť</Label>
             </label>
           </RadioGroup>
+          <p className="text-xs text-muted-foreground">
+            {buyerType === "company"
+              ? "Firma alebo živnosť: názov firmy a IČO. DIČ a IČ DPH sú voliteľné."
+              : "Fyzická osoba: meno a priezvisko. IČO sa tu nezobrazuje."}
+          </p>
           <Field
             label={buyerType === "company" ? "Názov firmy" : "Meno a priezvisko"}
             value={form.name}
+            autoComplete={buyerType === "company" ? "organization" : "name"}
             error={fieldErrors.name}
             onChange={(value) => setForm((current) => ({ ...current, name: value }))}
           />
@@ -258,16 +272,20 @@ export function PalletOrderForm({
             error={fieldErrors.street}
             onChange={(value) => setForm((current) => ({ ...current, street: value }))}
           />
-          <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,9.5rem)]">
+          <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,11rem)]">
             <Field
               label="Mesto"
               value={form.city}
+              autoComplete="address-level2"
               error={fieldErrors.city}
               onChange={(value) => setForm((current) => ({ ...current, city: value }))}
             />
             <Field
               label="PSČ"
               value={form.zip}
+              autoComplete="postal-code"
+              inputMode="numeric"
+              maxLength={6}
               error={fieldErrors.zip}
               onChange={(value) => setForm((current) => ({ ...current, zip: value }))}
             />
@@ -404,12 +422,18 @@ function Field({
   onChange,
   error,
   type = "text",
+  autoComplete,
+  inputMode,
+  maxLength,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   error?: string;
   type?: string;
+  autoComplete?: string;
+  inputMode?: "numeric" | "text" | "tel" | "email" | "decimal";
+  maxLength?: number;
 }) {
   const id = label.toLowerCase().replace(/[^a-záäčďéíľňóôŕšťúýž0-9]+/gi, "-");
   return (
@@ -419,7 +443,11 @@ function Field({
         id={id}
         type={type}
         value={value}
+        autoComplete={autoComplete}
+        inputMode={inputMode}
+        maxLength={maxLength}
         aria-invalid={Boolean(error)}
+        className="w-full min-w-0 max-w-full"
         onChange={(event) => onChange(event.target.value)}
       />
       {error ? <p className="text-xs text-destructive">{error}</p> : null}

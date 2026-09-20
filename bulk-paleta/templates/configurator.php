@@ -60,18 +60,23 @@ $asset_js = htmlspecialchars($asset_js, ENT_QUOTES, 'UTF-8');
             <label><input type="radio" name="buyerType" value="person" checked> Fyzická osoba</label>
             <label><input type="radio" name="buyerType" value="company"> Firma / živnosť</label>
           </div>
+          <p class="muted" data-buyer-hint style="font-size:.8rem">
+            Fyzická osoba: meno a priezvisko. IČO sa tu nezobrazuje.
+          </p>
           <div class="vulcanus-fields">
-            <label><span data-name-label>Meno a priezvisko</span> <input name="name" required></label>
-            <label>E-mail <input type="email" name="email" required></label>
-            <label>Telefón <input name="phone" required></label>
+            <label><span data-name-label>Meno a priezvisko</span> <input name="name" required autocomplete="name"></label>
+            <label>E-mail <input type="email" name="email" required autocomplete="email"></label>
+            <label>Telefón <input name="phone" required autocomplete="tel"></label>
             <div data-company-fields hidden>
-              <label>IČO <input name="ico"></label>
-              <label>DIČ <input name="dic"></label>
-              <label>IČ DPH <input name="icDph"></label>
+              <label>IČO <input name="ico" autocomplete="off"></label>
+              <label>DIČ <input name="dic" autocomplete="off"></label>
+              <label>IČ DPH <input name="icDph" autocomplete="off"></label>
             </div>
-            <label>Ulica a číslo <input name="street" required></label>
-            <label>Mesto <input name="city" required></label>
-            <label>PSČ <input name="zip" placeholder="000 00" required></label>
+            <label>Ulica a číslo <input name="street" required autocomplete="street-address"></label>
+            <div class="fields-city">
+              <label>Mesto <input name="city" required autocomplete="address-level2"></label>
+              <label>PSČ <input name="zip" placeholder="000 00" required autocomplete="postal-code" inputmode="numeric" maxlength="6"></label>
+            </div>
             <label>Poznámka <textarea name="note" rows="3"></textarea></label>
           </div>
           <p class="vulcanus-error" data-form-error hidden></p>
