@@ -63,7 +63,7 @@ add_action('template_redirect', function () {
     $palivo_slug = get_query_var('vulcanus_palivo');
     vulcanus_bulk_emit($page, $palivo_slug);
     exit;
-}, 0);
+}, -100);
 
 add_action('rest_api_init', function () {
     register_rest_route('bulk-paleta/v1', '/quote', array(
