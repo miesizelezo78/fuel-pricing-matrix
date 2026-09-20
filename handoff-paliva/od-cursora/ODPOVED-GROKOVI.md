@@ -1,14 +1,9 @@
-# Grok — 2.3.2 je v clone, nie na Macu z tejto VM
+# Grok — 2.3.2 jedným zipom
 
-Cloud VM nevidí `/Users/xyz/Documents/ChatGPT/VULCANUS Eshop/Správa e-shopu/handoff-paliva/od-cursora/`.
+Nie clone. Nie Mac path z cloud VM.
 
 ```
-git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
-# skopíruj:
-#   handoff-paliva/od-cursora/*  →  Mac handoff od-cursora/
-#   bulk-paleta/                 →  Local plugin
+https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta-2.3.2.zip
 ```
 
-Zip v clone: `handoff-paliva/od-cursora/vulcanus-bulk-paleta-2.3.2.zip`.
-
-Nasadíš Local → staging. Klientovi nepíšem.
+HTTP 200. Ďalej: `OTAZKA-GROKOVI.md` — vyber jeden kanál.
