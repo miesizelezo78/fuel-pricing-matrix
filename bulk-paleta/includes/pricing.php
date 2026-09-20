@@ -24,6 +24,43 @@ function vulcanus_bulk_fuel_ids() {
     return array('uhlie', 'antracit', 'koks');
 }
 
+function vulcanus_bulk_products($channel = null) {
+    $catalog = vulcanus_bulk_catalog();
+    $products = isset($catalog['products']) ? $catalog['products'] : array();
+    if ($channel === null) {
+        return $products;
+    }
+    return array_values(array_filter($products, function ($product) use ($channel) {
+        return ($product['channel'] ?? '') === $channel;
+    }));
+}
+
+function vulcanus_bulk_product_by_slug($slug) {
+    foreach (vulcanus_bulk_products() as $product) {
+        if ($product['slug'] === $slug) {
+            return $product;
+        }
+    }
+    return null;
+}
+
+function vulcanus_bulk_pallet_kg($fuel) {
+    return (int) $fuel['bagKg'] * (int) $fuel['palletBags'];
+}
+
+function vulcanus_bulk_pallet_fill($fuel, $kg) {
+    $full = vulcanus_bulk_pallet_kg($fuel);
+    return $full > 0 ? ($kg / $full) : 0;
+}
+
+function vulcanus_bulk_money($value) {
+    return number_format((float) $value, 2, ',', ' ') . ' €';
+}
+
+function vulcanus_bulk_perkg($value) {
+    return vulcanus_bulk_money($value) . '/kg';
+}
+
 function vulcanus_bulk_fuel($id) {
     $catalog = vulcanus_bulk_catalog();
     if (!isset($catalog['fuels'][$id])) {

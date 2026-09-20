@@ -34,7 +34,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-background/10 px-4 py-4 text-center text-xs text-background/50 sm:px-6">
         Dobierka a poplatok za platbu nie sú v cene tovaru.{" "}
-        <Link href="/ako-to-funguje" className="underline decoration-background/30 underline-offset-4">
+        <Link href="/ako-to-predavame" className="underline decoration-background/30 underline-offset-4">
           Ako je katalóg poskladaný
         </Link>
       </div>

@@ -1,7 +1,9 @@
 # VULCANUS Bulk Paleta
 
-Drop-in do `vulcanus-shop-demo/bulk-paleta/`.
+WordPress modul: tri **samostatné podstránky**, nie Woo.
 
-Živý konfigurátor palív od 100 kg (uhlie / antracit / koks), klikateľné kg, záväzná objednávka mimo Woo košíka. Solo Woo produkty nemente.
+- `/paliva/` — katalóg dlaždíc
+- `/objednavka-paleta/` — živý konfigurátor od 100 kg
+- `/ako-to-predavame/` — ako sa to predáva
 
-Inštalácia a 30 s smoke test: koreňový súbor [`../HOTOVO.md`](../HOTOVO.md).
+Solo Woo produkty nemente. Inštalácia: [`../HOTOVO.md`](../HOTOVO.md).

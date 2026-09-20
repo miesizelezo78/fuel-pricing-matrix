@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button";
 import { usePricedCart } from "@/components/cart-provider";
 
 const links = [
-  { href: "/", label: "Palivá" },
+  { href: "/paliva", label: "Palivá" },
   { href: "/objednavka-paleta", label: "Paleta" },
-  { href: "/ako-to-funguje", label: "Ako to predávame" },
+  { href: "/ako-to-predavame", label: "Ako to predávame" },
 ];
 
 export function SiteHeader() {
@@ -32,8 +32,9 @@ export function SiteHeader() {
         <nav className="flex items-center gap-1 sm:gap-2">
           {links.map((link) => {
             const active =
-              link.href === "/"
-                ? pathname === "/" ||
+              link.href === "/paliva"
+                ? pathname === "/paliva" ||
+                  pathname === "/" ||
                   (pathname.startsWith("/palivo") && !pathname.includes("objednavka"))
                 : pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (

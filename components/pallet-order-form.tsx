@@ -15,7 +15,7 @@ import {
   getFuel,
   getProduct,
 } from "@/lib/catalog";
-import { formatBagCount, formatKg, formatMoney } from "@/lib/format";
+import { formatBagCount, formatKg, formatMoney, formatPerKg } from "@/lib/format";
 import { clampBulkKg, quoteBulk } from "@/lib/pricing";
 import {
   validatePalletOrder,
@@ -254,14 +254,32 @@ export function PalletOrderForm({
       </div>
 
       <aside className="h-fit space-y-4 rounded-2xl bg-card p-5 ring-1 ring-foreground/10 sm:sticky sm:top-24">
-        <h2 className="font-heading text-2xl">Záväzná objednávka</h2>
+        <h2 className="font-heading text-2xl">Živý prepočet</h2>
         <p className="text-sm text-muted-foreground">
           {quote.product.name} · {formatKg(quote.kg)} · {formatBagCount(quote.bags)}
         </p>
-        <p className="font-heading text-3xl">{formatMoney(quote.goods)}</p>
+        <dl className="space-y-2 text-sm">
+          <div className="flex justify-between gap-3 border-b border-foreground/10 py-1.5">
+            <dt className="text-muted-foreground">€/kg (s DPH)</dt>
+            <dd className="tabular-nums">{formatPerKg(quote.pricePerKg)}</dd>
+          </div>
+          <div className="flex justify-between gap-3 border-b border-foreground/10 py-1.5">
+            <dt className="text-muted-foreground">Tovar s DPH</dt>
+            <dd className="tabular-nums">{formatMoney(quote.goods)}</dd>
+          </div>
+          <div className="flex justify-between gap-3 border-b border-foreground/10 py-1.5">
+            <dt className="text-muted-foreground">Odhad dopravy</dt>
+            <dd className="tabular-nums">
+              {fulfillment === "pickup" ? "0,00 € (osobný odber)" : `${formatMoney(quote.freight)} (odhad)`}
+            </dd>
+          </div>
+        </dl>
+        <p className="font-heading text-3xl">
+          {formatMoney(quote.goods + (fulfillment === "pickup" ? 0 : quote.freight))}
+        </p>
         <p className="text-xs text-muted-foreground">
-          Tovar s DPH. Doprava paletou sa do SuperFaktúry zatiaľ neúčtuje —
-          naceníme ju, alebo prídete osobne.
+          Spolu = tovar + odhad dopravy. Do SuperFaktúry ide najprv tovar —
+          paletovú dopravu naceníme, alebo prídete osobne.
         </p>
         <RadioGroup
           value={fulfillment}
@@ -308,7 +326,7 @@ export function PalletOrderForm({
         <p className="text-xs text-muted-foreground">
           Ostrý doklad ide cez SuperFaktúra API. Bez kľúčov ostane náhľad v
           prehliadači.{" "}
-          <Link href="/ako-to-funguje" className="underline underline-offset-4">
+          <Link href="/ako-to-predavame" className="underline underline-offset-4">
             Dva režimy predaja
           </Link>
         </p>

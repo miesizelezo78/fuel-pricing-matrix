@@ -1,15 +1,15 @@
 <?php
 /**
- * Standalone front controller for smoke tests without WordPress.
+ * Standalone front controller.
  * php -S 127.0.0.1:8765 standalone.php
  */
 define('VULCANUS_BULK_STANDALONE', true);
 require_once __DIR__ . '/includes/pricing.php';
 require_once __DIR__ . '/includes/order.php';
+require_once __DIR__ . '/includes/html.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
-
 header('Cache-Control: no-store');
 
 if (preg_match('#/assets/(.+)$#', $uri, $m)) {
@@ -49,23 +49,29 @@ if (($uri === '/order' || $uri === '/order/') && $method === 'POST') {
     exit;
 }
 
-if (strpos($uri, '/hotovo') !== false) {
-    $order = isset($_GET['order']) ? htmlspecialchars($_GET['order'], ENT_QUOTES, 'UTF-8') : '';
-    header('Content-Type: text/html; charset=utf-8');
-    echo '<!doctype html><html lang="sk"><meta charset="utf-8"><title>Objednávka</title>';
-    echo '<link rel="stylesheet" href="/assets/configurator.css">';
-    echo '<div class="vulcanus-bulk"><div class="vulcanus-card vulcanus-done">';
-    echo '<p class="eyebrow">Objednávka</p><h1>' . ($order ?: 'Odoslané') . '</h1>';
-    echo '<p>Záväzná paletová objednávka. Nie Woo košík.</p>';
-    echo '<p><a href="/objednavka-paleta">Späť na konfigurátor</a></p></div></div></html>';
-    exit;
+$page = 'paliva';
+$palivo_slug = '';
+if ($uri === '/' || $uri === '/paliva' || $uri === '/paliva/') {
+    $page = 'paliva';
+} elseif (preg_match('#^/objednavka-paleta/hotovo#', $uri) || strpos($uri, '/hotovo') !== false) {
+    $page = 'done';
+} elseif (preg_match('#^/objednavka-paleta#', $uri)) {
+    $page = 'paleta';
+} elseif (preg_match('#^/ako-to-(predavame|funguje)#', $uri)) {
+    $page = 'ako';
+} elseif (preg_match('#^/palivo/([^/]+)#', $uri, $m)) {
+    $page = 'palivo';
+    $palivo_slug = $m[1];
 }
 
-header('Content-Type: text/html; charset=utf-8');
-$order_url = '/order';
-$done_url = '/hotovo';
-$asset_css = '/assets/configurator.css';
-$asset_js = '/assets/configurator.js';
-echo '<!doctype html><html lang="sk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Paletový konfigurátor</title></head><body>';
-include __DIR__ . '/templates/configurator.php';
-echo '</body></html>';
+$map = array(
+    'paliva' => array('Palivá', 'paliva.php'),
+    'paleta' => array('Paletová objednávka', 'paleta.php'),
+    'ako' => array('Ako to predávame', 'ako.php'),
+    'done' => array('Objednávka', 'hotovo.php'),
+    'palivo' => array('Palivo', 'palivo.php'),
+);
+list($title, $file) = $map[$page];
+$nav = $page === 'done' ? 'paleta' : ($page === 'palivo' ? 'paliva' : $page);
+$content = include __DIR__ . '/templates/' . $file;
+vulcanus_render_document($nav, $title, $content);

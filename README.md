@@ -8,9 +8,7 @@ Vetva: **main**
 git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
 ```
 
-Tento Next.js náhľad ostáva laboratórium výpočtov. Ostrý konfigurátor pre existujúci web je priečinok **`bulk-paleta/`** (WordPress plugin, drop-in do `vulcanus-shop-demo/bulk-paleta/`).
-
-Solo Woo produkty **nemeniť**. Od 100 kg je záväzná objednávka mimo košíka, so **živým prepočtom** pri každom kliknutí.
+Ostré podstránky pre existujúci web sú v **`bulk-paleta/`**: Palivá, Paleta, Ako to predávame. Nie Woo. Solo Woo produkty **nemeniť**. Od 100 kg je záväzná objednávka mimo košíka, so **živým prepočtom** pri každom kliknutí.
 
 Inštalácia a smoke test: [`HOTOVO.md`](HOTOVO.md).
 

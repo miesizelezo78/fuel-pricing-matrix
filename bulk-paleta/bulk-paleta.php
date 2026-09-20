@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: VULCANUS Bulk Paleta
- * Description: Paletový konfigurátor od 100 kg so živým prepočtom. Nie Woo košík. Solo produkty nemení.
- * Version: 1.2.0
+ * Description: Samostatné podstránky Palivá, Paleta a Ako to predávame. Konfigurátor od 100 kg. Nie Woo. Solo produkty nemení.
+ * Version: 2.0.0
  * Author: VULCANUS
  * Text Domain: vulcanus-bulk-paleta
  */
@@ -16,6 +16,7 @@ define('VULCANUS_BULK_URL', plugin_dir_url(__FILE__));
 
 require_once VULCANUS_BULK_DIR . 'includes/pricing.php';
 require_once VULCANUS_BULK_DIR . 'includes/order.php';
+require_once VULCANUS_BULK_DIR . 'includes/html.php';
 
 register_activation_hook(__FILE__, function () {
     vulcanus_bulk_rewrites();
@@ -24,35 +25,32 @@ register_activation_hook(__FILE__, function () {
 
 add_action('init', 'vulcanus_bulk_rewrites');
 function vulcanus_bulk_rewrites() {
+    add_rewrite_rule('^paliva/?$', 'index.php?vulcanus_bulk=paliva', 'top');
     add_rewrite_rule('^objednavka-paleta/hotovo/?$', 'index.php?vulcanus_bulk=done', 'top');
-    add_rewrite_rule('^objednavka-paleta/?$', 'index.php?vulcanus_bulk=form', 'top');
+    add_rewrite_rule('^objednavka-paleta/?$', 'index.php?vulcanus_bulk=paleta', 'top');
+    add_rewrite_rule('^ako-to-predavame/?$', 'index.php?vulcanus_bulk=ako', 'top');
+    add_rewrite_rule('^ako-to-funguje/?$', 'index.php?vulcanus_bulk=ako', 'top');
+    add_rewrite_rule('^palivo/([^/]+)/?$', 'index.php?vulcanus_bulk=palivo&vulcanus_palivo=$matches[1]', 'top');
     add_rewrite_tag('%vulcanus_bulk%', '([^&]+)');
+    add_rewrite_tag('%vulcanus_palivo%', '([^&]+)');
 }
 
 add_filter('query_vars', function ($vars) {
     $vars[] = 'vulcanus_bulk';
+    $vars[] = 'vulcanus_palivo';
     return $vars;
 });
 
-add_shortcode('vulcanus_bulk_paleta', 'vulcanus_bulk_shortcode');
-function vulcanus_bulk_shortcode() {
-    ob_start();
-    vulcanus_bulk_render_form();
-    return ob_get_clean();
-}
-
 add_action('template_redirect', function () {
     $page = get_query_var('vulcanus_bulk');
-    if ($page === 'form') {
-        status_header(200);
-        vulcanus_bulk_print_layout('form');
-        exit;
+    if (!$page) {
+        return;
     }
-    if ($page === 'done') {
-        status_header(200);
-        vulcanus_bulk_print_layout('done');
-        exit;
-    }
+    status_header(200);
+    nocache_headers();
+    $palivo_slug = get_query_var('vulcanus_palivo');
+    vulcanus_bulk_emit($page, $palivo_slug);
+    exit;
 });
 
 add_action('rest_api_init', function () {
@@ -76,34 +74,25 @@ add_action('rest_api_init', function () {
                 return new WP_REST_Response(array('ok' => false, 'error' => 'Neplatné JSON.'), 400);
             }
             $result = vulcanus_bulk_create_order($json);
-            $status = !empty($result['ok']) ? 200 : 400;
-            return new WP_REST_Response($result, $status);
+            return new WP_REST_Response($result, !empty($result['ok']) ? 200 : 400);
         },
     ));
 });
 
-function vulcanus_bulk_render_form() {
-    $order_url = rest_url('bulk-paleta/v1/order');
-    $done_url = home_url('/objednavka-paleta/hotovo');
-    $asset_css = VULCANUS_BULK_URL . 'assets/configurator.css';
-    $asset_js = VULCANUS_BULK_URL . 'assets/configurator.js';
-    include VULCANUS_BULK_DIR . 'templates/configurator.php';
-}
-
-function vulcanus_bulk_print_layout($which) {
-    get_header();
-    echo '<main class="vulcanus-bulk-main">';
-    if ($which === 'done') {
-        $order = isset($_GET['order']) ? sanitize_text_field(wp_unslash($_GET['order'])) : '';
-        echo '<div class="vulcanus-bulk"><div class="vulcanus-card vulcanus-done">';
-        echo '<p class="eyebrow">Objednávka</p>';
-        echo '<h1>' . esc_html($order ? $order : 'Objednávka odoslaná') . '</h1>';
-        echo '<p>Záväzná paletová objednávka. Solo Woo košík sa nemení.</p>';
-        echo '<p><a href="' . esc_url(home_url('/objednavka-paleta')) . '">Späť na konfigurátor</a></p>';
-        echo '</div></div>';
-    } else {
-        vulcanus_bulk_render_form();
+function vulcanus_bulk_emit($page, $palivo_slug = '') {
+    $map = array(
+        'paliva' => array('Palivá', 'paliva.php'),
+        'paleta' => array('Paletová objednávka', 'paleta.php'),
+        'form' => array('Paletová objednávka', 'paleta.php'),
+        'ako' => array('Ako to predávame', 'ako.php'),
+        'done' => array('Objednávka', 'hotovo.php'),
+        'palivo' => array('Palivo', 'palivo.php'),
+    );
+    if (!isset($map[$page])) {
+        $page = 'paliva';
     }
-    echo '</main>';
-    get_footer();
+    list($title, $file) = $map[$page];
+    $nav = $page === 'form' || $page === 'done' ? 'paleta' : ($page === 'palivo' ? 'paliva' : $page);
+    $content = include VULCANUS_BULK_DIR . 'templates/' . $file;
+    vulcanus_render_document($nav, $title, $content);
 }
