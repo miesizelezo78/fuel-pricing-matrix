@@ -80,8 +80,11 @@ export default function HowItWorksPage() {
         <p className="leading-relaxed text-muted-foreground">
           V katalógu ostane e-shopová dlaždica „Kováčske uhlie od 100 kg“.
           Nie je to produkt. Klik ide rovno na objednávkovú podstránku s
-          konfigurátorom. Cenník ostáva: 100 kg, sadzba z celkových kíl, koks
-          bez 250 kg. Tlačidlo je „k objednávke“.
+          konfigurátorom. Cenník ostáva: 100 kg, sadzba z kíl daného paliva.
+          Plus a mínus idú po jednom vreci. Uhlie, antracit a koks viete
+          skombinovať — každé má vlastnú kartu, v súhrne sú položky. 100 kg
+          antracitu + 100 kg koksu nie je 200 kg sadzba. Tlačidlo je „k
+          objednávke“.
         </p>
         <p className="leading-relaxed text-muted-foreground">
           Formulár berie údaje, ktoré SuperFaktúra potrebuje na doklad (meno /

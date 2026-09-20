@@ -59,7 +59,7 @@ function vulcanus_render_document($page, $title, $content) {
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
     echo '<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">';
-    echo '<link rel="stylesheet" href="' . vulcanus_e(vulcanus_asset('site.css')) . '?ver=2.1.1">';
+    echo '<link rel="stylesheet" href="' . vulcanus_e(vulcanus_asset('site.css')) . '?ver=2.2.0">';
     echo '</head><body class="vulcanus-site">';
     echo '<header class="vulcanus-header"><div class="vulcanus-wrap vulcanus-header-inner">';
     echo '<a class="vulcanus-brand" href="' . vulcanus_e(vulcanus_url('paliva')) . '">';
@@ -81,6 +81,6 @@ function vulcanus_render_document($page, $title, $content) {
     echo '<p class="muted">Paleta 110 × 120 cm — 40 vriec uhlia / 50 vriec koksu = 1 t</p></div>';
     echo '</div><p class="vulcanus-copy">Dobierka nie je v cene tovaru. <a href="' . vulcanus_e(vulcanus_url('ako-to-predavame')) . '">Ako je katalóg poskladaný</a></p>';
     echo '</footer>';
-    echo '<script src="' . vulcanus_e(vulcanus_asset('configurator.js')) . '?ver=2.1.1"></script>';
+    echo '<script src="' . vulcanus_e(vulcanus_asset('configurator.js')) . '?ver=2.2.0"></script>';
     echo '</body></html>';
 }

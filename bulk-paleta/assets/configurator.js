@@ -5,36 +5,73 @@
   const catalog = JSON.parse(root.getAttribute("data-catalog"));
   const money = new Intl.NumberFormat("sk-SK", { style: "currency", currency: "EUR" });
   const num = new Intl.NumberFormat("sk-SK");
+  const fuelIds = Object.keys(catalog.fuels);
+  const startFuel = root.getAttribute("data-fuel") || "uhlie";
+  const startKg = Number(root.getAttribute("data-initial-kg") || 100);
 
   const state = {
-    fuelId: root.getAttribute("data-fuel") || "uhlie",
-    kg: Number(root.getAttribute("data-initial-kg") || root.getAttribute("data-kg") || 100),
+    kgByFuel: {},
     fulfillment: "pallet",
     buyerType: "person",
   };
-
-  function fuel() {
-    return catalog.fuels[state.fuelId];
+  fuelIds.forEach(function (id) {
+    state.kgByFuel[id] = 0;
+  });
+  if (catalog.fuels[startFuel]) {
+    state.kgByFuel[startFuel] = startKg;
   }
 
-  function clampKg(next) {
-    const f = fuel();
+  function fuelOf(id) {
+    return catalog.fuels[id];
+  }
+
+  function clampKg(id, next, allowZero) {
+    const f = fuelOf(id);
     const bag = f.bagKg;
-    let kg = Math.round(Number(next) || f.presetsKg[0]);
+    let kg = Math.round(Number(next) || 0);
+    if (allowZero && kg <= 0) return 0;
     kg = Math.max(100, Math.min(10000, kg));
-    if (f.id === "koks" && kg === 250) kg = 200;
     kg = Math.round(kg / bag) * bag;
-    if (f.id === "koks" && (kg === 250 || kg === 240 || kg === 260)) kg = 200;
     if (kg < 100) kg = Math.ceil(100 / bag) * bag;
+    if (kg > 10000) kg = Math.floor(10000 / bag) * bag;
     return kg;
   }
 
-  function tierFor(kg) {
-    let current = fuel().tiers[0];
-    fuel().tiers.forEach(function (tier) {
+  function tierFor(id, kg) {
+    let current = fuelOf(id).tiers[0];
+    fuelOf(id).tiers.forEach(function (tier) {
       if (kg >= tier.minKg) current = tier;
     });
     return current;
+  }
+
+  function nextMin(id, minKg) {
+    const next = fuelOf(id).tiers.find(function (tier) {
+      return tier.minKg > minKg;
+    });
+    return next ? next.minKg : Infinity;
+  }
+
+  function quoteLine(id, kg) {
+    kg = clampKg(id, kg, false);
+    const f = fuelOf(id);
+    const tier = tierFor(id, kg);
+    const goods = Math.round(kg * tier.pricePerKg * 100) / 100;
+    const first = f.tiers[0];
+    const savings = Math.round((first.pricePerKg - tier.pricePerKg) * kg * 100) / 100;
+    return {
+      fuelId: id,
+      fuelName: f.name,
+      shortName: f.shortName,
+      kg: kg,
+      bags: kg / f.bagKg,
+      bagKg: f.bagKg,
+      palletBags: f.palletBags,
+      pricePerKg: tier.pricePerKg,
+      tierLabel: tier.label,
+      goods: goods,
+      savings: savings,
+    };
   }
 
   function freight(kg) {
@@ -51,66 +88,47 @@
     return Math.round(rate * pallets * 100) / 100;
   }
 
-  function quote() {
-    const kg = clampKg(state.kg);
-    state.kg = kg;
-    const tier = tierFor(kg);
-    const goods = Math.round(kg * tier.pricePerKg * 100) / 100;
+  function quoteOrder() {
+    const lines = [];
+    fuelIds.forEach(function (id) {
+      const kg = state.kgByFuel[id];
+      if (kg >= 100) lines.push(quoteLine(id, kg));
+    });
+    const goods = Math.round(lines.reduce(function (sum, line) {
+      return sum + line.goods;
+    }, 0) * 100) / 100;
+    const kg = lines.reduce(function (sum, line) {
+      return sum + line.kg;
+    }, 0);
     const ship = freight(kg);
     return {
-      kg: kg,
-      bags: kg / fuel().bagKg,
-      pricePerKg: tier.pricePerKg,
-      tierLabel: tier.label,
+      lines: lines,
       goods: goods,
+      kg: kg,
       freight: ship,
       total: Math.round((goods + ship) * 100) / 100,
-      fuelName: fuel().name,
-      bagKg: fuel().bagKg,
-      palletBags: fuel().palletBags,
     };
   }
 
-  function kgSteps() {
-    const values = {};
-    fuel().presetsKg.forEach(function (kg) {
-      values[kg] = true;
-    });
-    return Object.keys(values)
-      .map(Number)
-      .sort(function (a, b) {
-        return a - b;
-      });
-  }
-
-  function nextMin(minKg) {
-    const next = fuel().tiers.find(function (tier) {
-      return tier.minKg > minKg;
-    });
-    return next ? next.minKg : Infinity;
-  }
-
-  function renderLadder(q) {
-    const body = root.querySelector("[data-ladder]");
+  function renderLadder(card, id, selectedKg) {
+    const body = card.querySelector("[data-ladder]");
     if (!body) return;
-    const first = fuel().tiers[0];
-    body.innerHTML = fuel()
-      .tiers.map(function (tier) {
+    const f = fuelOf(id);
+    const first = f.tiers[0];
+    body.innerHTML = f.tiers
+      .map(function (tier) {
         const kg = tier.minKg;
-        const bags = kg / fuel().bagKg;
+        const bags = kg / f.bagKg;
         const goods = Math.round(kg * tier.pricePerKg * 100) / 100;
-        const fill = kg / (fuel().bagKg * fuel().palletBags);
-        const on = q.kg >= tier.minKg && q.kg < nextMin(tier.minKg) ? " is-on" : "";
+        const fill = kg / (f.bagKg * f.palletBags);
+        const on =
+          selectedKg >= 100 && selectedKg >= tier.minKg && selectedKg < nextMin(id, tier.minKg)
+            ? " is-on"
+            : "";
         const perKgSave = first.pricePerKg - tier.pricePerKg;
-        const totalSave = Math.round(perKgSave * kg * 100) / 100;
         const save =
           perKgSave > 0
-            ? '<span class="save">−' +
-              money.format(perKgSave) +
-              "/kg</span>" +
-              '<span class="save-total">−' +
-              money.format(totalSave) +
-              " oproti 100 kg</span>"
+            ? '<span class="save">−' + money.format(perKgSave) + "/kg</span>"
             : "";
         const fillLabel = fill >= 1 ? "Plná paleta" : "Paleta " + Math.round(fill * 100) + " %";
         return (
@@ -123,7 +141,7 @@
           "</span></td><td>" +
           bags +
           " × " +
-          fuel().bagKg +
+          f.bagKg +
           " kg</td><td>" +
           money.format(tier.pricePerKg) +
           "/kg" +
@@ -136,93 +154,193 @@
       .join("");
   }
 
-  function render() {
-    const q = quote();
-    root.querySelectorAll("[data-fuel-btn]").forEach(function (btn) {
-      btn.classList.toggle("is-on", btn.getAttribute("data-fuel-btn") === state.fuelId);
-    });
-    const presets = root.querySelector("[data-presets]");
+  function renderCard(id) {
+    const card = root.querySelector('[data-fuel-card="' + id + '"]');
+    if (!card) return;
+    const f = fuelOf(id);
+    const kg = state.kgByFuel[id];
+    const included = kg >= 100;
+    const q = included ? quoteLine(id, kg) : null;
+    card.classList.toggle("is-off", !included);
+    const toggle = card.querySelector("[data-fuel-toggle]");
+    if (toggle) {
+      toggle.textContent = included ? "Odstrániť" : "Pridať od 100 kg";
+      toggle.classList.toggle("btn-primary", !included);
+      toggle.classList.toggle("btn-outline", included);
+    }
+    const presets = card.querySelector("[data-presets]");
     if (presets) {
-      presets.innerHTML = kgSteps()
-        .map(function (kg) {
-          const on = q.kg === kg ? " is-on" : "";
-          const label = kg >= 1000 ? num.format(kg) + " kg" : kg + " kg";
-          return '<button type="button" class="' + on + '" data-kg="' + kg + '">' + label + "</button>";
+      presets.innerHTML = f.presetsKg
+        .map(function (preset) {
+          const on = included && q.kg === preset ? " is-on" : "";
+          const label = preset >= 1000 ? num.format(preset) + " kg" : preset + " kg";
+          return (
+            '<button type="button" class="' +
+            on +
+            '" data-kg="' +
+            preset +
+            '">' +
+            label +
+            "</button>"
+          );
         })
         .join("");
     }
-    const kgLabel = root.querySelector("[data-kg-label]");
-    if (kgLabel) kgLabel.textContent = num.format(q.kg) + " kg";
-    const koksHint = root.querySelector("[data-koks-hint]");
-    if (koksHint) koksHint.hidden = fuel().id !== "koks";
-    root.querySelector("[data-live-fuel]").textContent =
-      q.fuelName + " · " + q.bags + " × " + q.bagKg + " kg · " + q.tierLabel;
-    root.querySelector("[data-live-perkg]").textContent = money.format(q.pricePerKg) + "/kg";
-    root.querySelector("[data-live-goods]").textContent = money.format(q.goods);
-    root.querySelector("[data-live-freight]").textContent =
-      state.fulfillment === "pickup" ? "0,00 € (osobný odber)" : money.format(q.freight) + " (odhad)";
-    root.querySelector("[data-live-total]").textContent = money.format(q.total);
-    const bagsEl = root.querySelector("[data-fact-bags]");
-    if (bagsEl) bagsEl.textContent = q.bags + " × " + q.bagKg + " kg";
-    const goodsEl = root.querySelector("[data-fact-goods]");
-    if (goodsEl) goodsEl.textContent = money.format(q.pricePerKg) + "/kg · " + money.format(q.goods);
-    const frEl = root.querySelector("[data-fact-freight]");
-    if (frEl) {
-      frEl.textContent =
-        state.fulfillment === "pickup"
-          ? "Osobný odber, doprava 0 €."
-          : money.format(q.freight) + " odhad. Do SuperFaktúry ide zatiaľ tovar.";
+    const kgLabel = card.querySelector("[data-kg-label]");
+    if (kgLabel) kgLabel.textContent = included ? num.format(q.kg) + " kg" : "0 kg";
+    const minus = card.querySelector("[data-kg-minus]");
+    if (minus) minus.disabled = !included;
+    const empty = card.querySelector("[data-fuel-empty]");
+    if (empty) empty.hidden = included;
+    renderLadder(card, id, included ? q.kg : 0);
+    const bagsEl = card.querySelector("[data-fact-bags]");
+    if (bagsEl) bagsEl.textContent = included ? q.bags + " × " + q.bagKg + " kg" : "—";
+    const goodsEl = card.querySelector("[data-fact-goods]");
+    if (goodsEl) {
+      if (!included) {
+        goodsEl.textContent = "—";
+      } else {
+        goodsEl.innerHTML =
+          money.format(q.pricePerKg) +
+          "/kg · " +
+          money.format(q.goods) +
+          (q.savings > 0
+            ? '<span class="save">Ušetríte ' +
+              money.format(q.savings) +
+              " oproti cene za 100 kg</span>"
+            : "");
+      }
     }
-    const fill = Math.min(1, q.kg / (q.bagKg * q.palletBags));
-    const extra = Math.max(0, q.bags / q.palletBags - 1);
-    const meterFill = root.querySelector("[data-meter-fill]");
+    const fill = included ? Math.min(1, q.kg / (q.bagKg * q.palletBags)) : 0;
+    const extra = included ? Math.max(0, q.bags / q.palletBags - 1) : 0;
+    const meterFill = card.querySelector("[data-meter-fill]");
     if (meterFill) meterFill.style.width = Math.min(100, fill * 100) + "%";
-    const meterLabel = root.querySelector("[data-meter-label]");
-    if (meterLabel) meterLabel.textContent = "Paleta " + q.palletBags + " vriec · 110 × 120 cm";
-    const meterPct = root.querySelector("[data-meter-pct]");
-    if (meterPct) meterPct.textContent = Math.round((q.kg / (q.bagKg * q.palletBags)) * 100) + " %";
-    const meterNote = root.querySelector("[data-meter-note]");
-    if (meterNote) {
-      meterNote.textContent =
-        extra > 0
-          ? "Nad jednu tonu ide ďalšia paleta (+" + Math.ceil(extra) + ")."
-          : q.bags + " z " + q.palletBags + " vriec na paletu. Jedna tona = " + q.palletBags + " × " + q.bagKg + " kg.";
+    const meterLabel = card.querySelector("[data-meter-label]");
+    if (meterLabel) meterLabel.textContent = "Paleta " + f.palletBags + " vriec · 110 × 120 cm";
+    const meterPct = card.querySelector("[data-meter-pct]");
+    if (meterPct) {
+      meterPct.textContent = included
+        ? Math.round((q.kg / (q.bagKg * q.palletBags)) * 100) + " %"
+        : "0 %";
     }
-    renderLadder(q);
-    root.querySelector("[name=fuelId]").value = state.fuelId;
-    root.querySelector("[name=kg]").value = String(q.kg);
-    root.querySelector("[name=fulfillment]").value = state.fulfillment;
+    const meterNote = card.querySelector("[data-meter-note]");
+    if (meterNote) {
+      if (!included) {
+        meterNote.textContent =
+          "Paletový predaj začína od 100 kg (" + 100 / f.bagKg + " vriec).";
+      } else if (extra > 0) {
+        meterNote.textContent = "Nad jednu tonu ide ďalšia paleta (+" + Math.ceil(extra) + ").";
+      } else {
+        meterNote.textContent =
+          q.bags +
+          " z " +
+          q.palletBags +
+          " vriec na paletu. Jedna tona = " +
+          q.palletBags +
+          " × " +
+          q.bagKg +
+          " kg.";
+      }
+    }
+  }
+
+  function renderLive(order) {
+    const empty = root.querySelector("[data-live-empty]");
+    const list = root.querySelector("[data-live-lines]");
+    if (empty) empty.hidden = order.lines.length > 0;
+    if (list) {
+      list.innerHTML = order.lines
+        .map(function (line) {
+          return (
+            '<li class="live-line"><div class="live-line-top"><span>' +
+            line.fuelName +
+            "</span><span>" +
+            money.format(line.goods) +
+            '</span></div><p class="muted" style="margin:.2rem 0 0;font-size:.8rem">' +
+            num.format(line.kg) +
+            " kg · " +
+            line.bags +
+            " × " +
+            line.bagKg +
+            " kg · " +
+            money.format(line.pricePerKg) +
+            "/kg · " +
+            line.tierLabel +
+            "</p>" +
+            (line.savings > 0
+              ? '<p class="save">Ušetríte ' +
+                money.format(line.savings) +
+                " oproti cene za 100 kg</p>"
+              : "") +
+            "</li>"
+          );
+        })
+        .join("");
+    }
+    root.querySelector("[data-live-goods]").textContent = money.format(order.goods);
+    root.querySelector("[data-live-freight]").textContent =
+      state.fulfillment === "pickup"
+        ? "0,00 € (osobný odber)"
+        : money.format(order.freight) + " (odhad)";
+    root.querySelector("[data-live-total]").textContent = money.format(order.total);
+  }
+
+  function render() {
+    fuelIds.forEach(renderCard);
+    const order = quoteOrder();
+    renderLive(order);
+    const linesInput = root.querySelector("[name=lines]");
+    if (linesInput) {
+      linesInput.value = JSON.stringify(
+        order.lines.map(function (line) {
+          return { fuelId: line.fuelId, kg: line.kg };
+        })
+      );
+    }
+    const fulfillmentInput = root.querySelector("[name=fulfillment]");
+    if (fulfillmentInput) fulfillmentInput.value = state.fulfillment;
     const company = root.querySelector("[data-company-fields]");
     if (company) company.classList.toggle("hidden", state.buyerType !== "company");
   }
 
   root.addEventListener("click", function (event) {
-    const fuelBtn = event.target.closest("[data-fuel-btn]");
-    if (fuelBtn) {
+    const toggle = event.target.closest("[data-fuel-toggle]");
+    if (toggle) {
       event.preventDefault();
-      state.fuelId = fuelBtn.getAttribute("data-fuel-btn");
-      state.kg = fuel().presetsKg[0];
+      const card = toggle.closest("[data-fuel-card]");
+      const id = card.getAttribute("data-fuel-card");
+      state.kgByFuel[id] = state.kgByFuel[id] >= 100 ? 0 : 100;
       render();
       return;
     }
     const minus = event.target.closest("[data-kg-minus]");
     if (minus) {
       event.preventDefault();
-      state.kg = clampKg(state.kg - 100);
+      const card = minus.closest("[data-fuel-card]");
+      const id = card.getAttribute("data-fuel-card");
+      const bag = fuelOf(id).bagKg;
+      const current = state.kgByFuel[id];
+      state.kgByFuel[id] = current <= 100 ? 0 : clampKg(id, current - bag, true);
       render();
       return;
     }
     const plus = event.target.closest("[data-kg-plus]");
     if (plus) {
       event.preventDefault();
-      state.kg = clampKg(state.kg + 100);
+      const card = plus.closest("[data-fuel-card]");
+      const id = card.getAttribute("data-fuel-card");
+      const bag = fuelOf(id).bagKg;
+      const current = state.kgByFuel[id];
+      state.kgByFuel[id] = current < 100 ? 100 : clampKg(id, current + bag, false);
       render();
       return;
     }
     const kgBtn = event.target.closest("button[data-kg]");
     if (kgBtn) {
       event.preventDefault();
-      state.kg = Number(kgBtn.getAttribute("data-kg"));
+      const card = kgBtn.closest("[data-fuel-card]");
+      const id = card.getAttribute("data-fuel-card");
+      state.kgByFuel[id] = Number(kgBtn.getAttribute("data-kg"));
       render();
     }
   });
@@ -246,7 +364,11 @@
     const err = root.querySelector("[data-form-error]");
     err.classList.add("hidden");
     const body = Object.fromEntries(new FormData(form).entries());
-    body.kg = Number(body.kg);
+    try {
+      body.lines = JSON.parse(body.lines || "[]");
+    } catch (error) {
+      body.lines = [];
+    }
     body.binding = root.querySelector("[name=binding]").checked;
     try {
       const response = await fetch(root.getAttribute("data-order-url"), {

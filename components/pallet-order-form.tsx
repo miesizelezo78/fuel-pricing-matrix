@@ -16,7 +16,7 @@ import {
   getProduct,
 } from "@/lib/catalog";
 import { formatBagCount, formatKg, formatMoney, formatPerKg } from "@/lib/format";
-import { clampBulkKg, quoteBulk } from "@/lib/pricing";
+import { quoteBulkLines } from "@/lib/pricing";
 import {
   validatePalletOrder,
   type BuyerType,
@@ -25,6 +25,12 @@ import {
 } from "@/lib/superfaktura";
 
 const STORAGE_KEY = "kovacske-paliva-pallet-order";
+
+const EMPTY_KG: Record<FuelId, number> = {
+  uhlie: 0,
+  antracit: 0,
+  koks: 0,
+};
 
 export function PalletOrderForm({
   initialFuelId,
@@ -37,10 +43,10 @@ export function PalletOrderForm({
   const startFuel = initialFuelId ?? "uhlie";
   const startProduct = getProduct(startFuel) ?? BULK_PRODUCTS[0];
   const startFuelData = getFuel(startProduct.fuelId);
-  const [fuelId, setFuelId] = useState<FuelId>(startProduct.fuelId);
-  const [kg, setKg] = useState(() =>
-    clampBulkKg(startFuelData, initialKg ?? startFuelData.bulkPresetsKg[0]),
-  );
+  const [kgByFuel, setKgByFuel] = useState<Record<FuelId, number>>(() => ({
+    ...EMPTY_KG,
+    [startProduct.fuelId]: initialKg ?? startFuelData.bulkPresetsKg[0],
+  }));
   const [fulfillment, setFulfillment] = useState<Fulfillment>("pallet");
   const [buyerType, setBuyerType] = useState<BuyerType>("person");
   const [binding, setBinding] = useState(false);
@@ -60,13 +66,25 @@ export function PalletOrderForm({
   });
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const product = getProduct(fuelId) ?? BULK_PRODUCTS[0];
-  const quote = useMemo(() => quoteBulk(product, kg), [product, kg]);
+  const lines = useMemo(
+    () =>
+      (Object.entries(kgByFuel) as [FuelId, number][])
+        .filter(([, kg]) => kg >= 100)
+        .map(([fuelId, kg]) => ({ fuelId, kg })),
+    [kgByFuel],
+  );
+  const quote = useMemo(
+    () => quoteBulkLines(lines, fulfillment),
+    [lines, fulfillment],
+  );
+
+  function setFuelKg(fuelId: FuelId, kg: number) {
+    setKgByFuel((current) => ({ ...current, [fuelId]: kg }));
+  }
 
   function payload(): PalletOrderInput {
     return {
-      fuelId,
-      kg: quote.kg,
+      lines,
       fulfillment,
       buyerType,
       name: form.name,
@@ -110,6 +128,12 @@ export function PalletOrderForm({
         fuelName?: string;
         fulfillment?: Fulfillment;
         message?: string;
+        lines?: {
+          fuelName: string;
+          kg: number;
+          bags: number;
+          goods: number;
+        }[];
       };
       if (!result.ok) {
         setFormError(result.error || "Objednávku sa nepodarilo odoslať.");
@@ -127,38 +151,46 @@ export function PalletOrderForm({
   return (
     <form onSubmit={submit} className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
       <div className="space-y-6">
-        <section className="rounded-2xl bg-card p-5 ring-1 ring-foreground/10 sm:p-7">
-          <p className="text-xs uppercase tracking-[0.2em] text-primary">
-            Cenník ostáva
+        {BULK_PRODUCTS.map((item) => {
+          const fuel = getFuel(item.fuelId);
+          const kg = kgByFuel[item.fuelId];
+          const included = kg >= fuel.bulkMinKg;
+          return (
+            <section
+              key={item.id}
+              className="rounded-2xl bg-card p-5 ring-1 ring-foreground/10 sm:p-7"
+            >
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-primary">
+                    {fuel.bagKg} kg / vrece
+                  </p>
+                  <h2 className="font-heading mt-1 text-2xl">{fuel.name}</h2>
+                </div>
+                <Button
+                  type="button"
+                  variant={included ? "outline" : "default"}
+                  onClick={() => setFuelKg(item.fuelId, included ? 0 : fuel.bulkMinKg)}
+                >
+                  {included ? "Odstrániť" : "Pridať od 100 kg"}
+                </Button>
+              </div>
+              <div className="mt-6">
+                <BulkCalculator
+                  product={item}
+                  kg={kg}
+                  onKgChange={(next) => setFuelKg(item.fuelId, next)}
+                />
+              </div>
+            </section>
+          );
+        })}
+
+        {fieldErrors.kg || fieldErrors.fuelId ? (
+          <p className="text-sm text-destructive">
+            {fieldErrors.kg || fieldErrors.fuelId}
           </p>
-          <h2 className="font-heading mt-1 text-2xl">Palivo a hmotnosť</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {BULK_PRODUCTS.map((item) => (
-              <Button
-                key={item.id}
-                type="button"
-                variant={fuelId === item.fuelId ? "default" : "outline"}
-                onClick={() => {
-                  const nextFuel = getFuel(item.fuelId);
-                  setFuelId(item.fuelId);
-                  setKg(clampBulkKg(nextFuel, nextFuel.bulkPresetsKg[0]));
-                }}
-              >
-                {getFuel(item.fuelId).shortName}
-              </Button>
-            ))}
-          </div>
-          <div className="mt-6">
-            <BulkCalculator
-              product={product}
-              kg={kg}
-              onKgChange={(next) => setKg(clampBulkKg(getFuel(product.fuelId), next))}
-            />
-            {fieldErrors.kg ? (
-              <p className="mt-3 text-sm text-destructive">{fieldErrors.kg}</p>
-            ) : null}
-          </div>
-        </section>
+        ) : null}
 
         <section className="space-y-4 rounded-2xl bg-card p-5 ring-1 ring-foreground/10 sm:p-7">
           <h2 className="font-heading text-2xl">Údaje pre SuperFaktúru</h2>
@@ -255,14 +287,36 @@ export function PalletOrderForm({
 
       <aside className="h-fit space-y-4 rounded-2xl bg-card p-5 ring-1 ring-foreground/10 sm:sticky sm:top-24">
         <h2 className="font-heading text-2xl">Živý prepočet</h2>
-        <p className="text-sm text-muted-foreground">
-          {quote.product.name} · {formatKg(quote.kg)} · {formatBagCount(quote.bags)}
-        </p>
+        {quote.lines.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            Pridajte aspoň jedno palivo od 100 kg. Každá karta ostáva zvlášť,
+            tu pribudnú položky.
+          </p>
+        ) : (
+          <ul className="space-y-3">
+            {quote.lines.map((line) => (
+              <li
+                key={line.fuel.id}
+                className="border-b border-foreground/10 pb-3"
+              >
+                <div className="flex justify-between gap-3 text-sm font-medium">
+                  <span>{line.fuel.name}</span>
+                  <span className="tabular-nums">{formatMoney(line.goods)}</span>
+                </div>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  {formatKg(line.kg)} · {formatBagCount(line.bags)} ·{" "}
+                  {formatPerKg(line.pricePerKg)} · {line.tier.label}
+                </p>
+                {line.savings > 0 ? (
+                  <p className="mt-1 text-xs font-semibold text-primary">
+                    Ušetríte {formatMoney(line.savings)} oproti cene za 100 kg
+                  </p>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
         <dl className="space-y-2 text-sm">
-          <div className="flex justify-between gap-3 border-b border-foreground/10 py-1.5">
-            <dt className="text-muted-foreground">€/kg (s DPH)</dt>
-            <dd className="tabular-nums">{formatPerKg(quote.pricePerKg)}</dd>
-          </div>
           <div className="flex justify-between gap-3 border-b border-foreground/10 py-1.5">
             <dt className="text-muted-foreground">Tovar s DPH</dt>
             <dd className="tabular-nums">{formatMoney(quote.goods)}</dd>
@@ -270,16 +324,18 @@ export function PalletOrderForm({
           <div className="flex justify-between gap-3 border-b border-foreground/10 py-1.5">
             <dt className="text-muted-foreground">Odhad dopravy</dt>
             <dd className="tabular-nums">
-              {fulfillment === "pickup" ? "0,00 € (osobný odber)" : `${formatMoney(quote.freight)} (odhad)`}
+              {fulfillment === "pickup"
+                ? "0,00 € (osobný odber)"
+                : `${formatMoney(quote.freight)} (odhad)`}
             </dd>
           </div>
         </dl>
-        <p className="font-heading text-3xl">
-          {formatMoney(quote.goods + (fulfillment === "pickup" ? 0 : quote.freight))}
-        </p>
+        <p className="font-heading text-3xl">{formatMoney(quote.total)}</p>
         <p className="text-xs text-muted-foreground">
-          Spolu = tovar + odhad dopravy. Do SuperFaktúry ide najprv tovar —
-          paletovú dopravu naceníme, alebo prídete osobne.
+          Spolu = položky tovaru + odhad dopravy z celkových kíl zásielky.
+          Zľava za množstvo sa na palivá nesčítava — 100 kg antracitu a 100 kg
+          koksu sú dve stovky, nie jedna 200 kg sadzba. Do SuperFaktúry ide
+          najprv tovar.
         </p>
         <RadioGroup
           value={fulfillment}

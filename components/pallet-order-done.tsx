@@ -5,6 +5,13 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { formatBagCount, formatKg, formatMoney } from "@/lib/format";
 
+type StoredLine = {
+  fuelName: string;
+  kg: number;
+  bags: number;
+  goods: number;
+};
+
 type Stored = {
   orderId: string;
   mocked?: boolean;
@@ -14,6 +21,7 @@ type Stored = {
   fuelName?: string;
   fulfillment?: "pickup" | "pallet";
   message?: string;
+  lines?: StoredLine[];
 };
 
 function subscribe() {
@@ -65,6 +73,18 @@ export function PalletOrderDone() {
     );
   }
 
+  const lines =
+    order.lines && order.lines.length > 0
+      ? order.lines
+      : [
+          {
+            fuelName: order.fuelName ?? "Palivo",
+            kg: order.kg ?? 0,
+            bags: order.bags ?? 0,
+            goods: order.goods ?? 0,
+          },
+        ];
+
   return (
     <div className="rounded-2xl bg-card px-6 py-12 ring-1 ring-foreground/10">
       <p className="text-xs uppercase tracking-[0.2em] text-primary">
@@ -72,10 +92,13 @@ export function PalletOrderDone() {
       </p>
       <h1 className="font-heading mt-2 text-4xl">{order.orderId}</h1>
       <p className="mt-3 max-w-xl text-muted-foreground">{order.message}</p>
-      <ul className="mt-6 space-y-1 text-sm">
-        <li>
-            {order.fuelName} · {formatBagCount(order.bags ?? 0)} · {formatKg(order.kg ?? 0)}
-        </li>
+      <ul className="mt-6 space-y-2 text-sm">
+        {lines.map((line) => (
+          <li key={`${line.fuelName}-${line.kg}`}>
+            {line.fuelName} · {formatBagCount(line.bags)} · {formatKg(line.kg)} ·{" "}
+            {formatMoney(line.goods)}
+          </li>
+        ))}
         <li>
           {order.fulfillment === "pickup"
             ? "Osobný odber"

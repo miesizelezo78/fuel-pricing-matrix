@@ -99,29 +99,110 @@ function vulcanus_bulk_freight($kg, $fulfillment) {
     return vulcanus_bulk_round($rate * $pallets);
 }
 
-function vulcanus_bulk_clamp_kg($fuel, $kg) {
+function vulcanus_bulk_clamp_kg($fuel, $kg, $allow_zero = false) {
     $bag = (int) $fuel['bagKg'];
     $min = 100;
     $max = 10000;
     $kg = (int) round((float) $kg);
+    if ($allow_zero && $kg <= 0) {
+        return 0;
+    }
     if ($kg < $min) {
         $kg = $min;
     }
     if ($kg > $max) {
         $kg = $max;
     }
-    $bags = max((int) ($min / $bag), (int) round($kg / $bag));
+    $bags = max((int) ceil($min / $bag), (int) round($kg / $bag));
     $out = $bags * $bag;
-    if ($fuel['id'] === 'koks' && ($kg === 250 || $out === 250 || $out === 240 || $out === 260)) {
-        $out = 200;
-    }
-    while ($out > $max || ($out % $bag) !== 0) {
+    while ($out > $max) {
         $out -= $bag;
     }
     if ($out < $min) {
         $out = (int) ceil($min / $bag) * $bag;
     }
     return $out;
+}
+
+function vulcanus_bulk_savings($fuel, $kg, $price_per_kg) {
+    $first = (float) $fuel['tiers'][0]['pricePerKg'];
+    return vulcanus_bulk_round(($first - (float) $price_per_kg) * $kg);
+}
+
+function vulcanus_bulk_read_lines($input) {
+    $lines = array();
+    $raw = $input['lines'] ?? null;
+    if (is_string($raw)) {
+        $decoded = json_decode($raw, true);
+        $raw = is_array($decoded) ? $decoded : null;
+    }
+    if (is_array($raw)) {
+        foreach ($raw as $line) {
+            if (!is_array($line)) {
+                continue;
+            }
+            $id = (string) ($line['fuelId'] ?? '');
+            $kg = (int) ($line['kg'] ?? 0);
+            if ($id !== '' && $kg > 0) {
+                $lines[] = array('fuelId' => $id, 'kg' => $kg);
+            }
+        }
+    } elseif (!empty($input['fuelId'])) {
+        $lines[] = array(
+            'fuelId' => (string) $input['fuelId'],
+            'kg' => (int) ($input['kg'] ?? 0),
+        );
+    }
+    return $lines;
+}
+
+function vulcanus_bulk_quote_order($lines, $fulfillment = 'pallet') {
+    $fulfillment = $fulfillment === 'pickup' ? 'pickup' : 'pallet';
+    $priced = array();
+    $goods = 0.0;
+    $kg = 0;
+    $bags = 0;
+    $savings = 0.0;
+    if (!is_array($lines) || !$lines) {
+        return array('ok' => false, 'error' => 'Vyberte aspoň jedno palivo od 100 kg.');
+    }
+    foreach ($lines as $line) {
+        $q = vulcanus_bulk_quote($line['fuelId'], $line['kg'], 'pickup');
+        if (empty($q['ok'])) {
+            return $q;
+        }
+        $fuel = vulcanus_bulk_fuel($q['fuelId']);
+        $save = vulcanus_bulk_savings($fuel, $q['kg'], $q['pricePerKg']);
+        $q['savings'] = $save;
+        $q['freight'] = 0;
+        $q['total'] = $q['goods'];
+        $priced[] = $q;
+        $goods += $q['goods'];
+        $kg += $q['kg'];
+        $bags += $q['bags'];
+        $savings += $save;
+    }
+    $goods = vulcanus_bulk_round($goods);
+    $savings = vulcanus_bulk_round($savings);
+    $freight = vulcanus_bulk_freight($kg, $fulfillment);
+    $names = array();
+    foreach ($priced as $row) {
+        $names[] = $row['fuelName'];
+    }
+    return array(
+        'ok' => true,
+        'lines' => $priced,
+        'kg' => $kg,
+        'bags' => $bags,
+        'goods' => $goods,
+        'savings' => $savings,
+        'freight' => $freight,
+        'freightIsEstimate' => $fulfillment === 'pallet',
+        'total' => vulcanus_bulk_round($goods + $freight),
+        'fulfillment' => $fulfillment,
+        'fuelName' => implode(' + ', $names),
+        'vatIncluded' => true,
+    );
 }
 
 function vulcanus_bulk_quote($fuel_id, $kg, $fulfillment = 'pallet') {
@@ -152,6 +233,7 @@ function vulcanus_bulk_quote($fuel_id, $kg, $fulfillment = 'pallet') {
         'total' => vulcanus_bulk_round($goods + $freight),
         'fulfillment' => $fulfillment,
         'presetsKg' => $fuel['presetsKg'],
+        'savings' => vulcanus_bulk_savings($fuel, $kg, $price),
         'vatIncluded' => true,
     );
 }

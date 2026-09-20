@@ -53,7 +53,7 @@ ob_start();
 
   <section>
     <h2>Od 100 kg: záväzná objednávka</h2>
-    <p class="muted">V katalógu ostane e-shopová dlaždica „Kováčske uhlie od 100 kg“. Nie je to produkt. Klik ide rovno na podstránku Paleta s konfigurátorom. Cenník ostáva: 100 kg, sadzba z celkových kíl, koks bez 250 kg. Tlačidlo je „k objednávke“.</p>
+    <p class="muted">V katalógu ostane e-shopová dlaždica „Kováčske uhlie od 100 kg“. Nie je to produkt. Klik ide rovno na podstránku Paleta s konfigurátorom. Cenník ostáva: 100 kg, sadzba z kíl daného paliva. Plus a mínus idú po jednom vreci. Uhlie, antracit a koks viete skombinovať — každé má vlastnú kartu, v súhrne sú položky. 100 kg antracitu + 100 kg koksu nie je 200 kg sadzba. Tlačidlo je „k objednávke“.</p>
     <p class="muted">Formulár berie údaje, ktoré SuperFaktúra potrebuje na doklad. Zákazník zvolí osobný odber alebo paletovú prepravu. Dopravu naceníte až podľa miesta — do prvého dokladu ide tovar.</p>
   </section>
 

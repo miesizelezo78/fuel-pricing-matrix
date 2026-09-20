@@ -36,9 +36,9 @@ function vulcanus_bulk_validate_order($input) {
             $errors['ico'] = 'Zadajte IČO.';
         }
     }
-    $quote = vulcanus_bulk_quote(
-        (string) ($input['fuelId'] ?? ''),
-        (int) ($input['kg'] ?? 0),
+    $lines = vulcanus_bulk_read_lines($input);
+    $quote = vulcanus_bulk_quote_order(
+        $lines,
         (string) ($input['fulfillment'] ?? 'pallet')
     );
     if (empty($quote['ok'])) {
@@ -104,6 +104,7 @@ function vulcanus_bulk_create_order($input) {
         'bags' => $quote['bags'],
         'fuelName' => $quote['fuelName'],
         'fulfillment' => $quote['fulfillment'],
+        'lines' => $quote['lines'],
         'message' => $payload['mocked']
             ? 'Objednávka je uložená ako náhľad. Doplňte kľúče SuperFaktúry pre ostrý doklad.'
             : 'Objednávka odišla do SuperFaktúry.',
@@ -116,28 +117,30 @@ function vulcanus_bulk_push_superfaktura($email, $api_key, $payload) {
     $company = getenv('SUPERFAKTURA_COMPANY_ID') ?: '';
     $base = rtrim(getenv('SUPERFAKTURA_BASE_URL') ?: 'https://moja.superfaktura.sk', '/');
     $vat = (int) vulcanus_bulk_catalog()['vatPercent'];
-    $net = vulcanus_bulk_round($quote['pricePerKg'] / (1 + $vat / 100));
     $fulfillment_label = $quote['fulfillment'] === 'pickup'
         ? 'Osobný odber. Paletovú dopravu neúčtujeme.'
         : 'Paletová preprava. Dopravu naceníme zvlášť a doplníme do dokladu.';
+    $items = array();
+    foreach ($quote['lines'] as $line) {
+        $net = vulcanus_bulk_round($line['pricePerKg'] / (1 + $vat / 100));
+        $items[] = array(
+            'name' => $line['fuelName'],
+            'description' => $line['bags'] . ' × ' . $line['bagKg'] . ' kg · ' . $line['tierLabel'],
+            'quantity' => $line['kg'],
+            'unit' => 'kg',
+            'unit_price' => $net,
+            'tax' => $vat,
+        );
+    }
     $body = array(
         'Invoice' => array(
             'name' => 'Záväzná objednávka ' . $quote['fuelName'],
             'type' => 'order',
             'order_no' => $payload['orderId'],
             'invoice_currency' => 'EUR',
-            'header_comment' => 'Záväzná paletová objednávka, nie e-shopový košík. ' . $fulfillment_label,
+            'header_comment' => 'Záväzná paletová objednávka, nie e-shopový košík. Každé palivo má vlastnú sadzbu z vlastných kíl. ' . $fulfillment_label,
         ),
-        'InvoiceItem' => array(
-            array(
-                'name' => $quote['fuelName'],
-                'description' => $quote['bags'] . ' × ' . $quote['bagKg'] . ' kg · ' . $quote['tierLabel'],
-                'quantity' => $quote['kg'],
-                'unit' => 'kg',
-                'unit_price' => $net,
-                'tax' => $vat,
-            ),
-        ),
+        'InvoiceItem' => $items,
         'Client' => array(
             'name' => $client['name'],
             'email' => $client['email'],

@@ -26,8 +26,10 @@ export function PalletOrderScreen({
         <p className="mt-3 max-w-2xl text-muted-foreground">
           Rovnaký cenník ako v náhľade, ale tovar nejde do e-shopového košíka.
           Klik z dlaždice „od 100 kg“ aj z detailu 25 kg vreca končí tu:
-          konfigurátor, údaje pre SuperFaktúru, záväzná objednávka. Paletovú
-          dopravu naceníme, alebo si tovar vyzdvihnete.
+          konfigurátor, údaje pre SuperFaktúru, záväzná objednávka. Uhlie,
+          antracit a koks viete dať do jednej objednávky — každé palivo má
+          vlastnú kartu a vlastnú sadzbu. Paletovú dopravu naceníme, alebo
+          si tovar vyzdvihnete.
         </p>
       </div>
       <PalletOrderForm initialFuelId={fuelId} initialKg={kg} />

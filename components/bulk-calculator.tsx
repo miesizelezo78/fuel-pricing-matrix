@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { PalletMeter, PriceLadder } from "@/components/price-ladder";
 import { getFuel, type CatalogProduct } from "@/lib/catalog";
 import { formatKg, formatMoney, formatPerKg } from "@/lib/format";
-import { bulkKgOptions, clampBulkKg, quoteBulk } from "@/lib/pricing";
+import { clampBulkKg, quoteBulk } from "@/lib/pricing";
 
 export function BulkCalculator({
   product,
@@ -17,26 +17,35 @@ export function BulkCalculator({
   onKgChange: (kg: number) => void;
 }) {
   const fuel = getFuel(product.fuelId);
-  const quote = quoteBulk(product, kg);
-  const options = bulkKgOptions(fuel);
-  const maxKg = options[options.length - 1] ?? fuel.bulkMinKg;
+  const included = kg >= fuel.bulkMinKg;
+  const quote = included ? quoteBulk(product, kg) : null;
+  const maxKg = 10_000;
 
   function step(delta: number) {
-    onKgChange(clampBulkKg(fuel, quote.kg + delta));
+    if (!included && delta > 0) {
+      onKgChange(fuel.bulkMinKg);
+      return;
+    }
+    if (included && delta < 0 && quote && quote.kg <= fuel.bulkMinKg) {
+      onKgChange(0);
+      return;
+    }
+    const next = (quote?.kg ?? 0) + delta;
+    onKgChange(clampBulkKg(fuel, next, true));
   }
 
   return (
     <div className="space-y-5">
       <p className="text-sm leading-relaxed text-muted-foreground">
-        Cena za kilogram ide z celkových kíl, nie z počtu klikov na stovku. Toto
-        nie je e-shopový košík — ide o záväznú paletovú objednávku.
+        Sadzba ide z kíl tohto paliva, nie zo súčtu objednávky. Plus a mínus
+        pridávajú jedno vrece ({fuel.bagKg} kg).
       </p>
       <div className="flex flex-wrap gap-2">
         {fuel.bulkPresetsKg.map((preset) => (
           <Button
             key={preset}
             type="button"
-            variant={quote.kg === preset ? "default" : "outline"}
+            variant={quote?.kg === preset ? "default" : "outline"}
             onClick={() => onKgChange(preset)}
           >
             {preset === 1000 ? "1 000 kg" : `${preset} kg`}
@@ -44,26 +53,28 @@ export function BulkCalculator({
         ))}
       </div>
       <div className="flex items-center justify-between gap-4">
-        <p className="text-sm font-medium">Vlastné množstvo po 100 kg</p>
+        <p className="text-sm font-medium">
+          Vlastné množstvo po {fuel.bagKg} kg (1 vrece)
+        </p>
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="icon"
-            onClick={() => step(-fuel.bulkStepKg)}
-            disabled={quote.kg <= fuel.bulkMinKg}
-            aria-label="Menej o 100 kg"
+            onClick={() => step(-fuel.bagKg)}
+            disabled={!included}
+            aria-label={`Menej o ${fuel.bagKg} kg`}
           >
             <Minus />
           </Button>
           <span className="min-w-24 text-center font-heading text-2xl tabular-nums">
-            {formatKg(quote.kg)}
+            {included && quote ? formatKg(quote.kg) : "0 kg"}
           </span>
           <Button
             variant="outline"
             size="icon"
-            onClick={() => step(fuel.bulkStepKg)}
-            disabled={quote.kg >= maxKg}
-            aria-label="Viac o 100 kg"
+            onClick={() => step(fuel.bagKg)}
+            disabled={(quote?.kg ?? 0) >= maxKg}
+            aria-label={`Viac o ${fuel.bagKg} kg`}
           >
             <Plus />
           </Button>
@@ -71,30 +82,49 @@ export function BulkCalculator({
       </div>
       {fuel.id === "koks" ? (
         <p className="text-xs text-muted-foreground">
-          Koks je vo 20 kg vreciach, preto tu nie je 250 kg — nevyšlo by to na
-          celé vrecia. Najbližšie zostavy sú 200 kg (10 vriec) a 300 kg (15 vriec).
+          Koks je vo 20 kg vreciach, preto tu nie je tlačidlo 250 kg — nevyšlo
+          by to na celé vrecia. Presety sú 200 kg (10 vriec) a 500 kg. Plusom
+          idete 220, 240, 260 kg.
         </p>
       ) : null}
-      <PriceLadder fuel={fuel} selectedKg={quote.kg} />
-      <PalletMeter fuel={fuel} kg={quote.kg} />
+      {!included ? (
+        <p className="rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground">
+          Toto palivo v objednávke nie je. Preset alebo plus pridá od 100 kg.
+        </p>
+      ) : null}
+      <PriceLadder fuel={fuel} selectedKg={quote?.kg ?? 0} />
+      <PalletMeter fuel={fuel} kg={quote?.kg ?? 0} />
       <dl className="grid grid-cols-2 gap-3 text-sm">
         <div className="rounded-lg bg-muted/50 p-3">
           <dt className="text-muted-foreground">Vrecia</dt>
           <dd className="font-medium">
-            {quote.bags} × {fuel.bagKg} kg
+            {included && quote
+              ? `${quote.bags} × ${fuel.bagKg} kg`
+              : "—"}
           </dd>
         </div>
         <div className="rounded-lg bg-muted/50 p-3">
           <dt className="text-muted-foreground">Cena tovaru</dt>
           <dd className="font-medium">
-            {formatPerKg(quote.pricePerKg)} · {formatMoney(quote.goods)}
+            {included && quote ? (
+              <>
+                {formatPerKg(quote.pricePerKg)} · {formatMoney(quote.goods)}
+                {quote.savings > 0 ? (
+                  <span className="mt-1 block text-xs font-semibold text-primary">
+                    Ušetríte {formatMoney(quote.savings)} oproti cene za 100 kg
+                  </span>
+                ) : null}
+              </>
+            ) : (
+              "—"
+            )}
           </dd>
         </div>
         <div className="rounded-lg bg-muted/50 p-3 col-span-2">
           <dt className="text-muted-foreground">Paletová doprava</dt>
           <dd className="font-medium">
-            Naceníme podľa miesta, alebo osobný odber. Do SuperFaktúry ide zatiaľ
-            len tovar.
+            Odhad podľa súčtu všetkých palív v súhrne. Do SuperFaktúry ide
+            zatiaľ len tovar.
           </dd>
         </div>
       </dl>

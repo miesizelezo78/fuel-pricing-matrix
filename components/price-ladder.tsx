@@ -35,7 +35,11 @@ export function PriceLadder({
           const bags = kg / fuel.bagKg;
           const priced = bulkGoodsPrice(fuel, kg);
           const fill = palletFill(fuel, kg);
-          const active = selectedKg >= tier.minKg && selectedKg < nextMin(fuel, tier.minKg);
+          const active =
+            selectedKg >= fuel.bulkMinKg &&
+            selectedKg >= tier.minKg &&
+            selectedKg < nextMin(fuel, tier.minKg);
+          const perKgSave = first.pricePerKg - priced.pricePerKg;
           return (
             <TableRow
               key={tier.minKg}
@@ -54,21 +58,10 @@ export function PriceLadder({
               </TableCell>
               <TableCell>
                 {formatPerKg(priced.pricePerKg)}
-                {priced.pricePerKg < first.pricePerKg ? (
-                  <>
-                    <span className="mt-0.5 block text-xs font-semibold text-primary">
-                      −{formatMoney(first.pricePerKg - priced.pricePerKg)}/kg
-                    </span>
-                    <span className="block text-xs font-medium text-primary">
-                      −
-                      {formatMoney(
-                        Math.round(
-                          (first.pricePerKg - priced.pricePerKg) * kg * 100,
-                        ) / 100,
-                      )}{" "}
-                      oproti 100 kg
-                    </span>
-                  </>
+                {perKgSave > 0 ? (
+                  <span className="mt-0.5 block text-xs font-semibold text-primary">
+                    −{formatMoney(perKgSave)}/kg
+                  </span>
                 ) : null}
               </TableCell>
               <TableCell className="text-right tabular-nums">
@@ -104,7 +97,11 @@ export function PalletMeter({ fuel, kg }: { fuel: Fuel; kg: number }) {
           style={{ width: `${Math.min(100, fill * 100)}%` }}
         />
       </div>
-      {extra > 0 ? (
+      {kg < fuel.bulkMinKg ? (
+        <p className="mt-2 text-xs text-muted-foreground">
+          Paletový predaj začína od 100 kg ({fuel.bulkMinKg / fuel.bagKg} vriec).
+        </p>
+      ) : extra > 0 ? (
         <p className="mt-2 text-xs text-muted-foreground">
           Nad jednu tonu ide ďalšia paleta (+{Math.ceil(extra)}).
         </p>

@@ -2,7 +2,7 @@
   "vatPercent": 23,
   "bulkMinKg": 100,
   "bulkMaxKg": 10000,
-  "bulkStepKg": 100,
+  "bulkStepKg": "bag",
   "fuels": {
     "uhlie": {
       "id": "uhlie",

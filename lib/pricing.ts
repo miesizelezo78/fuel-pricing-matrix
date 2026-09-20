@@ -5,6 +5,7 @@ import {
   type Fuel,
   type PriceTier,
   getFuel,
+  getProduct,
   getProductById,
   palletKg,
 } from "@/lib/catalog";
@@ -21,22 +22,13 @@ export function tierForKg(tiers: PriceTier[], kg: number): PriceTier {
   return current;
 }
 
-/** Kilogram values reachable from a catalog preset by ±100 kg, in whole bags. */
+/** Whole-bag kilogram values from 100 kg up, one bag at a time. */
 export function bulkKgOptions(fuel: Fuel): number[] {
-  const values = new Set<number>();
-  for (const preset of fuel.bulkPresetsKg) {
-    for (let kg = preset; kg <= BULK_MAX_KG; kg += fuel.bulkStepKg) {
-      if (kg >= fuel.bulkMinKg && kg % fuel.bagKg === 0) values.add(kg);
-    }
-    for (
-      let kg = preset - fuel.bulkStepKg;
-      kg >= fuel.bulkMinKg;
-      kg -= fuel.bulkStepKg
-    ) {
-      if (kg % fuel.bagKg === 0) values.add(kg);
-    }
+  const values: number[] = [];
+  for (let kg = fuel.bulkMinKg; kg <= BULK_MAX_KG; kg += fuel.bagKg) {
+    if (kg % fuel.bagKg === 0) values.push(kg);
   }
-  return [...values].sort((a, b) => a - b);
+  return values;
 }
 
 export function isValidBulkKg(fuel: Fuel, kg: number) {
@@ -53,19 +45,17 @@ export function bulkKgError(fuel: Fuel, kg: number) {
   if (kg > BULK_MAX_KG) {
     return "Najviac 10 000 kg v jednej objednávke.";
   }
-  if (fuel.id === "koks" && kg === 250) {
-    return "Koks 250 kg nie je platná zostava (20 kg vrecia). Dajte 200 kg alebo 300 kg.";
-  }
   if (kg % fuel.bagKg !== 0) {
     return `Hmotnosť musí sedieť na celé ${fuel.bagKg} kg vrecia.`;
   }
   if (!isValidBulkKg(fuel, kg)) {
-    return "Hmotnosť musí ísť po 100 kg od platnej zostavy.";
+    return `Hmotnosť ide po jednom ${fuel.bagKg} kg vreci, od 100 kg.`;
   }
   return undefined;
 }
 
-export function clampBulkKg(fuel: Fuel, kg: number) {
+export function clampBulkKg(fuel: Fuel, kg: number, allowZero = false) {
+  if (allowZero && (!Number.isFinite(kg) || kg <= 0)) return 0;
   const options = bulkKgOptions(fuel);
   const fallback = options[0] ?? fuel.bulkMinKg;
   if (!Number.isFinite(kg)) return fallback;
@@ -133,6 +123,43 @@ export function quoteSolo(product: CatalogProduct, bags: number) {
     fulfillment: "courier" as const,
     pricePerBag: fuel.soloPrice,
     maxBags: fuel.soloMaxBags,
+  };
+}
+
+export type BulkLineInput = {
+  fuelId: Fuel["id"];
+  kg: number;
+};
+
+export function quoteBulkLines(
+  lines: BulkLineInput[],
+  fulfillment: "pickup" | "pallet" = "pallet",
+) {
+  const priced = lines
+    .filter((line) => line.kg >= 100)
+    .map((line) => {
+      const product = getProduct(line.fuelId);
+      if (!product || product.channel !== "bulk") {
+        throw new Error(`Neznáme palivo ${line.fuelId}`);
+      }
+      return quoteBulk(product, line.kg);
+    });
+  const goods = roundMoney(priced.reduce((sum, line) => sum + line.goods, 0));
+  const kg = priced.reduce((sum, line) => sum + line.kg, 0);
+  const bags = priced.reduce((sum, line) => sum + line.bags, 0);
+  const savings = roundMoney(
+    priced.reduce((sum, line) => sum + line.savings, 0),
+  );
+  const freight = fulfillment === "pickup" ? 0 : freightForBulkKg(kg);
+  return {
+    lines: priced,
+    goods,
+    kg,
+    bags,
+    savings,
+    freight,
+    total: roundMoney(goods + freight),
+    fulfillment,
   };
 }
 

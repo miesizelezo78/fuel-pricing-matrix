@@ -68,7 +68,7 @@ export const FUELS: Record<FuelId, Fuel> = {
     soloPrice: 28.9,
     bulkPresetsKg: [100, 250, 500, 1000],
     bulkMinKg: 100,
-    bulkStepKg: 100,
+    bulkStepKg: 25,
     tiers: [
       { minKg: 100, pricePerKg: 0.89, label: "100 kg" },
       { minKg: 250, pricePerKg: 0.82, label: "250 kg" },
@@ -92,7 +92,7 @@ export const FUELS: Record<FuelId, Fuel> = {
     soloPrice: 34.9,
     bulkPresetsKg: [100, 250, 500, 1000],
     bulkMinKg: 100,
-    bulkStepKg: 100,
+    bulkStepKg: 25,
     tiers: [
       { minKg: 100, pricePerKg: 1.12, label: "100 kg" },
       { minKg: 250, pricePerKg: 1.04, label: "250 kg" },
@@ -116,7 +116,7 @@ export const FUELS: Record<FuelId, Fuel> = {
     soloPrice: 32.9,
     bulkPresetsKg: [100, 200, 500, 1000],
     bulkMinKg: 100,
-    bulkStepKg: 100,
+    bulkStepKg: 20,
     tiers: [
       { minKg: 100, pricePerKg: 1.25, label: "100 kg" },
       { minKg: 200, pricePerKg: 1.15, label: "200 kg" },

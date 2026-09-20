@@ -6,14 +6,18 @@ import {
   isFuelId,
 } from "@/lib/catalog";
 import { roundMoney } from "@/lib/format";
-import { bulkKgError, quoteBulk } from "@/lib/pricing";
+import { bulkKgError, quoteBulkLines } from "@/lib/pricing";
 
 export type BuyerType = "person" | "company";
 export type Fulfillment = "pickup" | "pallet";
 
-export type PalletOrderInput = {
+export type PalletOrderLineInput = {
   fuelId: FuelId;
   kg: number;
+};
+
+export type PalletOrderInput = {
+  lines: PalletOrderLineInput[];
   fulfillment: Fulfillment;
   buyerType: BuyerType;
   name: string;
@@ -40,6 +44,14 @@ export type PalletOrderResult = {
   bags: number;
   fuelName: string;
   fulfillment: Fulfillment;
+  lines: {
+    fuelId: FuelId;
+    fuelName: string;
+    kg: number;
+    bags: number;
+    goods: number;
+    pricePerKg: number;
+  }[];
   message: string;
 };
 
@@ -58,11 +70,38 @@ function asText(value: unknown) {
   return typeof value === "string" ? value : "";
 }
 
+function readLines(body: Record<string, unknown>): PalletOrderLineInput[] {
+  const raw = body.lines;
+  if (typeof raw === "string") {
+    try {
+      return readLines({ ...body, lines: JSON.parse(raw) });
+    } catch {
+      return [];
+    }
+  }
+  if (Array.isArray(raw)) {
+    return raw
+      .map((item) => {
+        if (!item || typeof item !== "object") return null;
+        const row = item as Record<string, unknown>;
+        const fuelId = row.fuelId;
+        const kg = typeof row.kg === "number" ? row.kg : Number(row.kg);
+        if (!isFuelId(fuelId) || !Number.isFinite(kg) || kg <= 0) return null;
+        return { fuelId, kg };
+      })
+      .filter((line): line is PalletOrderLineInput => line !== null);
+  }
+  if (isFuelId(body.fuelId)) {
+    const kg = typeof body.kg === "number" ? body.kg : Number(body.kg);
+    if (Number.isFinite(kg) && kg > 0) return [{ fuelId: body.fuelId, kg }];
+  }
+  return [];
+}
+
 export function readPalletOrder(raw: unknown): PalletOrderInput {
   const body = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
   return {
-    fuelId: body.fuelId as FuelId,
-    kg: typeof body.kg === "number" ? body.kg : Number.NaN,
+    lines: readLines(body),
     fulfillment: body.fulfillment as Fulfillment,
     buyerType: body.buyerType as BuyerType,
     name: asText(body.name),
@@ -75,12 +114,12 @@ export function readPalletOrder(raw: unknown): PalletOrderInput {
     dic: asText(body.dic) || undefined,
     icDph: asText(body.icDph) || undefined,
     note: asText(body.note) || undefined,
-    binding: body.binding === true,
+    binding: body.binding === true || body.binding === "true" || body.binding === "on",
   };
 }
 
 export function validatePalletOrder(input: PalletOrderInput) {
-  const errors: Partial<Record<keyof PalletOrderInput, string>> = {};
+  const errors: Partial<Record<keyof PalletOrderInput | "kg" | "fuelId", string>> = {};
   if (!input.binding) {
     errors.binding = "Potvrďte, že ide o záväznú objednávku.";
   }
@@ -102,15 +141,25 @@ export function validatePalletOrder(input: PalletOrderInput) {
     const ico = (input.ico ?? "").replace(/\s/g, "");
     if (ico.length < 6) errors.ico = "Zadajte IČO.";
   }
-  if (!isFuelId(input.fuelId)) {
-    errors.fuelId = "Neznáme palivo.";
+  if (input.lines.length === 0) {
+    errors.fuelId = "Vyberte aspoň jedno palivo od 100 kg.";
   } else {
-    const product = getProduct(FUEL_SLUG[input.fuelId]);
-    if (!product || product.channel !== "bulk") {
-      errors.fuelId = "Neznáme palivo.";
+    for (const line of input.lines) {
+      if (!isFuelId(line.fuelId)) {
+        errors.fuelId = "Neznáme palivo.";
+        break;
+      }
+      const product = getProduct(FUEL_SLUG[line.fuelId]);
+      if (!product || product.channel !== "bulk") {
+        errors.fuelId = "Neznáme palivo.";
+        break;
+      }
+      const kgError = bulkKgError(getFuel(line.fuelId), line.kg);
+      if (kgError) {
+        errors.kg = kgError;
+        break;
+      }
     }
-    const kgError = bulkKgError(getFuel(input.fuelId), input.kg);
-    if (kgError) errors.kg = kgError;
   }
   return errors;
 }
@@ -120,10 +169,8 @@ export function netFromGross(gross: number, vatPercent = VAT_RATE) {
 }
 
 export function buildSuperfakturaPayload(input: PalletOrderInput) {
-  const product = getProduct(FUEL_SLUG[input.fuelId]);
-  if (!product) throw new Error("Neznáme palivo");
-  const quote = quoteBulk(product, input.kg);
-  const fuel = getFuel(input.fuelId);
+  const quote = quoteBulkLines(input.lines, input.fulfillment);
+  const names = quote.lines.map((line) => line.fuel.name).join(" + ");
   const orderId = `PAL-${Date.now().toString().slice(-8)}`;
   const fulfillmentLabel =
     input.fulfillment === "pickup"
@@ -146,12 +193,15 @@ export function buildSuperfakturaPayload(input: PalletOrderInput) {
   };
 
   const invoice = {
-    name: `Záväzná objednávka ${fuel.name}`,
+    name: `Záväzná objednávka ${names}`,
     type: "order",
     order_no: orderId,
     invoice_currency: "EUR",
-    header_comment: `Záväzná paletová objednávka, nie e-shopový košík. ${fulfillmentLabel}`,
-    internal_comment: `kg=${quote.kg}; bags=${quote.bags}; fulfillment=${input.fulfillment}`,
+    header_comment: `Záväzná paletová objednávka, nie e-shopový košík. Každé palivo má vlastnú sadzbu z vlastných kíl. ${fulfillmentLabel}`,
+    internal_comment: quote.lines
+      .map((line) => `${line.fuel.id}=${line.kg}kg/${line.bags}v`)
+      .concat(`fulfillment=${input.fulfillment}`)
+      .join("; "),
     delivery_name: input.name.trim(),
     delivery_address: input.street.trim(),
     delivery_city: input.city.trim(),
@@ -159,21 +209,19 @@ export function buildSuperfakturaPayload(input: PalletOrderInput) {
     delivery_phone: input.phone.trim(),
   };
 
-  const items = [
-    {
-      name: fuel.name,
-      description: `${quote.bags} × ${fuel.bagKg} kg vrecia · paleta 110 × 120 cm · ${quote.tier.label}`,
-      quantity: quote.kg,
-      unit: "kg",
-      unit_price: netFromGross(quote.pricePerKg),
-      tax: VAT_RATE,
-    },
-  ];
+  const items = quote.lines.map((line) => ({
+    name: line.fuel.name,
+    description: `${line.bags} × ${line.fuel.bagKg} kg vrecia · paleta 110 × 120 cm · ${line.tier.label}`,
+    quantity: line.kg,
+    unit: "kg",
+    unit_price: netFromGross(line.pricePerKg),
+    tax: VAT_RATE,
+  }));
 
   return {
     orderId,
     quote,
-    fuel,
+    names,
     payload: {
       Invoice: invoice,
       InvoiceItem: items,
@@ -191,15 +239,21 @@ export async function createSuperfakturaOrder(input: PalletOrderInput): Promise<
   }
 
   const built = buildSuperfakturaPayload(input);
-  if (built.quote.kg !== input.kg) {
-    return { ok: false, error: "Hmotnosť sa nepodarilo overiť." };
-  }
   const email = process.env.SUPERFAKTURA_EMAIL;
   const apiKey = process.env.SUPERFAKTURA_API_KEY;
   const companyId = process.env.SUPERFAKTURA_COMPANY_ID ?? "";
   const baseUrl = (
     process.env.SUPERFAKTURA_BASE_URL ?? "https://moja.superfaktura.sk"
   ).replace(/\/$/, "");
+
+  const lines = built.quote.lines.map((line) => ({
+    fuelId: line.fuel.id,
+    fuelName: line.fuel.name,
+    kg: line.kg,
+    bags: line.bags,
+    goods: line.goods,
+    pricePerKg: line.pricePerKg,
+  }));
 
   if (!email || !apiKey) {
     return {
@@ -209,8 +263,9 @@ export async function createSuperfakturaOrder(input: PalletOrderInput): Promise<
       goods: built.quote.goods,
       kg: built.quote.kg,
       bags: built.quote.bags,
-      fuelName: built.fuel.name,
+      fuelName: built.names,
       fulfillment: input.fulfillment,
+      lines,
       message:
         "Kľúče SuperFaktúry nie sú nastavené. Objednávka je uložená ako náhľad. Doplňte SUPERFAKTURA_EMAIL a SUPERFAKTURA_API_KEY.",
     };
@@ -254,8 +309,9 @@ export async function createSuperfakturaOrder(input: PalletOrderInput): Promise<
     goods: built.quote.goods,
     kg: built.quote.kg,
     bags: built.quote.bags,
-    fuelName: built.fuel.name,
+    fuelName: built.names,
     fulfillment: input.fulfillment,
+    lines,
     message: "Objednávka odišla do SuperFaktúry. Ostrý doklad príde odtiaľ.",
   };
 }
