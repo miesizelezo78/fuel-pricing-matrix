@@ -17,8 +17,11 @@ import {
 } from "@/lib/catalog";
 import { formatBagCount, formatKg, formatMoney, formatPerKg } from "@/lib/format";
 import { quoteBulkLines } from "@/lib/pricing";
+import { VAT_RATE } from "@/lib/catalog";
 import {
+  isVatPayer,
   validatePalletOrder,
+  vatSplit,
   type BuyerType,
   type Fulfillment,
   type PalletOrderInput,
@@ -77,6 +80,8 @@ export function PalletOrderForm({
     () => quoteBulkLines(lines, fulfillment),
     [lines, fulfillment],
   );
+  const vatPayer = isVatPayer(buyerType, form.icDph);
+  const goodsVat = vatSplit(quote.goods);
 
   function setFuelKg(fuelId: FuelId, kg: number) {
     setKgByFuel((current) => ({ ...current, [fuelId]: kg }));
@@ -93,9 +98,9 @@ export function PalletOrderForm({
       street: form.street,
       city: form.city,
       zip: form.zip,
-      ico: form.ico,
-      dic: form.dic,
-      icDph: form.icDph,
+      ico: buyerType === "company" ? form.ico : undefined,
+      dic: buyerType === "company" ? form.dic : undefined,
+      icDph: buyerType === "company" ? form.icDph : undefined,
       note: form.note,
       binding,
     };
@@ -193,10 +198,10 @@ export function PalletOrderForm({
         ) : null}
 
         <section className="min-w-0 space-y-4 rounded-2xl bg-card p-5 ring-1 ring-foreground/10 sm:p-7">
-          <h2 className="font-heading text-2xl">Údaje pre SuperFaktúru</h2>
+          <h2 className="font-heading text-2xl">Údaje na predfaktúru</h2>
           <p className="text-sm text-muted-foreground">
-            Polia kopírujú klienta na doklade: meno, adresa, IČO, DIČ, IČ DPH,
-            e-mail, telefón.
+            Meno, adresa, e-mail, telefón. Firma doplní IČO. Ak ste platca DPH,
+            doplňte IČ DPH — v súhrne sa rozpíše daň. Neplatičom stačí IČO.
           </p>
           <RadioGroup
             value={buyerType}
@@ -221,8 +226,8 @@ export function PalletOrderForm({
           </RadioGroup>
           <p className="text-xs text-muted-foreground">
             {buyerType === "company"
-              ? "Firma alebo živnosť: názov firmy a IČO. DIČ a IČ DPH sú voliteľné."
-              : "Fyzická osoba: meno a priezvisko. IČO sa tu nezobrazuje."}
+              ? "Firma alebo živnosť: názov firmy a IČO. DIČ je voliteľné. IČ DPH len ak ste platca DPH."
+              : "Fyzická osoba: meno a priezvisko. Ceny v súhrne sú konečné, vrátane DPH, bez rozpisu dane."}
           </p>
           <Field
             label={buyerType === "company" ? "Názov firmy" : "Meno a priezvisko"}
@@ -261,6 +266,7 @@ export function PalletOrderForm({
               />
               <Field
                 label="IČ DPH"
+                hint="Len ak ste platca DPH"
                 value={form.icDph}
                 onChange={(value) => setForm((current) => ({ ...current, icDph: value }))}
               />
@@ -342,8 +348,22 @@ export function PalletOrderForm({
           </p>
         ) : null}
         <dl className="space-y-2 text-sm">
+          {vatPayer ? (
+            <>
+              <div className="flex justify-between gap-3 border-b border-foreground/10 py-1.5">
+                <dt className="text-muted-foreground">Základ dane</dt>
+                <dd className="tabular-nums">{formatMoney(goodsVat.net)}</dd>
+              </div>
+              <div className="flex justify-between gap-3 border-b border-foreground/10 py-1.5">
+                <dt className="text-muted-foreground">DPH {VAT_RATE} %</dt>
+                <dd className="tabular-nums">{formatMoney(goodsVat.vat)}</dd>
+              </div>
+            </>
+          ) : null}
           <div className="flex justify-between gap-3 border-b border-foreground/10 py-1.5">
-            <dt className="text-muted-foreground">Tovar s DPH</dt>
+            <dt className="text-muted-foreground">
+              {vatPayer ? "Tovar s DPH" : "Tovar"}
+            </dt>
             <dd className="tabular-nums">{formatMoney(quote.goods)}</dd>
           </div>
           <div className="flex justify-between gap-3 border-b border-foreground/10 py-1.5">
@@ -355,12 +375,16 @@ export function PalletOrderForm({
             </dd>
           </div>
         </dl>
-        <p className="font-heading text-3xl">{formatMoney(quote.total)}</p>
+        <div>
+          <p className="text-xs text-muted-foreground">Spolu k úhrade</p>
+          <p className="font-heading text-3xl">{formatMoney(quote.total)}</p>
+        </div>
         <p className="text-xs text-muted-foreground">
-          Spolu = položky tovaru + odhad dopravy z celkových kíl zásielky.
+          {vatPayer
+            ? "Rozpis dane ide na predfaktúru. Dopravu naceníme zvlášť a doplníme do dokladu."
+            : "Ceny sú konečné, vrátane DPH."}{" "}
           Zľava za množstvo sa na palivá nesčítava — 100 kg antracitu a 100 kg
-          koksu sú dve stovky, nie jedna 200 kg sadzba. Do SuperFaktúry ide
-          najprv tovar.
+          koksu sú dve stovky, nie jedna 200 kg sadzba.
         </p>
         <RadioGroup
           value={fulfillment}
@@ -425,6 +449,7 @@ function Field({
   autoComplete,
   inputMode,
   maxLength,
+  hint,
 }: {
   label: string;
   value: string;
@@ -434,6 +459,7 @@ function Field({
   autoComplete?: string;
   inputMode?: "numeric" | "text" | "tel" | "email" | "decimal";
   maxLength?: number;
+  hint?: string;
 }) {
   const id = label.toLowerCase().replace(/[^a-záäčďéíľňóôŕšťúýž0-9]+/gi, "-");
   return (
@@ -450,6 +476,9 @@ function Field({
         className="w-full min-w-0 max-w-full"
         onChange={(event) => onChange(event.target.value)}
       />
+      {hint && !error ? (
+        <p className="text-xs text-muted-foreground">{hint}</p>
+      ) : null}
       {error ? <p className="text-xs text-destructive">{error}</p> : null}
     </div>
   );

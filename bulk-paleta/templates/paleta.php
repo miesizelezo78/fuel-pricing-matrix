@@ -91,10 +91,10 @@ ob_start();
       <?php endforeach; ?>
 
       <section class="card" style="margin-top:1rem">
-        <h2>Údaje pre SuperFaktúru</h2>
+        <h2>Údaje na predfaktúru</h2>
         <p class="muted" style="font-size:.9rem">
-          Polia kopírujú klienta na doklade: meno, adresa, IČO, DIČ, IČ DPH,
-          e-mail, telefón.
+          Meno, adresa, e-mail, telefón. Firma doplní IČO. Ak ste platca DPH,
+          doplňte IČ DPH — v súhrne sa rozpíše daň. Neplatičom stačí IČO.
         </p>
         <input type="hidden" name="lines" value="">
         <input type="hidden" name="fulfillment" value="pallet">
@@ -103,7 +103,7 @@ ob_start();
           <label><input type="radio" name="buyerType" value="company"> Firma / živnosť</label>
         </div>
         <p class="muted" data-buyer-hint style="font-size:.8rem;margin:-.35rem 0 .7rem">
-          Fyzická osoba: meno a priezvisko. IČO sa tu nezobrazuje.
+          Fyzická osoba: meno a priezvisko. Ceny v súhrne sú konečné, vrátane DPH, bez rozpisu dane.
         </p>
         <div class="fields">
           <label><span data-name-label>Meno a priezvisko</span> <input name="name" required autocomplete="name"></label>
@@ -114,7 +114,7 @@ ob_start();
           <div data-company-fields class="hidden fields-3">
             <label>IČO <input name="ico" autocomplete="off"></label>
             <label>DIČ <input name="dic" autocomplete="off"></label>
-            <label>IČ DPH <input name="icDph" autocomplete="off"></label>
+            <label>IČ DPH <span class="field-hint">(len platca DPH)</span> <input name="icDph" placeholder="SK…" autocomplete="off"></label>
           </div>
           <label>Ulica a číslo <input name="street" required autocomplete="street-address"></label>
           <div class="fields-city">
@@ -131,14 +131,20 @@ ob_start();
       <p class="muted" data-live-empty>Pridajte aspoň jedno palivo od 100 kg. Každá karta ostáva zvlášť, tu pribudnú položky.</p>
       <ul class="live-lines" data-live-lines></ul>
       <dl>
-        <div class="row"><dt>Tovar s DPH</dt><dd data-live-goods>0,00 €</dd></div>
+        <div class="row" data-vat-breakdown hidden>
+          <dt>Základ dane</dt><dd data-live-net>0,00 €</dd>
+        </div>
+        <div class="row" data-vat-breakdown hidden>
+          <dt data-live-vat-label>DPH 23 %</dt><dd data-live-vat>0,00 €</dd>
+        </div>
+        <div class="row"><dt data-live-goods-label>Tovar</dt><dd data-live-goods>0,00 €</dd></div>
         <div class="row"><dt>Odhad dopravy</dt><dd data-live-freight>0,00 €</dd></div>
       </dl>
+      <p class="total-kicker">Spolu k úhrade</p>
       <p class="total" data-live-total>0,00 €</p>
-      <p class="muted" style="font-size:.8rem">
-        Spolu = položky tovaru + odhad dopravy z celkových kíl zásielky.
-        100 kg antracitu a 100 kg koksu sú dve stovky, nie jedna 200 kg sadzba.
-        Do SuperFaktúry ide najprv tovar.
+      <p class="muted" data-live-vat-note style="font-size:.8rem">
+        Ceny sú konečné, vrátane DPH. Zľava za množstvo sa na palivá nesčítava.
+        Do predfaktúry ide najprv tovar.
       </p>
       <div class="radio">
         <label>

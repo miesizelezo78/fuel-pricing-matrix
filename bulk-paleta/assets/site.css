@@ -227,7 +227,10 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 .live { position: sticky; top: 5rem; }
 .live dl { margin: 0.6rem 0 0; }
 .live .row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; border-bottom: 1px solid var(--line); }
-.live .total { font-size: 2rem; margin: 0.7rem 0; font-weight: 600; }
+.live .row[hidden], .live .row.hidden { display: none; }
+.live .total { font-size: 2rem; margin: 0.35rem 0 0.7rem; font-weight: 600; }
+.live .total-kicker { margin: 0.7rem 0 0; font-size: 0.8rem; color: var(--muted); }
+.field-hint { font-size: 0.75rem; color: var(--muted); font-weight: 400; }
 .muted { color: var(--muted); }
 .fields { display: grid; gap: 0.7rem; }
 .fields label { display: grid; gap: 0.25rem; font-size: 0.9rem; }

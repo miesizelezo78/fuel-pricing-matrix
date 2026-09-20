@@ -303,6 +303,25 @@
     }
   }
 
+  function vatSplit(gross) {
+    const pct = Number(catalog.vatPercent) || 23;
+    const net = Math.round((gross / (1 + pct / 100)) * 100) / 100;
+    return {
+      net: net,
+      vat: Math.round((gross - net) * 100) / 100,
+      percent: pct,
+    };
+  }
+
+  function icDphValue() {
+    const input = root.querySelector("[name=icDph]");
+    return input ? String(input.value || "").replace(/\s+/g, "") : "";
+  }
+
+  function isVatPayer() {
+    return state.buyerType === "company" && icDphValue().length >= 5;
+  }
+
   function renderLive(order) {
     const empty = root.querySelector("[data-live-empty]");
     const list = root.querySelector("[data-live-lines]");
@@ -350,6 +369,25 @@
         ? "0,00 € (osobný odber)"
         : money.format(order.freight) + " (odhad)";
     root.querySelector("[data-live-total]").textContent = money.format(order.total);
+    const split = vatSplit(order.goods);
+    const netEl = root.querySelector("[data-live-net]");
+    const vatEl = root.querySelector("[data-live-vat]");
+    if (netEl) netEl.textContent = money.format(split.net);
+    if (vatEl) vatEl.textContent = money.format(split.vat);
+    const vatLabel = root.querySelector("[data-live-vat-label]");
+    if (vatLabel) vatLabel.textContent = "DPH " + split.percent + " %";
+    const payer = isVatPayer();
+    root.querySelectorAll("[data-vat-breakdown]").forEach(function (row) {
+      row.hidden = !payer;
+    });
+    const goodsLabel = root.querySelector("[data-live-goods-label]");
+    if (goodsLabel) goodsLabel.textContent = payer ? "Tovar s DPH" : "Tovar";
+    const vatNote = root.querySelector("[data-live-vat-note]");
+    if (vatNote) {
+      vatNote.textContent = payer
+        ? "Rozpis dane ide na predfaktúru. Dopravu naceníme zvlášť a doplníme do dokladu."
+        : "Ceny sú konečné, vrátane DPH. Zľava za množstvo sa na palivá nesčítava. Do predfaktúry ide najprv tovar.";
+    }
   }
 
   function render() {
@@ -384,8 +422,8 @@
     if (hint) {
       hint.textContent =
         state.buyerType === "company"
-          ? "Firma alebo živnosť: názov firmy a IČO. DIČ a IČ DPH sú voliteľné."
-          : "Fyzická osoba: meno a priezvisko. IČO sa tu nezobrazuje.";
+          ? "Firma alebo živnosť: názov firmy a IČO. DIČ je voliteľné. IČ DPH len ak ste platca DPH."
+          : "Fyzická osoba: meno a priezvisko. Ceny v súhrne sú konečné, vrátane DPH, bez rozpisu dane.";
     }
   }
 
@@ -443,6 +481,10 @@
       render();
     });
   });
+  const icDphInput = root.querySelector("[name=icDph]");
+  if (icDphInput) {
+    icDphInput.addEventListener("input", render);
+  }
 
   const form = root.querySelector("form");
   form.addEventListener("submit", async function (event) {
@@ -456,6 +498,11 @@
       body.lines = [];
     }
     body.binding = root.querySelector("[name=binding]").checked;
+    if (state.buyerType !== "company") {
+      body.ico = "";
+      body.dic = "";
+      body.icDph = "";
+    }
     try {
       const response = await fetch(root.getAttribute("data-order-url"), {
         method: "POST",

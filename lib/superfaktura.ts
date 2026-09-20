@@ -100,19 +100,21 @@ function readLines(body: Record<string, unknown>): PalletOrderLineInput[] {
 
 export function readPalletOrder(raw: unknown): PalletOrderInput {
   const body = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
+  const buyerType = body.buyerType as BuyerType;
+  const company = buyerType === "company";
   return {
     lines: readLines(body),
     fulfillment: body.fulfillment as Fulfillment,
-    buyerType: body.buyerType as BuyerType,
+    buyerType,
     name: asText(body.name),
     email: asText(body.email),
     phone: asText(body.phone),
     street: asText(body.street),
     city: asText(body.city),
     zip: asText(body.zip),
-    ico: asText(body.ico) || undefined,
-    dic: asText(body.dic) || undefined,
-    icDph: asText(body.icDph) || undefined,
+    ico: company ? asText(body.ico) || undefined : undefined,
+    dic: company ? asText(body.dic) || undefined : undefined,
+    icDph: company ? asText(body.icDph) || undefined : undefined,
     note: asText(body.note) || undefined,
     binding: body.binding === true || body.binding === "true" || body.binding === "on",
   };
@@ -166,6 +168,22 @@ export function validatePalletOrder(input: PalletOrderInput) {
 
 export function netFromGross(gross: number, vatPercent = VAT_RATE) {
   return roundMoney(gross / (1 + vatPercent / 100));
+}
+
+/** Platca DPH = firma s vyplneným IČ DPH. Neplatič a fyzická osoba platia to isté, bez rozpisu. */
+export function isVatPayer(buyerType: BuyerType, icDph?: string) {
+  if (buyerType !== "company") return false;
+  return (icDph ?? "").replace(/\s/g, "").length >= 5;
+}
+
+export function vatSplit(gross: number, vatPercent = VAT_RATE) {
+  const net = netFromGross(gross, vatPercent);
+  return {
+    net,
+    vat: roundMoney(gross - net),
+    gross: roundMoney(gross),
+    percent: vatPercent,
+  };
 }
 
 export function buildSuperfakturaPayload(input: PalletOrderInput) {

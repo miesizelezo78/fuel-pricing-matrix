@@ -58,6 +58,8 @@ function vulcanus_bulk_create_order($input) {
     $api_key = getenv('SUPERFAKTURA_API_KEY') ?: (defined('SUPERFAKTURA_API_KEY') ? SUPERFAKTURA_API_KEY : '');
     $mocked = ($email === '' || $api_key === '');
 
+    $buyer_type = ($input['buyerType'] ?? 'person') === 'company' ? 'company' : 'person';
+    $company = $buyer_type === 'company';
     $payload = array(
         'orderId' => $order_id,
         'quote' => $quote,
@@ -68,11 +70,11 @@ function vulcanus_bulk_create_order($input) {
             'street' => trim((string) $input['street']),
             'city' => trim((string) $input['city']),
             'zip' => trim((string) $input['zip']),
-            'ico' => preg_replace('/\s+/', '', (string) ($input['ico'] ?? '')),
-            'dic' => preg_replace('/\s+/', '', (string) ($input['dic'] ?? '')),
-            'icDph' => preg_replace('/\s+/', '', (string) ($input['icDph'] ?? '')),
+            'ico' => $company ? preg_replace('/\s+/', '', (string) ($input['ico'] ?? '')) : '',
+            'dic' => $company ? preg_replace('/\s+/', '', (string) ($input['dic'] ?? '')) : '',
+            'icDph' => $company ? preg_replace('/\s+/', '', (string) ($input['icDph'] ?? '')) : '',
             'note' => trim((string) ($input['note'] ?? '')),
-            'buyerType' => ($input['buyerType'] ?? 'person') === 'company' ? 'company' : 'person',
+            'buyerType' => $buyer_type,
         ),
         'mocked' => $mocked,
         'createdAt' => gmdate('c'),

@@ -1,6 +1,6 @@
 # HOTOVO — Cursor → Grok Bot
 
-**PLUGIN-VERSION: 2.3.0** · súbor v koreni `PLUGIN-VERSION` · `bulk-paleta/bulk-paleta.php` hlavička `Version: 2.3.0`.
+**PLUGIN-VERSION: 2.3.1** · súbor v koreni `PLUGIN-VERSION` · `bulk-paleta/bulk-paleta.php` hlavička `Version: 2.3.1`.
 
 Ak v clone vidíš **2.1.0** a lištu Palivá·Paleta·Ako, máš starý dump. Znova:
 
@@ -8,7 +8,7 @@ Ak v clone vidíš **2.1.0** a lištu Palivá·Paleta·Ako, máš starý dump. Z
 git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
 # alebo v existujúcom clone: git fetch && git checkout main && git reset --hard origin/main
 grep Version bulk-paleta/bulk-paleta.php
-# musí byť 2.3.0
+# musí byť 2.3.1
 ```
 
 Staging **nenahrávam**. Ty Local, potom SFTP.
@@ -52,6 +52,8 @@ Karty kreslia `vd-card` / `v-g3` — chytia sa tvojho `store.css`. Solo Woo kart
 
 Plugin **nekreslí** `get_header` dokument, menu Palivá · Paleta · Ako, Figtree, Fraunces, ani pätičku z náhľadu.
 
+**DPH v súhrne:** fyzická osoba a neplatič vidia jednu sumu k úhrade (vrátane DPH), bez rozpisu. Keď firma vyplní IČ DPH, pribudne základ dane a DPH 23 %. SuperFaktúra má daň na doklade vždy — to je zákon, nie obrazovka.
+
 ## Redirecty (plugin)
 
 | Odkiaľ | Kam |
@@ -81,6 +83,7 @@ Obsah existujúcej Bricks stránky `/objednavka-paleta/` plugin **neprepisuje**.
 4. Koks 250 kg tlačidlo nie je; 200 kg → tovar 230 €, doprava 39 €, spolu **269 €**.
 5. `/paliva/` → 301 do shop filtra.
 6. Detail Woo vreca: dlaždica OD 100 KG s `?palivo=` ostáva (už ju máš).
+7. Paleta: fyzická osoba = súhrn bez rozpisu DPH. Firma + IČ DPH = základ + DPH 23 % + tovar s DPH.
 
 ## Zakázané
 

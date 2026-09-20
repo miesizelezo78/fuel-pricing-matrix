@@ -167,6 +167,24 @@ function vulcanus_bulk_round($value) {
     return round((float) $value, 2);
 }
 
+function vulcanus_bulk_vat_split($gross) {
+    $percent = (int) vulcanus_bulk_catalog()['vatPercent'];
+    $net = vulcanus_bulk_round($gross / (1 + $percent / 100));
+    return array(
+        'net' => $net,
+        'vat' => vulcanus_bulk_round($gross - $net),
+        'gross' => vulcanus_bulk_round($gross),
+        'percent' => $percent,
+    );
+}
+
+function vulcanus_bulk_is_vat_payer($buyer_type, $ic_dph) {
+    if ($buyer_type !== 'company') {
+        return false;
+    }
+    return strlen(preg_replace('/\s+/', '', (string) $ic_dph)) >= 5;
+}
+
 function vulcanus_bulk_tier($fuel, $kg) {
     $current = $fuel['tiers'][0];
     foreach ($fuel['tiers'] as $tier) {
