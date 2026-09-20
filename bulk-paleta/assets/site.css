@@ -186,6 +186,17 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 .grid-2 > * { min-width: 0; }
 @media (min-width: 1100px) {
   .grid-2 { grid-template-columns: minmax(0, 1.25fr) minmax(22rem, 0.75fr); }
+  .live-track { position: relative; }
+  .live-track .live {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+  .live.is-traveling {
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
 }
 .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0 1rem; }
 .chips button, .stepper button {
@@ -225,7 +236,8 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
   margin: 0.4rem 0 0.8rem;
 }
 .radio label { display: flex; align-items: flex-start; gap: 0.55rem; cursor: pointer; }
-.live { position: sticky; top: 5rem; }
+.live-track { min-width: 0; }
+.live { position: static; }
 .live dl { margin: 0.6rem 0 0; }
 .live .row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; border-bottom: 1px solid var(--line); }
 .live .row[hidden], .live .row.hidden { display: none; }
@@ -383,7 +395,6 @@ body:has(.vulcanus-config) {
 }
 .vulcanus-config .live {
   position: static;
-  top: auto;
 }
 .vulcanus-config h1 {
   font-size: clamp(1.85rem, 6vw, 3.4rem);
@@ -499,17 +510,32 @@ body:has(.vulcanus-config) {
   .vulcanus-config .grid-2 {
     grid-template-columns: minmax(0, 1.25fr) minmax(20rem, 0.75fr);
     gap: 2rem;
-    align-items: start;
+    align-items: stretch;
   }
-  .vulcanus-config .live {
-    position: sticky;
-    top: 6.75rem;
+  .vulcanus-config .live-track {
+    position: relative;
+  }
+  .vulcanus-config .live-track .live {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+  .vulcanus-config .live.is-traveling {
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .vulcanus-config .ladder {
     display: table;
     overflow: visible;
     width: 100%;
     min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vulcanus-config .live.is-traveling {
+    transition: none;
   }
 }
 

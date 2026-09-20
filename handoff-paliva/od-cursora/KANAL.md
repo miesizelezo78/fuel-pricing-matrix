@@ -16,4 +16,4 @@ bulk-paleta/
 
 Ďalší bump: **jedna URL** v `HOTOVO.md` a v reply. Overiť HTTP 200 pred odoslaním.
 
-Ďalší drop: **2.3.4** — jeden HTTPS zip. Šírka = e-shop `.vd-section` (1400 px, 5 %), nie širšia.
+Ďalší drop: **2.3.5** — jeden HTTPS zip. Súhrn ide za kartou, na ktorej zákazník pracuje.

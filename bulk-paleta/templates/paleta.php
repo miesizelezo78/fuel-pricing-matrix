@@ -34,7 +34,7 @@ ob_start();
   <form id="vulcanus-bulk-form" class="grid-2" style="margin-top:1.5rem">
     <div data-fuel-cards>
       <?php foreach ($catalog['fuels'] as $id => $item) : ?>
-        <section class="card fuel-card" data-fuel-card="<?php echo vulcanus_e($id); ?>">
+        <section class="card fuel-card" data-fuel-card="<?php echo vulcanus_e($id); ?>" data-work-window>
           <div class="fuel-card-head">
             <div>
               <p class="eyebrow">Od 100 kg · <?php echo (int) $item['bagKg']; ?> kg vrece</p>
@@ -90,7 +90,7 @@ ob_start();
         </section>
       <?php endforeach; ?>
 
-      <section class="card" style="margin-top:1rem">
+      <section class="card" data-invoice-card data-work-window style="margin-top:1rem">
         <h2>Údaje na predfaktúru</h2>
         <p class="muted">
           Meno, adresa, e-mail, telefón. Firma doplní IČO. Ak ste platca DPH,
@@ -126,7 +126,8 @@ ob_start();
       </section>
     </div>
 
-    <aside class="card live" aria-live="polite">
+    <div class="live-track">
+    <aside class="card live" data-live-panel aria-live="polite">
       <h2>Súhrn objednávky</h2>
       <p class="muted" data-live-empty>Pridajte aspoň jedno palivo od 100 kg. Každá karta ostáva zvlášť, tu pribudnú položky.</p>
       <ul class="live-lines" data-live-lines></ul>
@@ -169,6 +170,7 @@ ob_start();
         <a href="<?php echo vulcanus_e(vulcanus_fuels_shop_url()); ?>">Vrecia s doručením</a>
       </p>
     </aside>
+    </div>
   </form>
 </div>
 <?php
