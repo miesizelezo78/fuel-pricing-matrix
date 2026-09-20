@@ -1,10 +1,9 @@
 # VULCANUS Bulk Paleta
 
-WordPress modul 2.2.6: konfigurátor v **existujúcej téme na stagingu** (`get_header` / `get_footer`). Paleta je jednorazová, nevratná a v cene tovaru.
+WordPress modul **2.3.0**: shortcode `[vulcanus_paleta]` do Bricks / G3. Paleta je jednorazová, nevratná a v cene tovaru.
 
-**Mapa ciest najprv:** [`../UX-MAPA.md`](../UX-MAPA.md). `/paliva/` nie je ostrý obchod — po schválení redirect na Woo filter Kováčske palivá.
+- `[vulcanus_paleta]` — konfigurátor (`?palivo=uhlie|antracit|koks`)
+- `[vulcanus_paleta_karty]` — tri karty od 100 kg v jazyku `vd-card`
+- `/paliva/` na webe redirectuje do Woo
 
-- `/objednavka-paleta/` — živý konfigurátor od 100 kg (jediná podstránka, ktorú plugin má kresliť)
-- Woo vrecia s doručením nemente
-
-Inštalácia: [`../HOTOVO.md`](../HOTOVO.md).
+Vrecia s doručením nemente. Inštalácia: [`../handoff-paliva/od-cursora/HOTOVO.md`](../handoff-paliva/od-cursora/HOTOVO.md).

@@ -7,8 +7,8 @@ export function SiteFooter() {
         <div>
           <p className="font-heading text-2xl">Kováčske palivá</p>
           <p className="mt-2 max-w-sm text-sm leading-relaxed text-background/70">
-            Kováčske uhlie, antracit a koks. Solo vrecia kuriérom pre hobby
-            vyhne. Od 100 kg záväzná paletová objednávka, nie košík.
+            Kováčske uhlie, antracit a koks. Vrecia s doručením kuriérom. Od
+            100 kg záväzná paletová objednávka, nie košík.
           </p>
         </div>
         <div className="text-sm">
@@ -20,16 +20,15 @@ export function SiteFooter() {
               Paletová objednávka
             </Link>
           </p>
-          <p className="text-background/70">Solo vrecia — košík. Paleta — SuperFaktúra.</p>
+          <p className="text-background/70">Vrecia s doručením — košík. Paleta — SuperFaktúra.</p>
         </div>
         <div className="text-sm">
           <p className="text-xs uppercase tracking-[0.18em] text-background/50">
             Doručenie
           </p>
-          <p className="mt-2">SDS kuriér — solo vrecia, doprava v cene</p>
+          <p className="mt-2">SDS kuriér — vrecia s doručením, doprava v cene</p>
           <p className="text-background/70">
-            100 a 200 kg na palete 80 × 120 cm. Tona na 110 × 120 cm, niekedy
-            110 × 110. Paleta je jednorazová, nevratná a v cene tovaru.
+            Paleta je jednorazová, nevratná a v cene tovaru.
           </p>
         </div>
       </div>

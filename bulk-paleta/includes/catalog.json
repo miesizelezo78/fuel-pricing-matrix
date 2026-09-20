@@ -85,54 +85,54 @@
       "slug": "uhlie-25kg",
       "channel": "solo",
       "fuelId": "uhlie",
-      "name": "Kováčske uhlie 25 kg",
-      "eyebrow": "Solo vrece · kuriér SDS",
-      "lead": "Jedno 25 kg vrece s doručením. Cena už zahŕňa balné aj kuriéra."
+      "name": "Kováčske čierne uhlie – 25 kg s doručením",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Kováčske čierne uhlie v 25 kg balení. Zrnitosť 10–30 mm."
     },
     {
       "id": "antracit-solo",
       "slug": "antracit-25kg",
       "channel": "solo",
       "fuelId": "antracit",
-      "name": "Kováčsky antracit 25 kg",
-      "eyebrow": "Solo vrece · kuriér SDS",
-      "lead": "Jedno 25 kg vrece s doručením. Vhodné ako vzorka alebo pre hobby vyhňu."
+      "name": "Kováčsky antracit – 25 kg s doručením",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Antracit v 25 kg balení. Zrnitosť 10–20 mm."
     },
     {
       "id": "koks-solo",
       "slug": "koks-20kg",
       "channel": "solo",
       "fuelId": "koks",
-      "name": "Kováčsky koks 20 kg",
-      "eyebrow": "Solo vrece · kuriér SDS",
-      "lead": "Jedno 20 kg vrece s doručením. Jedna kuriérska zásielka má najviac štyri vrecia koksu."
+      "name": "Kováčsky koks – 20 kg s doručením",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Kováčsky koks v 20 kg balení. Zrnitosť 10–20 mm."
     },
     {
       "id": "uhlie-bulk",
       "slug": "uhlie",
       "channel": "bulk",
       "fuelId": "uhlie",
-      "name": "Kováčske uhlie od 100 kg",
-      "eyebrow": "Na objednávku · 25 kg vrecia",
-      "lead": "Tovar na objednávku, nie do košíka. Od 100 kg (4 vrecia). Čím viac kíl, tým nižšia cena za kilogram."
+      "name": "Kováčske čierne uhlie – od 100 kg",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Tovar na objednávku, nie do košíka. Od 4 vriec (100 kg)."
     },
     {
       "id": "antracit-bulk",
       "slug": "antracit",
       "channel": "bulk",
       "fuelId": "antracit",
-      "name": "Kováčsky antracit od 100 kg",
-      "eyebrow": "Na objednávku · 25 kg vrecia",
-      "lead": "Tovar na objednávku, nie do košíka. Od 100 kg (4 vrecia). Čím viac kíl, tým nižšia cena za kilogram."
+      "name": "Kováčsky antracit – od 100 kg",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Tovar na objednávku, nie do košíka. Od 4 vriec (100 kg)."
     },
     {
       "id": "koks-bulk",
       "slug": "koks",
       "channel": "bulk",
       "fuelId": "koks",
-      "name": "Kováčsky koks od 100 kg",
-      "eyebrow": "Na objednávku · 20 kg vrecia",
-      "lead": "Tovar na objednávku, nie do košíka. Od 100 kg (5 vriec). Čím viac kíl, tým nižšia cena za kilogram."
+      "name": "Kováčsky koks – od 100 kg",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Tovar na objednávku, nie do košíka. Od 5 vriec (100 kg)."
     }
   ],
   "freightPerPalletEur": [

@@ -1,76 +1,73 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { BagMark } from "@/components/bag-mark";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   BULK_PRODUCTS,
   SOLO_PRODUCTS,
   getFuel,
-  palletKg,
   type CatalogProduct,
 } from "@/lib/catalog";
-import { formatMoney, formatPerKg } from "@/lib/format";
-import { palletOrderHref } from "@/lib/paths";
-import { bulkGoodsPrice } from "@/lib/pricing";
+import {
+  SITE_FUEL_PHOTO,
+  WOO_PRODUCT,
+  palletOrderHref,
+} from "@/lib/paths";
 
-function priceHint(product: CatalogProduct) {
-  const fuel = getFuel(product.fuelId);
+function tileHref(product: CatalogProduct) {
   if (product.channel === "solo") {
-    return {
-      amount: formatMoney(fuel.soloPrice),
-      note: "s doručením",
-    };
+    return WOO_PRODUCT[product.fuelId];
   }
-  const pallet = bulkGoodsPrice(fuel, palletKg(fuel));
-  return {
-    amount: formatPerKg(pallet.pricePerKg),
-    note: `od 100 kg · paleta ${formatPerKg(pallet.pricePerKg)}`,
-  };
+  return palletOrderHref(product.fuelId);
 }
 
-export function ProductTile({ product }: { product: CatalogProduct }) {
+function ProductTile({ product }: { product: CatalogProduct }) {
   const fuel = getFuel(product.fuelId);
-  const hint = priceHint(product);
+  const href = tileHref(product);
+  const isSolo = product.channel === "solo";
+  const pack = isSolo
+    ? `Vrece · ${fuel.bagKg} kg`
+    : "Na objednávku · od 100 kg";
+  const action = isSolo ? "Pozrieť produkt" : "K objednávke";
 
-  const href =
-    product.channel === "solo"
-      ? `/palivo/${product.slug}`
-      : palletOrderHref(product.fuelId);
+  const inner = (
+      <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-card ring-1 ring-foreground/10 transition-[transform,box-shadow] group-hover:-translate-y-0.5 group-hover:shadow-lg">
+        <img
+          src={SITE_FUEL_PHOTO}
+          alt={product.name}
+          width={300}
+          height={300}
+          className="aspect-square w-full object-cover"
+        />
+        <div className="flex flex-1 flex-col gap-2 p-4">
+          <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
+            {product.eyebrow}
+          </p>
+          <h3 className="font-heading text-xl leading-snug">{product.name}</h3>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {product.lead}
+          </p>
+          <p className="text-sm text-muted-foreground">{pack}</p>
+          <p className="mt-auto pt-3 text-sm font-medium">
+            {isSolo ? "s doručením" : "Cena podľa množstva"}
+          </p>
+          <span className="inline-flex items-center gap-1 text-sm font-medium">
+            {action}
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+          </span>
+        </div>
+      </article>
+  );
+
+  if (isSolo) {
+    return (
+      <a href={href} className="group block h-full">
+        {inner}
+      </a>
+    );
+  }
 
   return (
     <Link href={href} className="group block h-full">
-      <Card className="h-full transition-[transform,box-shadow] group-hover:-translate-y-0.5 group-hover:shadow-lg">
-        <CardContent className="flex flex-col gap-4">
-          <div className="flex items-start justify-between gap-3">
-            <Badge variant={product.channel === "solo" ? "secondary" : "default"}>
-              {product.channel === "solo" ? "E-shop · kuriér" : "Na objednávku"}
-            </Badge>
-            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
-              {fuel.bagKg} kg / vrece
-            </span>
-          </div>
-          <div className="mx-auto h-36 w-28">
-            <BagMark fuelId={fuel.id} weight={fuel.bagKg} />
-          </div>
-          <div>
-            <h3 className="font-heading text-2xl leading-tight">{product.name}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              {product.lead}
-            </p>
-          </div>
-        </CardContent>
-        <CardFooter className="justify-between">
-          <div>
-            <p className="font-heading text-xl">{hint.amount}</p>
-            <p className="text-xs text-muted-foreground">{hint.note}</p>
-          </div>
-          <span className="inline-flex items-center gap-1 text-sm font-medium">
-            {product.channel === "solo" ? "Do košíka" : "K objednávke"}
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-          </span>
-        </CardFooter>
-      </Card>
+      {inner}
     </Link>
   );
 }
@@ -82,13 +79,13 @@ export function CatalogGrid() {
         <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-primary">
-              Hobby · vzorky · kuriér
+              E-shop · kuriér
             </p>
-            <h2 className="font-heading mt-1 text-3xl">Solo vrecia s doručením</h2>
+            <h2 className="font-heading mt-1 text-3xl">Vrecia s doručením</h2>
           </div>
           <p className="max-w-md text-sm text-muted-foreground">
-            Cena už obsahuje balné aj dopravu SDS. Jedna zásielka: 3 vrecia
-            uhlia alebo antracitu, 4 vrecia koksu. Viac kuriérom by vyšlo draho.
+            Klik ide na Woo produkt — fotka, popis, košík. Jedna zásielka: 3
+            vrecia uhlia alebo antracitu, 4 vrecia koksu.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -101,13 +98,13 @@ export function CatalogGrid() {
         <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-primary">
-              80 × 120 cm, potom 110 × 120 cm
+              Nie košík
             </p>
-            <h2 className="font-heading mt-1 text-3xl">Na objednávku od 100 kg</h2>
+            <h2 className="font-heading mt-1 text-3xl">Od 100 kg</h2>
           </div>
           <p className="max-w-md text-sm text-muted-foreground">
-            Dlaždica vyzerá ako v e-shope, ale to nie je produkt do košíka.
-            Klik ide na konfigurátor a záväznú objednávku.
+            Rovnaká karta ako v e-shope, iné tlačidlo. Klik ide na konfigurátor
+            s predvybraným palivom.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

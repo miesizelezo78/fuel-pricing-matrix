@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: VULCANUS Bulk Paleta
- * Description: Samostatné WordPress podstránky Palivá, Paleta a Ako to predávame. Celý konfigurátor. Nie Woo. Solo produkty nemení.
- * Version: 2.2.6
+ * Description: Konfigurátor paletovej objednávky od 100 kg. Shortcode [vulcanus_paleta] do existujúceho G3 chrome. Vrecia s doručením (Woo) nemení.
+ * Version: 2.3.0
  * Author: VULCANUS
  * Text Domain: vulcanus-bulk-paleta
  */
@@ -13,57 +13,53 @@ if (!defined('ABSPATH')) {
 
 define('VULCANUS_BULK_DIR', plugin_dir_path(__FILE__));
 define('VULCANUS_BULK_URL', plugin_dir_url(__FILE__));
+define('VULCANUS_BULK_VERSION', '2.3.0');
 
 require_once VULCANUS_BULK_DIR . 'includes/pricing.php';
 require_once VULCANUS_BULK_DIR . 'includes/order.php';
 require_once VULCANUS_BULK_DIR . 'includes/html.php';
+require_once VULCANUS_BULK_DIR . 'includes/urls.php';
 require_once VULCANUS_BULK_DIR . 'includes/pages.php';
 
 register_activation_hook(__FILE__, function () {
-    vulcanus_bulk_rewrites();
     vulcanus_bulk_ensure_pages();
     flush_rewrite_rules();
-    update_option('vulcanus_bulk_pages_version', '2.1.0');
+    update_option('vulcanus_bulk_pages_version', VULCANUS_BULK_VERSION);
 });
 
-add_action('init', 'vulcanus_bulk_rewrites');
 add_action('admin_init', function () {
-    if (get_option('vulcanus_bulk_pages_version') === '2.1.0') {
+    if (get_option('vulcanus_bulk_pages_version') === VULCANUS_BULK_VERSION) {
         return;
     }
-    vulcanus_bulk_rewrites();
     vulcanus_bulk_ensure_pages();
     flush_rewrite_rules();
-    update_option('vulcanus_bulk_pages_version', '2.1.0');
-});
-function vulcanus_bulk_rewrites() {
-    add_rewrite_rule('^paliva/?$', 'index.php?vulcanus_bulk=paliva', 'top');
-    add_rewrite_rule('^objednavka-paleta/hotovo/?$', 'index.php?vulcanus_bulk=done', 'top');
-    add_rewrite_rule('^objednavka-paleta/?$', 'index.php?vulcanus_bulk=paleta', 'top');
-    add_rewrite_rule('^ako-to-predavame/?$', 'index.php?vulcanus_bulk=ako', 'top');
-    add_rewrite_rule('^ako-to-funguje/?$', 'index.php?vulcanus_bulk=ako', 'top');
-    add_rewrite_rule('^palivo/([^/]+)/?$', 'index.php?vulcanus_bulk=palivo&vulcanus_palivo=$matches[1]', 'top');
-    add_rewrite_tag('%vulcanus_bulk%', '([^&]+)');
-    add_rewrite_tag('%vulcanus_palivo%', '([^&]+)');
-}
-
-add_filter('query_vars', function ($vars) {
-    $vars[] = 'vulcanus_bulk';
-    $vars[] = 'vulcanus_palivo';
-    return $vars;
+    update_option('vulcanus_bulk_pages_version', VULCANUS_BULK_VERSION);
 });
 
-add_action('template_redirect', function () {
-    $page = vulcanus_bulk_current_page();
-    if (!$page) {
-        return;
+add_action('wp_enqueue_scripts', function () {
+    if (vulcanus_bulk_should_enqueue()) {
+        vulcanus_bulk_enqueue_assets();
     }
-    status_header(200);
-    nocache_headers();
-    $palivo_slug = get_query_var('vulcanus_palivo');
-    vulcanus_bulk_emit($page, $palivo_slug);
-    exit;
-}, -100);
+});
+
+add_shortcode('vulcanus_paleta', function () {
+    vulcanus_bulk_enqueue_assets();
+    return vulcanus_bulk_template('paleta.php');
+});
+
+add_shortcode('vulcanus_paleta_hotovo', function () {
+    vulcanus_bulk_enqueue_assets();
+    return vulcanus_bulk_template('hotovo.php');
+});
+
+add_shortcode('vulcanus_paleta_karty', function ($atts) {
+    vulcanus_bulk_enqueue_assets();
+    $atts = shortcode_atts(array('kanal' => 'bulk'), $atts ?: array());
+    $GLOBALS['vulcanus_karty_channel'] = $atts['kanal'] === 'all' ? 'all' : 'bulk';
+    return vulcanus_bulk_template('karty.php');
+});
+
+add_action('template_redirect', 'vulcanus_bulk_dead_end_redirects', 1);
 
 add_action('rest_api_init', function () {
     register_rest_route('bulk-paleta/v1', '/quote', array(
@@ -91,24 +87,27 @@ add_action('rest_api_init', function () {
     ));
 });
 
-function vulcanus_bulk_emit($page, $palivo_slug = '') {
-    $map = array(
-        'paliva' => array('Palivá', 'paliva.php'),
-        'paleta' => array('Paletová objednávka', 'paleta.php'),
-        'form' => array('Paletová objednávka', 'paleta.php'),
-        'ako' => array('Ako to predávame', 'ako.php'),
-        'done' => array('Objednávka', 'hotovo.php'),
-        'palivo' => array('Palivo', 'palivo.php'),
-    );
-    if (!isset($map[$page])) {
-        $page = 'paliva';
+function vulcanus_bulk_template($file) {
+    $path = VULCANUS_BULK_DIR . 'templates/' . $file;
+    if (!is_file($path)) {
+        return '';
     }
-    list($title, $file) = $map[$page];
-    $nav = $page === 'form' || $page === 'done' ? 'paleta' : ($page === 'palivo' ? 'paliva' : $page);
-    $content = include VULCANUS_BULK_DIR . 'templates/' . $file;
-    if (defined('VULCANUS_BULK_STANDALONE') && VULCANUS_BULK_STANDALONE) {
-        vulcanus_render_document($nav, $title, $content);
-        return;
+    $content = include $path;
+    return is_string($content) ? $content : '';
+}
+
+function vulcanus_bulk_should_enqueue() {
+    if (is_page('objednavka-paleta') || is_page('hotovo')) {
+        return true;
     }
-    vulcanus_render_in_theme($nav, $title, $content);
+    global $post;
+    if (!$post || empty($post->post_content)) {
+        return false;
+    }
+    foreach (array('vulcanus_paleta', 'vulcanus_paleta_hotovo', 'vulcanus_paleta_karty') as $tag) {
+        if (has_shortcode($post->post_content, $tag)) {
+            return true;
+        }
+    }
+    return false;
 }

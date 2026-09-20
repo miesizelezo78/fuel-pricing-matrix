@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s · Kováčske palivá",
   },
   description:
-    "Kováčske uhlie, antracit a koks. Solo vrecia kuriérom ako e-shop. Od 100 kg tovar na objednávku, nie do košíka.",
+    "Kováčske uhlie, antracit a koks. Vrecia s doručením kuriérom. Od 100 kg tovar na objednávku, nie do košíka.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

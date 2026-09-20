@@ -24,8 +24,8 @@ ob_start();
   <p class="eyebrow">Nie košík · záväzná objednávka</p>
   <h1>Paletový predaj od 100 kg</h1>
   <p class="lead">
-    Rovnaký cenník ako v náhľade, ale tovar nejde do e-shopového košíka.
-    Uhlie, antracit a koks viete dať do jednej objednávky — každé palivo
+    Vrecia s doručením ostávajú v e-shope. Od 100 kg to nie je košík —
+    uhlie, antracit a koks viete dať do jednej objednávky. Každé palivo
     má vlastnú kartu a vlastnú sadzbu z vlastných kíl. Súčet sa na zľavu
     nesčíta. Paleta je jednorazová, nevratná a v cene tovaru. Paletovú
     dopravu naceníme, alebo si tovar vyzdvihnete.
@@ -98,7 +98,7 @@ ob_start();
         </p>
         <input type="hidden" name="lines" value="">
         <input type="hidden" name="fulfillment" value="pallet">
-        <div className="radio">
+        <div class="radio">
           <label><input type="radio" name="buyerType" value="person" checked> Fyzická osoba</label>
           <label><input type="radio" name="buyerType" value="company"> Firma / živnosť</label>
         </div>
@@ -158,7 +158,9 @@ ob_start();
       <button class="submit" type="submit">Odoslať záväznú objednávku</button>
       <p class="muted" style="font-size:.75rem;margin-top:.8rem">
         Ostrý doklad ide cez SuperFaktúra API. Bez kľúčov ostane náhľad.
-        <a href="<?php echo vulcanus_e(vulcanus_url('ako-to-predavame')); ?>">Dva režimy predaja</a>
+        <a href="<?php echo vulcanus_e(vulcanus_fuels_hub_url()); ?>">Sprievodca palivami</a>
+        ·
+        <a href="<?php echo vulcanus_e(vulcanus_fuels_shop_url()); ?>">Vrecia s doručením</a>
       </p>
     </aside>
   </form>

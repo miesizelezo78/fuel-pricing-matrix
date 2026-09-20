@@ -1,12 +1,14 @@
 <?php
 /**
- * Standalone front controller.
- * php -S 127.0.0.1:8765 standalone.php
+ * Local preview only: php -S 127.0.0.1:8765 standalone.php
+ * WordPress uses shortcodes, never this file.
  */
 define('VULCANUS_BULK_STANDALONE', true);
+define('VULCANUS_BULK_VERSION', '2.3.0');
 require_once __DIR__ . '/includes/pricing.php';
 require_once __DIR__ . '/includes/order.php';
 require_once __DIR__ . '/includes/html.php';
+require_once __DIR__ . '/includes/urls.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
@@ -49,29 +51,26 @@ if (($uri === '/order' || $uri === '/order/') && $method === 'POST') {
     exit;
 }
 
-$page = 'paliva';
-$palivo_slug = '';
-if ($uri === '/' || $uri === '/paliva' || $uri === '/paliva/') {
-    $page = 'paliva';
-} elseif (preg_match('#^/objednavka-paleta/hotovo#', $uri) || strpos($uri, '/hotovo') !== false) {
+if ($uri === '/paliva' || $uri === '/paliva/') {
+    $GLOBALS['vulcanus_karty_channel'] = 'all';
+    $content = include __DIR__ . '/templates/karty.php';
+    $note = '<p class="lead">Lokálny náhľad kariet. Na webe /paliva/ redirectuje do Woo filtra Kováčske palivá. Solo karty idú na staging produkt, od 100 kg na tento konfigurátor.</p>';
+    vulcanus_render_document('Vrecia s doručením', $note . $content);
+    exit;
+}
+
+$page = 'paleta';
+if (preg_match('#^/objednavka-paleta/hotovo#', $uri) || strpos($uri, '/hotovo') !== false) {
     $page = 'done';
-} elseif (preg_match('#^/objednavka-paleta#', $uri)) {
-    $page = 'paleta';
-} elseif (preg_match('#^/ako-to-(predavame|funguje)#', $uri)) {
-    $page = 'ako';
-} elseif (preg_match('#^/palivo/([^/]+)#', $uri, $m)) {
-    $page = 'palivo';
-    $palivo_slug = $m[1];
+} elseif (preg_match('#^/palivo/#', $uri)) {
+    header('Location: https://staging.vulcanus.sk/?ukazka=obchod&rodina=kovacske-paliva', true, 302);
+    exit;
 }
 
 $map = array(
-    'paliva' => array('Palivá', 'paliva.php'),
     'paleta' => array('Paletová objednávka', 'paleta.php'),
-    'ako' => array('Ako to predávame', 'ako.php'),
     'done' => array('Objednávka', 'hotovo.php'),
-    'palivo' => array('Palivo', 'palivo.php'),
 );
 list($title, $file) = $map[$page];
-$nav = $page === 'done' ? 'paleta' : ($page === 'palivo' ? 'paliva' : $page);
 $content = include __DIR__ . '/templates/' . $file;
-vulcanus_render_document($nav, $title, $content);
+vulcanus_render_document($title, $content);

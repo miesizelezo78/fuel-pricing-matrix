@@ -8,9 +8,11 @@ ob_start();
 <div class="card" style="max-width:36rem;margin:2rem auto">
   <p class="eyebrow">Objednávka</p>
   <h1><?php echo $order ?: 'Objednávka odoslaná'; ?></h1>
-  <p>Záväzná paletová objednávka. Solo Woo košík sa nemení.</p>
-  <p><a class="btn btn-primary" href="<?php echo vulcanus_e(vulcanus_url('objednavka-paleta')); ?>">Späť na Paletu</a>
-     <a class="btn btn-outline" href="<?php echo vulcanus_e(vulcanus_url('paliva')); ?>">Palivá</a></p>
+  <p>Záväzná paletová objednávka. Vrecia s doručením v e-shope sa nemenia.</p>
+  <p>
+    <a class="btn btn-primary" href="<?php echo vulcanus_e(vulcanus_url('objednavka-paleta')); ?>">Späť na paletovú objednávku</a>
+    <a class="btn btn-outline" href="<?php echo vulcanus_e(vulcanus_fuels_shop_url()); ?>">Vrecia s doručením</a>
+  </p>
 </div>
 <?php
 return ob_get_clean();

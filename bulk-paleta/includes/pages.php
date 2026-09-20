@@ -3,26 +3,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-function vulcanus_bulk_page_defs() {
-    return array(
-        array(
-            'slug' => 'paliva',
-            'title' => 'Palivá',
-            'page' => 'paliva',
-        ),
-        array(
-            'slug' => 'objednavka-paleta',
-            'title' => 'Paleta',
-            'page' => 'paleta',
-        ),
-        array(
-            'slug' => 'ako-to-predavame',
-            'title' => 'Ako to predávame',
-            'page' => 'ako',
-        ),
-    );
-}
-
 function vulcanus_bulk_find_page_id($slug, $parent = 0) {
     $query = array(
         'name' => $slug,
@@ -39,28 +19,21 @@ function vulcanus_bulk_find_page_id($slug, $parent = 0) {
 
 function vulcanus_bulk_ensure_pages() {
     $ids = array();
-    foreach (vulcanus_bulk_page_defs() as $def) {
-        $id = vulcanus_bulk_find_page_id($def['slug']);
-        $payload = array(
-            'post_title' => $def['title'],
-            'post_name' => $def['slug'],
+    $paleta_id = vulcanus_bulk_find_page_id('objednavka-paleta');
+    if (!$paleta_id) {
+        $paleta_id = wp_insert_post(array(
+            'post_title' => 'Paletová objednávka',
+            'post_name' => 'objednavka-paleta',
             'post_status' => 'publish',
             'post_type' => 'page',
-            'post_content' => "<!-- wp:paragraph --><p>Túto podstránku kreslí modul VULCANUS Bulk Paleta. Nie je to Woo produkt.</p><!-- /wp:paragraph -->",
+            'post_content' => '[vulcanus_paleta]',
             'comment_status' => 'closed',
             'ping_status' => 'closed',
-        );
-        if (!$id) {
-            $id = wp_insert_post($payload, true);
-            if (is_wp_error($id)) {
-                continue;
-            }
-        } else {
-            $payload['ID'] = $id;
-            wp_update_post($payload);
-        }
-        $ids[$def['slug']] = (int) $id;
-        update_post_meta((int) $id, '_vulcanus_bulk_page', $def['page']);
+        ), true);
+    }
+    if (!is_wp_error($paleta_id) && $paleta_id) {
+        $ids['objednavka-paleta'] = (int) $paleta_id;
+        update_post_meta((int) $paleta_id, '_vulcanus_bulk_page', 'paleta');
     }
 
     if (!empty($ids['objednavka-paleta'])) {
@@ -69,21 +42,17 @@ function vulcanus_bulk_ensure_pages() {
         if (!$done_id) {
             $done_id = vulcanus_bulk_find_page_id('hotovo');
         }
-        $done_payload = array(
-            'post_title' => 'Objednávka odoslaná',
-            'post_name' => 'hotovo',
-            'post_parent' => $parent,
-            'post_status' => 'publish',
-            'post_type' => 'page',
-            'post_content' => "<!-- wp:paragraph --><p>Potvrdenie paletovej objednávky. Nie Woo.</p><!-- /wp:paragraph -->",
-            'comment_status' => 'closed',
-            'ping_status' => 'closed',
-        );
         if (!$done_id) {
-            $done_id = wp_insert_post($done_payload, true);
-        } else {
-            $done_payload['ID'] = $done_id;
-            wp_update_post($done_payload);
+            $done_id = wp_insert_post(array(
+                'post_title' => 'Objednávka odoslaná',
+                'post_name' => 'hotovo',
+                'post_parent' => $parent,
+                'post_status' => 'publish',
+                'post_type' => 'page',
+                'post_content' => '[vulcanus_paleta_hotovo]',
+                'comment_status' => 'closed',
+                'ping_status' => 'closed',
+            ), true);
         }
         if (!is_wp_error($done_id) && $done_id) {
             $ids['hotovo'] = (int) $done_id;
@@ -91,83 +60,7 @@ function vulcanus_bulk_ensure_pages() {
         }
     }
 
-    vulcanus_bulk_ensure_menu($ids);
     return $ids;
-}
-
-function vulcanus_bulk_ensure_menu($page_ids) {
-    if (!is_array($page_ids) || empty($page_ids)) {
-        return;
-    }
-
-    $menu_name = 'VULCANUS Palivá';
-    $menu = wp_get_nav_menu_object($menu_name);
-    $own_id = $menu ? (int) $menu->term_id : 0;
-    if (!$own_id) {
-        $created = wp_create_nav_menu($menu_name);
-        if (!is_wp_error($created)) {
-            $own_id = (int) $created;
-        }
-    }
-
-    $locations = get_nav_menu_locations();
-    $target_id = $own_id;
-    foreach (array('primary', 'primary-menu', 'menu-1', 'main', 'header', 'main-menu') as $loc) {
-        if (!empty($locations[$loc])) {
-            $target_id = (int) $locations[$loc];
-            break;
-        }
-    }
-    $menu_ids = array_unique(array_filter(array($own_id, $target_id)));
-
-    foreach ($menu_ids as $menu_id) {
-        $existing = wp_get_nav_menu_items($menu_id) ?: array();
-        $have = array();
-        foreach ($existing as $item) {
-            if ($item->object === 'page') {
-                $have[(int) $item->object_id] = true;
-            }
-            if (!empty($item->url)) {
-                $have[untrailingslashit($item->url)] = true;
-            }
-        }
-        $position = is_array($existing) ? count($existing) + 1 : 1;
-        foreach (array('paliva', 'objednavka-paleta', 'ako-to-predavame') as $slug) {
-            if (empty($page_ids[$slug])) {
-                continue;
-            }
-            $id = (int) $page_ids[$slug];
-            $url = untrailingslashit(get_permalink($id));
-            if (!empty($have[$id]) || (!empty($url) && !empty($have[$url]))) {
-                continue;
-            }
-            wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-object-id' => $id,
-                'menu-item-object' => 'page',
-                'menu-item-type' => 'post_type',
-                'menu-item-status' => 'publish',
-                'menu-item-position' => $position,
-                'menu-item-title' => $slug === 'paliva' ? 'Palivá' : ($slug === 'objednavka-paleta' ? 'Paleta' : 'Ako to predávame'),
-            ));
-            $position++;
-        }
-    }
-
-    $mods = get_theme_mod('nav_menu_locations');
-    if (!is_array($mods)) {
-        $mods = array();
-    }
-    $assigned = false;
-    foreach (array('primary', 'primary-menu', 'menu-1', 'main', 'header', 'main-menu') as $loc) {
-        if (!empty($mods[$loc])) {
-            $assigned = true;
-            break;
-        }
-    }
-    if (!$assigned && $own_id) {
-        $mods['primary'] = $own_id;
-        set_theme_mod('nav_menu_locations', $mods);
-    }
 }
 
 function vulcanus_bulk_request_path() {
@@ -184,47 +77,32 @@ function vulcanus_bulk_request_path() {
     return $path;
 }
 
-function vulcanus_bulk_current_page() {
-    $qv = get_query_var('vulcanus_bulk');
-    if ($qv) {
-        return $qv;
-    }
-
-    if (function_exists('is_page') && is_page()) {
-        $meta = get_post_meta(get_queried_object_id(), '_vulcanus_bulk_page', true);
-        if ($meta === 'paliva' || $meta === 'paleta' || $meta === 'ako' || $meta === 'done') {
-            return $meta;
-        }
-        if (is_page('paliva')) {
-            return 'paliva';
-        }
-        if (is_page('ako-to-predavame') || is_page('ako-to-funguje')) {
-            return 'ako';
-        }
-        if (is_page('objednavka-paleta')) {
-            return 'paleta';
-        }
-        if (is_page('hotovo')) {
-            return 'done';
-        }
-    }
-
+function vulcanus_bulk_dead_end_redirects() {
     $path = vulcanus_bulk_request_path();
-    if ($path === 'paliva') {
-        return 'paliva';
+    $shop = vulcanus_fuels_shop_url();
+    $hub = vulcanus_fuels_hub_url();
+
+    if ($path === 'paliva' || (function_exists('is_page') && is_page('paliva'))) {
+        wp_redirect($shop, 301);
+        exit;
     }
-    if (preg_match('#^objednavka-paleta/hotovo#', $path)) {
-        return 'done';
-    }
-    if ($path === 'objednavka-paleta') {
-        return 'paleta';
-    }
-    if ($path === 'ako-to-predavame' || $path === 'ako-to-funguje') {
-        return 'ako';
+    if (
+        $path === 'ako-to-predavame'
+        || $path === 'ako-to-funguje'
+        || (function_exists('is_page') && (is_page('ako-to-predavame') || is_page('ako-to-funguje')))
+    ) {
+        wp_redirect($hub, 301);
+        exit;
     }
     if (preg_match('#^palivo/([^/]+)#', $path, $m)) {
-        set_query_var('vulcanus_palivo', $m[1]);
-        return 'palivo';
+        $slug = $m[1];
+        $fuel = 'uhlie';
+        if (strpos($slug, 'antracit') !== false) {
+            $fuel = 'antracit';
+        } elseif (strpos($slug, 'koks') !== false) {
+            $fuel = 'koks';
+        }
+        wp_redirect(vulcanus_woo_product_url($fuel), 301);
+        exit;
     }
-    return '';
 }

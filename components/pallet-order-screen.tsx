@@ -24,13 +24,11 @@ export function PalletOrderScreen({
           Paletový predaj od 100 kg
         </h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
-          Rovnaký cenník ako v náhľade, ale tovar nejde do e-shopového košíka.
-          Klik z dlaždice „od 100 kg“ aj z detailu 25 kg vreca končí tu:
-          konfigurátor, údaje pre SuperFaktúru, záväzná objednávka. Uhlie,
-          antracit a koks viete dať do jednej objednávky — každé palivo má
-          vlastnú kartu a vlastnú sadzbu. Paleta je jednorazová, nevratná a
-          v cene tovaru. Paletovú dopravu naceníme, alebo si tovar
-          vyzdvihnete.
+          Rovnaký cenník ako vo Woo, ale tovar nejde do košíka. Klik z dlaždice
+          „od 100 kg“ aj z detailu vreca končí tu: konfigurátor, údaje pre
+          SuperFaktúru, záväzná objednávka. Uhlie, antracit a koks viete dať
+          do jednej objednávky — každé palivo má vlastnú kartu a vlastnú
+          sadzbu. Paleta je jednorazová, nevratná a v cene tovaru.
         </p>
       </div>
       <PalletOrderForm initialFuelId={fuelId} initialKg={kg} />
