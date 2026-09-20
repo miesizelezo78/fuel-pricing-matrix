@@ -1,8 +1,10 @@
 # HOTOVO — Palivá / Paleta / Ako to predávame
 
-Vetva: **`main`**
+Vetva: **`main`** · plugin **2.1.0**
 
 Grok ťahá sám. Klient nič nekopíruje. Solo Woo produkty **nemeniť**.
+
+Toto **nie sú Woo produkty**. Plugin pri aktivácii založí tri **WordPress podstránky** a na nich kreslí celú stránku z náhľadu (hlavička Palivá · Paleta · Ako to predávame + konfigurátor).
 
 ## Clone
 
@@ -11,9 +13,9 @@ git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/
 cd vulcanus-bulk-paleta
 ```
 
-## Čo skopírovať do `vulcanus-shop-demo/bulk-paleta/`
+## Čo vymeniť v `vulcanus-shop-demo/bulk-paleta/`
 
-Vymeň **celý** priečinok pluginu (nie Woo produkty):
+Vymeň **celý** priečinok pluginu. Ak tam už je starý shortcode / polovičný formulár, aj tak ho vymeň — 2.1.0 stránku prekreslí celú.
 
 ```
 bulk-paleta/bulk-paleta.php
@@ -23,6 +25,7 @@ bulk-paleta/includes/catalog.json
 bulk-paleta/includes/pricing.php
 bulk-paleta/includes/order.php
 bulk-paleta/includes/html.php
+bulk-paleta/includes/pages.php
 bulk-paleta/assets/site.css
 bulk-paleta/assets/configurator.js
 bulk-paleta/templates/paliva.php
@@ -32,25 +35,28 @@ bulk-paleta/templates/palivo.php
 bulk-paleta/templates/hotovo.php
 ```
 
-wp-admin → Plugins → aktivuj **VULCANUS Bulk Paleta**. Settings → Permalinks → Save.
+1. wp-admin → Plugins → deaktivuj a znova aktivuj **VULCANUS Bulk Paleta** (alebo nahraj 2.1.0 a daj Activate).
+2. Settings → Permalinks → Save.
+3. Pages: musia tam byť **Palivá**, **Paleta**, **Ako to predávame** (a dieťa Palety: Objednávka odoslaná). Ak Grok predtým spravil Woo produkt / polovičný formulár na tých istých slugoch, podstránky plugin preberie — **Woo z nich nerob**.
+4. Solo Woo SKU (25 kg / 20 kg vrecia) **nemente, nemažte, neimportujte paletové SKU**.
 
-Plugin sám otvorí tri podstránky (**nie Woo**):
+## Podstránky (nie Woo)
 
-| Podstránka | URL |
-| --- | --- |
-| Palivá | `/paliva/` |
-| Paleta | `/objednavka-paleta/` |
-| Ako to predávame | `/ako-to-predavame/` |
+| Podstránka | URL | Čo je na nej |
+| --- | --- | --- |
+| Palivá | `/paliva/` | Hero + 3 solo dlaždice + 3 dlaždice od 100 kg |
+| Paleta | `/objednavka-paleta/` | Celý konfigurátor: palivo, kg, rebrík, meter, živý box, SuperFaktúra |
+| Ako to predávame | `/ako-to-predavame/` | Kde sa predaj láme |
 
-Navigácia Palivá · Paleta · Ako to predávame je v hlavičke týchto stránok. Téma Woo sa na ne neviaže — plugin kreslí celú stránku.
+Navigácia **Palivá · Paleta · Ako to predávame** je v hlavičke týchto troch stránok. Téma Woo sa na ne neviaže.
 
 ## 30 s smoke test
 
-1. `/paliva/` — hero, tri solo dlaždice, tri dlaždice „od 100 kg“. Klik na „Kováčske uhlie od 100 kg“ ide na Paletu, nie do košíka.
-2. `/objednavka-paleta/` — konfigurátor: palivo, kg, rebrík cien, meter palety, živý box €/kg + tovar + doprava + spolu.
+1. `/paliva/` — vpravo hore tri dlaždice Palivá / Paleta / Ako to predávame. Dole tri solo + tri „od 100 kg“. Klik „Kováčske uhlie od 100 kg“ ide na Paletu, **nie** do košíka.
+2. `/objednavka-paleta/` — celý konfigurátor, nie útržok formulára v téme Woo.
 3. Klik **Antracit** → **250 kg**. Tovar **260,00 €**, €/kg **1,04 €**, doprava **55,00 €**, spolu **315,00 €**.
 4. Klik **Koks** → **200 kg** (250 kg tam nie je). Tovar **230,00 €**, doprava **39,00 €**.
-5. `/ako-to-predavame/` — text „Kde sa predaj láme“, nie Woo produkt.
+5. `/ako-to-predavame/` — text „Kde sa predaj láme“.
 6. Solo Woo (25 kg vrecia) ostávajú ako boli.
 
 ```bash
