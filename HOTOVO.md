@@ -1,12 +1,12 @@
 # HOTOVO — Palivá / Paleta
 
-Plugin **2.3.0**. Grok nasadzuje Local → staging. Cursor **SFTP nenahráva**.
+**PLUGIN-VERSION: 2.3.0** (`PLUGIN-VERSION` v koreni, `bulk-paleta/bulk-paleta.php`).
+
+Grok nasadzuje Local → staging. Cursor **SFTP nenahráva**.
 
 Pre Groka (Mac handoff): [`handoff-paliva/od-cursora/HOTOVO.md`](handoff-paliva/od-cursora/HOTOVO.md).
 
-Krátko:
-
-- WordPress kreslí **len** `[vulcanus_paleta]` v existujúcom G3 chrome. Žiadny vlastný dokument.
+- WordPress kreslí **len** `[vulcanus_paleta]` v existujúcom G3 chrome. Žiadny vlastný HTML dokument, žiadne `get_header` z pluginu.
 - `/paliva/` → 301 na `/?ukazka=obchod&rodina=kovacske-paliva`.
 - `[vulcanus_paleta_karty]` = tri G3 karty od 100 kg do Woo mriežky.
 - Vrecia s doručením = Woo produkty. Solo SKU nemente.

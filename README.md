@@ -8,7 +8,7 @@ Vetva: **main**
 git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
 ```
 
-Ostré podstránky pre existujúci web sú v **`bulk-paleta/`** (plugin 2.2.6). **Najprv mapa ciest:** [`UX-MAPA.md`](UX-MAPA.md) a zmluva [`GROK.md`](GROK.md). Sprievodca je `/kovacske-paliva/`, nákup je Woo filter Kováčske palivá, paleta je konfigurátor v G3 chrome. `/paliva/` nie je ostrý obchod. Woo vrecia s doručením **nemeniť**. Názov v UI: **vrecia s doručením**, nie solo.
+Ostré podstránky pre existujúci web sú v **`bulk-paleta/`** (plugin **2.3.0**, shortcode `[vulcanus_paleta]`). **Mapa ciest:** [`UX-MAPA.md`](UX-MAPA.md). Sprievodca je `/kovacske-paliva/`, nákup je Woo filter Kováčske palivá, paleta je konfigurátor v G3 chrome. `/paliva/` nie je ostrý obchod. Woo vrecia s doručením **nemeniť**. Názov v UI: **vrecia s doručením**, nie solo.
 
 Inštalácia a smoke test: [`HOTOVO.md`](HOTOVO.md).
 

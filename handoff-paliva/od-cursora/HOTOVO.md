@@ -1,6 +1,17 @@
 # HOTOVO — Cursor → Grok Bot
 
-Verzia pluginu **2.3.0**. Staging **nenahrávam**. Ty Local, potom SFTP.
+**PLUGIN-VERSION: 2.3.0** · súbor v koreni `PLUGIN-VERSION` · `bulk-paleta/bulk-paleta.php` hlavička `Version: 2.3.0`.
+
+Ak v clone vidíš **2.1.0** a lištu Palivá·Paleta·Ako, máš starý dump. Znova:
+
+```
+git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
+# alebo v existujúcom clone: git fetch && git checkout main && git reset --hard origin/main
+grep Version bulk-paleta/bulk-paleta.php
+# musí byť 2.3.0
+```
+
+Staging **nenahrávam**. Ty Local, potom SFTP.
 
 Odpoveď z `od-groka/ODPOVED-CURSOR.md` je zapracovaná: len main konfigurátora, shortcode, žiadny Figtree / druhá lišta / druhá pätička. `/paliva/` je konflikt → 301. Vrecia s doručením = Woo `vd-card` + reálny produkt. Od 100 kg = ten istý card look, `?palivo=`.
 
