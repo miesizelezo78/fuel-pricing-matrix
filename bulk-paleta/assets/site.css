@@ -343,94 +343,117 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
   .vulcanus-nav-link { padding: 0.35rem 0.65rem; font-size: 0.85rem; }
 }
 
-/* Shortcode v G3: plná šírka rodiča, čitateľná stupnica. Bricks nesmie obaliť úzkym stĺpcom. */
+/* Shortcode v G3: plná šírka ako e-shop, čitateľná stupnica, jedno H1. */
 .vulcanus-config {
   width: 100%;
   max-width: none;
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   line-height: 1.55;
+  padding-top: 0.5rem;
+}
+#brx-content:has(.vulcanus-config) {
+  width: 100% !important;
+  max-width: 86rem !important;
+  margin-inline: auto !important;
+  padding: 2.5rem 1.5rem 4rem !important;
+  box-sizing: border-box;
+}
+@media (min-width: 1100px) {
+  #brx-content:has(.vulcanus-config) {
+    padding: 3rem 2rem 4.5rem !important;
+  }
+  .vulcanus-config {
+    font-size: 1.125rem;
+  }
+}
+#brx-content > h1:has(+ .vulcanus-config),
+#brx-content > h1[hidden] {
+  display: none !important;
 }
 .vulcanus-config h1 {
-  font-size: clamp(2.15rem, 4vw, 3.4rem);
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
   line-height: 1.12;
   max-width: none;
   margin: 0.35rem 0 0.9rem;
 }
 .vulcanus-config .lead {
-  max-width: 48rem;
-  font-size: 1.125rem;
+  max-width: 52rem;
+  font-size: 1.2rem;
   line-height: 1.65;
 }
 .vulcanus-config .eyebrow {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   letter-spacing: 0.14em;
 }
 .vulcanus-config .muted {
-  font-size: 1rem;
+  font-size: 1.0625rem;
   line-height: 1.55;
 }
 .vulcanus-config .fuel-card-head h2 {
-  font-size: clamp(1.5rem, 2.2vw, 1.95rem);
+  font-size: clamp(1.55rem, 2.2vw, 2.05rem);
   line-height: 1.2;
 }
 .vulcanus-config .card {
-  padding: 1.75rem 1.85rem;
+  padding: 1.85rem 2rem;
 }
 .vulcanus-config .ladder {
-  font-size: 1.02rem;
+  font-size: 1.0625rem;
 }
 .vulcanus-config .ladder .save,
 .vulcanus-config .ladder .save-total,
 .vulcanus-config .facts .save,
 .vulcanus-config .live .save {
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 .vulcanus-config .fields label,
 .vulcanus-config .binding,
 .vulcanus-config .radio label {
-  font-size: 1.02rem;
+  font-size: 1.0625rem;
 }
 .vulcanus-config .fields input,
 .vulcanus-config .fields textarea {
-  padding: 0.7rem 0.85rem;
-  font-size: 1.02rem;
+  padding: 0.75rem 0.9rem;
+  font-size: 1.0625rem;
 }
 .vulcanus-config .submit {
-  font-size: 1.08rem;
-  padding: 0.9rem 1rem;
+  font-size: 1.125rem;
+  padding: 0.95rem 1rem;
+}
+.vulcanus-config .live {
+  top: 6.75rem;
 }
 .vulcanus-config .live .total {
-  font-size: clamp(2rem, 3vw, 2.55rem);
+  font-size: clamp(2.1rem, 3vw, 2.65rem);
 }
 .vulcanus-config .live .total-kicker,
 .vulcanus-config .field-hint {
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 .vulcanus-config .stepper span {
-  font-size: 1.85rem;
+  font-size: 1.95rem;
 }
 .vulcanus-config .chips button,
 .vulcanus-config .stepper button {
-  font-size: 1.02rem;
-  padding: 0.55rem 0.95rem;
+  font-size: 1.0625rem;
+  padding: 0.6rem 1rem;
 }
 .vulcanus-config .meter-head {
   display: flex;
   justify-content: space-between;
-  font-size: 1rem;
+  font-size: 1.0625rem;
 }
 .vulcanus-config .meter-note {
   margin: 0.65rem 0 0;
 }
 .vulcanus-config .radio-sub {
   display: block;
-  font-size: 1rem;
+  font-size: 1.0625rem;
 }
 .vulcanus-config .legal-note {
   margin-top: 0.85rem;
-  font-size: 1rem;
+  font-size: 1.0625rem;
 }
 .vulcanus-config .live-line .muted {
-  font-size: 1rem;
+  font-size: 1.0625rem;
 }
 

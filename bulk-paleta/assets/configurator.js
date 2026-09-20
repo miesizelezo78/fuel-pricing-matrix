@@ -2,6 +2,12 @@
   const root = document.querySelector("[data-vulcanus-bulk]");
   if (!root) return;
 
+  const duplicate = root.previousElementSibling;
+  if (duplicate && duplicate.tagName === "H1") {
+    duplicate.setAttribute("hidden", "");
+    duplicate.setAttribute("aria-hidden", "true");
+  }
+
   const catalog = JSON.parse(root.getAttribute("data-catalog"));
   const money = new Intl.NumberFormat("sk-SK", { style: "currency", currency: "EUR" });
   const num = new Intl.NumberFormat("sk-SK");

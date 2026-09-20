@@ -310,7 +310,7 @@ export function PalletOrderForm({
       </div>
 
       <aside className="h-fit space-y-4 rounded-2xl bg-card p-6 ring-1 ring-foreground/10 sm:sticky sm:top-24 sm:p-8">
-        <h2 className="font-heading text-2xl">Živý prepočet</h2>
+        <h2 className="font-heading text-2xl">Súhrn objednávky</h2>
         {quote.lines.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             Pridajte aspoň jedno palivo od 100 kg. Každá karta ostáva zvlášť,

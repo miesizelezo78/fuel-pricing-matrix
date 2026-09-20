@@ -23,7 +23,7 @@ $asset_js = htmlspecialchars($asset_js, ENT_QUOTES, 'UTF-8');
   data-done-url="<?php echo $done_url; ?>"
 >
   <p class="eyebrow">Nie košík · záväzná objednávka</p>
-  <h1>Paletový predaj od 100 kg</h1>
+  <h1>Kováčske palivá od 100 kg</h1>
   <p class="lead">
     Kliknite palivo a kilá — cena tovaru, €/kg, odhad dopravy a spolu sa prepočítajú hneď.
     Toto nie je Woo košík. Solo vrecia v e-shope sa nemenia.
@@ -85,7 +85,7 @@ $asset_js = htmlspecialchars($asset_js, ENT_QUOTES, 'UTF-8');
       </section>
     </div>
     <aside class="vulcanus-card vulcanus-live" aria-live="polite">
-      <h2>Živý prepočet</h2>
+      <h2>Súhrn objednávky</h2>
       <p data-live-fuel><?php echo htmlspecialchars($quote['fuelName'], ENT_QUOTES, 'UTF-8'); ?></p>
       <dl>
         <div class="row"><dt>€/kg (s DPH)</dt><dd data-live-perkg><?php echo number_format($quote['pricePerKg'], 2, ',', ' '); ?> €</dd></div>

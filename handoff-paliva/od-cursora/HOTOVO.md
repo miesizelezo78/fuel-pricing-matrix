@@ -1,135 +1,92 @@
-# HOTOVO — jeden update pre Groka (2.3.2)
+# HOTOVO — 2.3.2 pre staging `/objednavka-paleta/`
 
-**PLUGIN-VERSION: 2.3.2** · `PLUGIN-VERSION` v koreni · `bulk-paleta/bulk-paleta.php` → `Version: 2.3.2`.
+**PLUGIN-VERSION: 2.3.2**
 
-Toto je **jeden drop**: DPH v súhrne + šírka/písmo/názvy konfigurátora + SEO pokyny. Nenasadzuj 2.3.1 a potom toto — stačí **2.3.2**.
+Cloud VM **nevidí** Mac cestu  
+`/Users/xyz/Documents/ChatGPT/VULCANUS Eshop/Správa e-shopu/handoff-paliva/od-cursora/`  
+Skopíruj sem z clone (alebo rozbaľ zip).
+
+## Odkiaľ vziať súbory
+
+**A. Git (hlavný zdroj)**
 
 ```
 git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
-# alebo: git fetch && git checkout main && git reset --hard origin/main
+cd vulcanus-bulk-paleta
+cat PLUGIN-VERSION
+# 2.3.2
 grep Version bulk-paleta/bulk-paleta.php
-# musí byť 2.3.2
+# * Version: 2.3.2
 ```
 
-Staging **nenahrávam**. Ty Local, potom SFTP.
+Do Mac handoffu skopíruj:
+
+```
+handoff-paliva/od-cursora/HOTOVO.md
+handoff-paliva/od-cursora/PLUGIN-VERSION
+handoff-paliva/od-cursora/vulcanus-bulk-paleta-2.3.2.zip
+```
+
+a celý priečinok `bulk-paleta/` z clone.
+
+**B. Zip (ak git nejde)**  
+V clone: `handoff-paliva/od-cursora/vulcanus-bulk-paleta-2.3.2.zip`  
+Obsah: `PLUGIN-VERSION` + `HOTOVO.md` + `bulk-paleta/`.
+
+Staging **nenahrávam**. Ty Local → SFTP.
 
 ## Čo vymeniť
 
-Celý priečinok `bulk-paleta/` z tohto repa. Ak Local drží **oba**:
+Celý `bulk-paleta/` z tohto balíka. Ak Local drží **oba**:
 
 - `wp-content/plugins/vulcanus-shop-demo/bulk-paleta/`
 - `wp-content/plugins/vulcanus-bulk-paleta/`
 
-vymeň **oba rovnakými súbormi**. Deaktivuj a znova aktivuj jeden (nenechaj dva aktívne). Permalinks → Save.
+vymeň **oba**. Deaktivuj a znova aktivuj jeden. Permalinks → Save.  
+Staging dnes ťahá `site.css?ver=2.3.0` — po výmene musí byť `?ver=2.3.2`.
 
-## Shortcode
+Shortcode ostáva `[vulcanus_paleta]` v G3 chrome. Plugin nekreslí dokument, menu Palivá·Paleta·Ako, Figtree.
 
-`/objednavka-paleta/` (G3 chrome):
+## 4 body oproti 2.3.0 (hotové v plugine)
 
-```
-[vulcanus_paleta]
-```
-
-`/objednavka-paleta/hotovo/`:
+Na stagingu 20. 9. 2026 boli **dve H1** hneď za sebou:
 
 ```
-[vulcanus_paleta_hotovo]
+<article id="brx-content">
+  <h1>Objednávka palety</h1>          ← Bricks / WP titulok
+  <div class="vulcanus-config">
+    <h1>Paletový predaj od 100 kg</h1> ← starý plugin
 ```
 
-Woo mriežka Kováčske palivá, **hneď pod tri vrecia**, nie pod sprievodcu:
+**2.3.2:**
 
-```
-[vulcanus_paleta_karty]
-```
+1. **Jedno viditeľné H1.** Plugin kreslí `Kováčske palivá od 100 kg`. Súrodenecké `h1` tesne pred `.vulcanus-config` skryje CSS + JS (`hidden`). V Bricks ten H1 aj tak zmaž, keď môžeš.
+2. Panel **Súhrn objednávky** (nie Živý prepočet).
+3. Šírka: `#brx-content:has(.vulcanus-config)` → `max-width: 86rem`, bez Bricks 15 % paddingu. Desktop písmo ~18 px.
+4. Odstup pod sticky G3 hlavičkou: padding `#brx-content` 2.5–3 rem; sticky súhrn `top: 6.75rem`. Spacer `.vd-site-spacer` nesahe.
 
-Plugin **nekreslí** `get_header` dokument, menu Palivá · Paleta · Ako, Figtree, Fraunces, ani pätičku z náhľadu.
+Plus z 2.3.1/2.3.2: DPH rozpis až po IČ DPH; názvy palív ako Woo.
 
----
+## Ty v Bricks (odporúčané, plugin to obíde)
 
-## 1. DPH v súhrne (plugin)
+- Zmaž Heading „Objednávka palety“ na stránke 226.
+- Shortcode nie v úzkom stĺpci.
+- Rank Math title: `Kováčske palivá od 100 kg | VULCANUS`.
+- Homepage a Woo vrecia nemente.
 
-Fyzická osoba a živnostník **bez IČ DPH** vidia jednu sumu **Spolu k úhrade** (vrátane DPH), bez rozpisu. Hobikováča daňou nezaťažujeme.
+## Smoke
 
-Keď firma vyplní **IČ DPH**, pribudne základ dane + DPH 23 % + tovar s DPH. Signál je IČ DPH, nie rádio „firma“.
-
-SuperFaktúra má daň na doklade **vždy**. To je zákon, nie obrazovka.
-
-Údaje dole sa volajú **Údaje na predfaktúru**.
-
----
-
-## 2. Dizajn konfigurátora (plugin + ty v Bricks)
-
-Klient: stránka je úzka, písmo maličké, nečitateľné, nadpisy a názvy nesedia.
-
-**Plugin 2.3.2 robí:**
-
-- shortcode `.vulcanus-config` ide na **plnú šírku rodiča** (žiadny vlastný 36–72 rem strop)
-- väčšia stupnica: telo ~17 px, lead 18 px, H1 clamp ~2.15–3.4 rem, H2 paliva ~1.5–1.95 rem
-- žiadne 0,72 / 0,75 / 0,8 rem v konfigurátore
-- **jeden H1:** `Kováčske palivá od 100 kg`
-- karty palív: `Kováčske čierne uhlie` / `Kováčsky antracit` / `Kováčsky koks` (ako Woo), eyebrow `Od 100 kg · 25 kg vrece`
-
-**Ty v Bricks — bez tohto ostane úzka aj so 2.3.2:**
-
-1. Shortcode **nie je** v úzkom content stĺpci (720 / 800 / „článok“). Sekcia na šírku ako G3 obchod, nie ako blogový stĺpec.
-2. V sekcii **žiadny druhý H1**. H1 kreslí shortcode.
-3. Fonty Identity webu. Plugin dedí. Nenaťahuj Figtree/Fraunces.
-4. Homepage `/` a ľavú dlaždicu Kováčske palivá **nemente**.
-
----
-
-## 3. SEO (ty v WP / Rank Math, ja to nemám)
-
-| Pole | Hodnota |
-| --- | --- |
-| Title | `Kováčske palivá od 100 kg \| VULCANUS` |
-| Meta description | `Záväzná paletová objednávka kováčskeho uhlia, antracitu a koksu od 100 kg. Nie e-shopový košík. Paleta je v cene tovaru.` |
-| H1 | ten zo shortcode, nepridávaj druhý |
-| Slug | `/objednavka-paleta/` (nemeň) |
-| Canonical | táto URL |
-| OG title | ako Title |
-
-Ak WP titulok ešte je „Paletová objednávka“, plugin ho pri aktivácii zdvihne na „Kováčske palivá od 100 kg“. Rank Math / Yoast **ty**. Obsah Bricks plugin **neprepisuje**.
-
-Hotovo: `Objednávka odoslaná` — `noindex`.
-
----
-
-## Čo urobíš ty (G3), okrem dizajnu palety
-
-1. **Hub** `/kovacske-paliva/` nesahej na chrome. CTA: vrecia → shop filter; od 100 kg → konfigurátor `?palivo=`. Ľavá dlaždica na homepage ostáva `/kovacske-paliva/`.
-2. **Obchod** `?rodina=kovacske-paliva` hneď zapni. Poradie: **3 vrecia s doručením → 3 karty od 100 kg → sprievodca dole.**
-3. **Pätička**, jedna veta: *Paleta je jednorazová, nevratná a v cene tovaru.* + odkaz na `/objednavka-paleta/`.
-4. Woo SKU vrecí **nemente**. Ceny 40 / 42 / 39. Karty od 100 kg: „Cena podľa množstva“.
-
-## Redirecty (plugin)
-
-| Odkiaľ | Kam |
-| --- | --- |
-| `/paliva/` | `/?ukazka=obchod&rodina=kovacske-paliva` |
-| `/palivo/uhlie-25kg` | `/produkt/kovacske-cierne-uhlie-25-kg` |
-| `/palivo/antracit-25kg` | `/produkt/kovacsky-antracit-25-kg` |
-| `/palivo/koks-20kg` | `/produkt/kovacsky-koks-20-kg` |
-| `/ako-to-predavame/` | `/kovacske-paliva/` |
-
-## Smoke (Local)
-
-1. `/kovacske-paliva/` — G3 chrome, video, tri charaktery.
-2. Shop filter — 3 Woo vrecia + 3 karty od 100 kg, sprievodca dole.
-3. `/objednavka-paleta/?palivo=antracit` — **široká** sekcia, čitateľné písmo, H1 „Kováčske palivá od 100 kg“, G3 hlavička/pätička. Antracit 250 kg → tovar 260 €, doprava 55 €, spolu **315 €**.
-4. Koks 200 kg → tovar 230 €, doprava 39 €, spolu **269 €**.
-5. Fyzická osoba = súhrn bez rozpisu DPH. Firma + IČ DPH = základ + DPH 23 %.
-6. Title v prehliadači obsahuje „Kováčske palivá od 100 kg“. Jeden H1.
-7. `/paliva/` → 301 do shop filtra.
+1. `/objednavka-paleta/?palivo=antracit` — **jedno** H1 „Kováčske palivá od 100 kg“. Žiadne „Objednávka palety“ ani „Paletový predaj“.
+2. Široká sekcia, čitateľné písmo, obsah nesedí pod hlavičkou.
+3. Pravý panel: **Súhrn objednávky**.
+4. Antracit 250 kg → tovar 260 €, doprava 55 €, spolu 315 €.
+5. Fyzická osoba = jedna suma. Firma + IČ DPH = základ + DPH 23 %.
+6. `site.css?ver=2.3.2`.
 
 ## Zakázané
 
 - Celý HTML dokument z pluginu
-- Druhé menu, druhá pätička, Google Fonts Figtree/Fraunces
-- Paletové SKU do Woo košíka
+- Figtree / Fraunces / druhá lišta
+- Paletové SKU do Woo
 - Staging SFTP z Cursoru
-- Úzky Bricks stĺpec okolo shortcode
-- Druhý H1 nad shortcode
-
-Zdroj: vetva `main`, priečinok `bulk-paleta/`. Mapa: `UX-MAPA.md`.
+- Písať klientovi — nasadíš ty

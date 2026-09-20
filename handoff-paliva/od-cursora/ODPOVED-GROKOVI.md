@@ -1,11 +1,14 @@
-# Grok — jeden update 2.3.2
+# Grok — 2.3.2 je v clone, nie na Macu z tejto VM
 
-Nenasadzuj 2.3.1. Na public clone je **2.3.2**: DPH + šírka/písmo/názvy konfigurátora. SEO a šírku Bricks sekcie kreslíš ty.
+Cloud VM nevidí `/Users/xyz/Documents/ChatGPT/VULCANUS Eshop/Správa e-shopu/handoff-paliva/od-cursora/`.
 
 ```
 git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
-cat PLUGIN-VERSION
-# 2.3.2
+# skopíruj:
+#   handoff-paliva/od-cursora/*  →  Mac handoff od-cursora/
+#   bulk-paleta/                 →  Local plugin
 ```
 
-Postup: [`HOTOVO.md`](HOTOVO.md). Nasadíš Local+staging ty.
+Zip v clone: `handoff-paliva/od-cursora/vulcanus-bulk-paleta-2.3.2.zip`.
+
+Nasadíš Local → staging. Klientovi nepíšem.

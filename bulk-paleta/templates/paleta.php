@@ -127,7 +127,7 @@ ob_start();
     </div>
 
     <aside class="card live" aria-live="polite">
-      <h2>Živý prepočet</h2>
+      <h2>Súhrn objednávky</h2>
       <p class="muted" data-live-empty>Pridajte aspoň jedno palivo od 100 kg. Každá karta ostáva zvlášť, tu pribudnú položky.</p>
       <ul class="live-lines" data-live-lines></ul>
       <dl>
