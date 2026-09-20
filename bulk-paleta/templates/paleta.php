@@ -32,7 +32,7 @@ ob_start();
   </p>
 
   <form id="vulcanus-bulk-form" class="grid-2" style="margin-top:1.5rem">
-    <div data-fuel-cards>
+    <div data-fuel-cards data-work-stack>
       <?php foreach ($catalog['fuels'] as $id => $item) : ?>
         <section class="card fuel-card" data-fuel-card="<?php echo vulcanus_e($id); ?>" data-work-window>
           <div class="fuel-card-head">

@@ -431,6 +431,7 @@
           ? "Firma alebo živnosť: názov firmy a IČO. DIČ je voliteľné. IČ DPH len ak ste platca DPH."
           : "Fyzická osoba: meno a priezvisko. Ceny v súhrne sú konečné, vrátane DPH, bez rozpisu dane.";
     }
+    root.dispatchEvent(new Event("vulcanus-render"));
   }
 
   root.addEventListener("click", function (event) {
@@ -609,6 +610,7 @@ function bindLiveCompanion(root) {
   function place(fromTravel) {
     if (!splitLayout()) {
       live.classList.remove("is-traveling");
+      live.style.marginTop = "0px";
       live.style.transform = "none";
       lastY = -1;
       lastWindow = null;
@@ -616,9 +618,10 @@ function bindLiveCompanion(root) {
     }
     const target = pickWindow();
     if (!target) return;
-    const trackRect = track.getBoundingClientRect();
+    const stack = root.querySelector("[data-work-stack]") || track;
     const liveH = live.offsetHeight;
-    const maxY = Math.max(0, track.clientHeight - liveH);
+    const maxY = Math.max(0, stack.offsetHeight - 64);
+    const origin = track.getBoundingClientRect().top;
     const viewTop = observerTop();
     const viewBottom = window.innerHeight - 16;
     const targetRect = target.getBoundingClientRect();
@@ -627,7 +630,7 @@ function bindLiveCompanion(root) {
     if (desired + liveH > viewBottom) {
       desired = Math.max(viewTop, viewBottom - liveH);
     }
-    let y = desired - trackRect.top;
+    let y = desired - origin;
     y = Math.max(0, Math.min(maxY, y));
     y = Math.round(y);
     const switched = target !== lastWindow;
@@ -638,12 +641,11 @@ function bindLiveCompanion(root) {
       travelTimer = window.setTimeout(function () {
         live.classList.remove("is-traveling");
       }, 600);
-    } else if (!switched) {
-      live.classList.remove("is-traveling");
     }
     if (y === lastY) return;
     lastY = y;
-    live.style.transform = "translate3d(0," + y + "px,0)";
+    live.style.transform = "none";
+    live.style.marginTop = y + "px";
   }
 
   function requestPlace() {
@@ -655,22 +657,33 @@ function bindLiveCompanion(root) {
     });
   }
 
-  window.addEventListener("scroll", requestPlace, { passive: true });
+  window.addEventListener("scroll", requestPlace, { passive: true, capture: true });
   window.addEventListener("resize", requestPlace);
+  root.addEventListener("vulcanus-render", function () {
+    place();
+  });
   root.addEventListener("focusin", function (event) {
     const win = event.target.closest("[data-work-window]");
     if (win) lockedWindow = win;
-    requestPlace();
+    place();
   });
   root.addEventListener("click", function (event) {
     if (event.target.closest("[data-live-panel]")) {
-      requestPlace();
+      place();
       return;
     }
     const win = event.target.closest("[data-work-window]");
     if (win) lockedWindow = win;
-    requestPlace();
+    place();
   });
+  if (typeof IntersectionObserver === "function") {
+    const io = new IntersectionObserver(function () {
+      requestPlace();
+    }, { root: null, rootMargin: "-12% 0px -35% 0px", threshold: [0, 0.2, 0.45, 0.75, 1] });
+    workWindows().forEach(function (win) {
+      io.observe(win);
+    });
+  }
   if (typeof ResizeObserver === "function") {
     const ro = new ResizeObserver(requestPlace);
     ro.observe(track);

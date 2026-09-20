@@ -162,7 +162,7 @@ export function PalletOrderForm({
       onSubmit={submit}
       className="grid items-stretch gap-6 min-[960px]:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] min-[960px]:gap-8"
     >
-      <div className="min-w-0 space-y-6">
+      <div className="min-w-0 space-y-6" data-work-stack>
         {BULK_PRODUCTS.map((item) => {
           const fuel = getFuel(item.fuelId);
           const kg = kgByFuel[item.fuelId];
@@ -321,10 +321,10 @@ export function PalletOrderForm({
         </section>
       </div>
 
-      <div className="live-track min-w-0 max-[959px]:contents min-[960px]:relative">
+      <div className="live-track min-w-0 max-[959px]:contents min-[960px]:relative min-[960px]:self-start">
       <aside
         data-live-panel
-        className="h-fit space-y-4 rounded-2xl bg-card p-6 ring-1 ring-foreground/10 min-[960px]:absolute min-[960px]:inset-x-0 min-[960px]:top-0 min-[960px]:p-8"
+        className="relative z-[2] h-fit space-y-4 rounded-2xl bg-card p-6 ring-1 ring-foreground/10 min-[960px]:p-8"
       >
         <h2 className="font-heading text-2xl">Súhrn objednávky</h2>
         {quote.lines.length === 0 ? (
