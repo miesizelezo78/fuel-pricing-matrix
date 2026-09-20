@@ -18,10 +18,11 @@ Paletový cenník v JSON je na sadzby a zákaz 250 kg koksu. **Nie** na Woo koš
 
 ## Čo má Grok urobiť
 
+0. Prečítaj `UX-MAPA.md` a `GROK.md` v koreni. Kým klient nepovie „kreslite“, **nič na stagingu neprepisuj**.
 1. Nezačínaj nový projekt. Otvor **už existujúci** staging webu.
-2. Solo vrecia (25 kg / 20 kg) daj do e-shopového košíka podľa JSON/CSV. Jedna zásielka = 3 vrecia uhlia/antracitu alebo 4 vrecia koksu, lebo ďalšie kuriérom by vyšli draho — nie že auto neunesie viac.
-3. Od 100 kg **nie je** produkt košíka. Je to tovar na objednávku (záväzná objednávka, SuperFaktúra). Na detaile sola dlaždica/tlačidlo „Od 100 kg na objednávku“. Paletové SKU do košíka nevytváraj.
-4. Cudzí tovar a tému nemaž. Najprv súpis, potom drafty, screenshoty, stop. Live až po „publikuj“.
+2. Vrecia s doručením (25 kg / 20 kg) ostávajú v e-shopovom košíku. Jedna zásielka = 3 vrecia uhlia/antracitu alebo 4 vrecia koksu. Woo SKU nemente.
+3. Od 100 kg **nie je** produkt košíka. V obchode (`?rodina=kovacske-paliva`) tri G3 karty v dizajne `vd-card` s odkazom na `/objednavka-paleta/?palivo=…`. Paletové SKU do košíka nevytváraj.
+4. `/paliva/` a `/palivo/…` po schválení redirectni preč. Cudzí tovar a tému nemaž.
 5. Keď treba login, zastav sa: *Prihláste sa, prosím. Potom napíšte „som vnútri“.*
 
 ## Čo Cursor bude robiť nabudúce

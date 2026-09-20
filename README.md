@@ -8,7 +8,7 @@ Vetva: **main**
 git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
 ```
 
-Ostré podstránky pre existujúci web sú v **`bulk-paleta/`** (plugin 2.2.6): Palivá, Paleta, Ako to predávame. Na WordPresse idú **do hlavičky a pätičky nového staging webu**. Nie Woo. Solo Woo produkty **nemeniť**.
+Ostré podstránky pre existujúci web sú v **`bulk-paleta/`** (plugin 2.2.6). **Najprv mapa ciest:** [`UX-MAPA.md`](UX-MAPA.md) a zmluva [`GROK.md`](GROK.md). Sprievodca je `/kovacske-paliva/`, nákup je Woo filter Kováčske palivá, paleta je konfigurátor v G3 chrome. `/paliva/` nie je ostrý obchod. Woo vrecia s doručením **nemeniť**. Názov v UI: **vrecia s doručením**, nie solo.
 
 Inštalácia a smoke test: [`HOTOVO.md`](HOTOVO.md).
 
@@ -31,12 +31,12 @@ Potom vymeň `vulcanus-shop-demo/bulk-paleta/` súbormi z `bulk-paleta/` (pozri 
 
 ## E-shopový náhľad (Next.js)
 
-- **Solo vrecia** — e-shopový košík, kuriér SDS, doprava v cene.
+- **Vrecia s doručením** — e-shopový košík, kuriér SDS, doprava v cene.
 - **Od 100 kg** — záväzná paletová objednávka (nie košík), cenník podľa kíl, doklad do SuperFaktúry.
 
 ## Čo je v katalógu
 
-| Tovar | Vrece | Solo (1 zásielka SDS) | Paleta 110 × 120 cm |
+| Tovar | Vrece | S doručením (1 zásielka SDS) | Paleta 110 × 120 cm |
 | --- | --- | --- | --- |
 | Kováčske uhlie | 25 kg | max. 3 vrecia | 40 vriec = 1 000 kg |
 | Kováčsky antracit | 25 kg | max. 3 vrecia | 40 vriec = 1 000 kg |
@@ -66,7 +66,7 @@ Objednávka sola je lokálny košík. Paletová objednávka ide na `/objednavka-
 
 ## WooCommerce
 
-Woo košík je **len pre solo vrecia**. Paleta od 100 kg do Woo nepatrí.
+Woo košík je **len pre vrecia s doručením**. Paleta od 100 kg do Woo nepatrí.
 
 1. Jedna kategória / dopravná trieda: kuriér SDS, 0 €, doprava v cene vreca.
 2. Solo = simple product, max. 3–4 ks.
@@ -77,4 +77,4 @@ Viac na stránke **Ako to predávame**.
 
 ## Grok Bot (existujúci web)
 
-Tento Next náhľad **nie je** ostrý web. Ostrý / staging stavia Grok Bot. Tu je logika palív a PHP drop-in. Mechanický postup: [`HOTOVO.md`](HOTOVO.md).
+Tento Next náhľad **nie je** ostrý web. Mapa ciest: [`UX-MAPA.md`](UX-MAPA.md). Ostrý / staging stavia Grok Bot. Mechanický postup: [`HOTOVO.md`](HOTOVO.md). Kým klient nepovie „kreslite“, staging sa neprepisuje.

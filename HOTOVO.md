@@ -2,7 +2,11 @@
 
 Vetva: **`main`** · plugin **2.2.6**
 
-Grok ťahá sám. **Najprv si prečítaj `GROK.md` a odpíš, kde plugin/téma leží a do ktorej stránky to ide.** Nekopíruj slepo cez `/paliva/`, kým to Grok nepovie — ostrá Palivá na stagingu je `/kovacske-paliva/` v Bricks.
+**STOP.** Klient chce najprv mapu ciest, potom diskusiu, až potom kreslenie. Predtým, než niečo vymeníš v plugine alebo v Bricks, prečítaj [`GROK.md`](GROK.md) a [`UX-MAPA.md`](UX-MAPA.md).
+
+Ostrá Palivá na stagingu **nie je** `/paliva/`. Sprievodca je [`/kovacske-paliva/`](https://staging.vulcanus.sk/kovacske-paliva/). Nákup je [`/?ukazka=obchod&rodina=kovacske-paliva`](https://staging.vulcanus.sk/?ukazka=obchod&rodina=kovacske-paliva). `/paliva/` je ostrov s vlastnou lištou — po schválení mapy redirect na obchod, nie druhý shop.
+
+Grok ťahá sám. **Odpíš, kde plugin/téma leží**, kým niečo kopíruješ. Nekopíruj slepo cez `/paliva/`.
 
 Toto **nie sú Woo produkty**. Plugin pri aktivácii založí tri **WordPress podstránky**. Na WordPresse idú **do hlavičky a pätičky nového staging webu** (`get_header` / `get_footer`). Identity je iCloud / Bricks, nie starý vulcanus.sk.
 
@@ -37,28 +41,31 @@ bulk-paleta/templates/hotovo.php
 
 1. wp-admin → Plugins → deaktivuj a znova aktivuj **VULCANUS Bulk Paleta** (alebo nahraj 2.2.6 a daj Activate).
 2. Settings → Permalinks → Save.
-3. Pages: musia tam byť **Palivá**, **Paleta**, **Ako to predávame** (a dieťa Palety: Objednávka odoslaná). Ak Grok predtým spravil Woo produkt / polovičný formulár na tých istých slugoch, podstránky plugin preberie — **Woo z nich nerob**.
-4. Solo Woo SKU (25 kg / 20 kg vrecia) **nemente, nemažte, neimportujte paletové SKU**.
+3. Pages: po schválení mapy ostáva **Paleta** (`/objednavka-paleta/`) a dieťa Objednávka odoslaná. **Palivá** (`/paliva/`) a **Ako to predávame** sa nahradia redirectom — Woo z nich nerob.
+4. Woo SKU vrecí s doručením (25 kg / 20 kg) **nemente, nemažte, neimportujte paletové SKU**.
 
-## Podstránky (nie Woo)
+## Podstránky po schválení mapy
+
+Pozri [`UX-MAPA.md`](UX-MAPA.md). Kým klient nepovie „kreslite“, toto neinštaluj ako ostrý obchod.
 
 | Podstránka | URL | Čo je na nej |
 | --- | --- | --- |
-| Palivá | `/paliva/` | Hero + 3 solo dlaždice + 3 dlaždice od 100 kg |
-| Paleta | `/objednavka-paleta/` | Celý konfigurátor: palivo, kg, rebrík, meter, živý box, SuperFaktúra |
-| Ako to predávame | `/ako-to-predavame/` | Kde sa predaj láme |
+| Sprievodca (Grok / Bricks) | `/kovacske-paliva/` | Video, tri charaktery ohňa |
+| Obchod (Grok / Woo) | `/?ukazka=obchod&rodina=kovacske-paliva` | 3 vrecia s doručením + 3 karty od 100 kg |
+| Paleta (plugin, G3 chrome) | `/objednavka-paleta/` | Konfigurátor: palivo, kg, rebrík, SuperFaktúra |
 
-Navigácia **Palivá · Paleta · Ako to predávame** má ísť do **existujúceho** menu webu. Téma / e-shopová hlavička ostáva.
+Navigácia ostáva G3: E-shop / Corten / Kontakt. Druhú lištu Palivá · Paleta · Ako **nekresli**.
 
-## 30 s smoke test
+## 30 s smoke test (až po „kreslite“)
 
-1. `/paliva/` — **tá istá hlavička a pätička ako na novom stagingu**. Dole tri solo + tri „od 100 kg“. Klik „Kováčske uhlie od 100 kg“ ide na Paletu, **nie** do košíka.
-2. `/objednavka-paleta/` — celý konfigurátor, nie útržok formulára v téme Woo.
-3. Klik **Antracit** → **250 kg**. Tovar **260,00 €**, €/kg **1,04 €**, doprava **55,00 €**, spolu **315,00 €**.
-4. Klik **Koks** → **200 kg** (250 kg tam nie je). Tovar **230,00 €**, doprava **39,00 €**.
-5. `/ako-to-predavame/` — text „Kde sa predaj láme“. Paleta jednorazová, nevratná a v cene tovaru. Bez slova Europaleta.
-6. Na Palete: 750 kg uhlia (koks 800 kg). Mix 100 kg uhlia + 100 kg antracitu = **1 paleta 80 × 120 cm**, nie dve.
-7. Solo Woo (25 kg vrecia) ostávajú ako boli.
+1. `/kovacske-paliva/` — sprievodca, G3 hlavička. Nie šesť nákupných dlaždíc.
+2. `/?ukazka=obchod&rodina=kovacske-paliva` — tri Woo karty + tri karty od 100 kg v tom istom `vd-card`. Klik od 100 kg ide na Paletu s `?palivo=`.
+3. `/objednavka-paleta/` — konfigurátor v G3 hlavičke a pätičke, nie Figtree ostrov.
+4. Klik **Antracit** → **250 kg**. Tovar **260,00 €**, €/kg **1,04 €**, doprava **55,00 €**, spolu **315,00 €**.
+5. Klik **Koks** → **200 kg** (250 kg tam nie je). Tovar **230,00 €**, doprava **39,00 €**.
+6. Mix 100 kg uhlia + 100 kg antracitu = **1 paleta 80 × 120 cm**, nie dve.
+7. Woo vrecia s doručením ostávajú ako boli.
+8. `/paliva/` redirectuje na obchod.
 
 ```bash
 php -S 127.0.0.1:8765 bulk-paleta/standalone.php

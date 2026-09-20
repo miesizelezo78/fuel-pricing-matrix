@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button";
 import { usePricedCart } from "@/components/cart-provider";
 
 const links = [
-  { href: "/paliva", label: "Palivá" },
+  { href: "/ux-mapa", label: "Mapa ciest" },
+  { href: "/paliva", label: "Starý náhľad" },
   { href: "/objednavka-paleta", label: "Paleta" },
-  { href: "/ako-to-predavame", label: "Ako to predávame" },
 ];
 
 export function SiteHeader() {
@@ -21,7 +21,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-foreground/10 bg-[color-mix(in_oklch,var(--background)_88%,white)] backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:h-[4.25rem] sm:px-6">
-        <Link href="/" className="flex items-baseline gap-2 tracking-tight">
+        <Link href="/ux-mapa" className="flex items-baseline gap-2 tracking-tight">
           <span className="font-heading text-xl text-foreground sm:text-2xl">
             Kováčske palivá
           </span>
@@ -32,11 +32,13 @@ export function SiteHeader() {
         <nav className="flex items-center gap-1 sm:gap-2">
           {links.map((link) => {
             const active =
-              link.href === "/paliva"
-                ? pathname === "/paliva" ||
-                  pathname === "/" ||
-                  (pathname.startsWith("/palivo") && !pathname.includes("objednavka"))
-                : pathname === link.href || pathname.startsWith(`${link.href}/`);
+              link.href === "/ux-mapa"
+                ? pathname === "/ux-mapa" || pathname === "/"
+                : link.href === "/paliva"
+                  ? pathname === "/paliva" ||
+                    (pathname.startsWith("/palivo") &&
+                      !pathname.includes("objednavka"))
+                  : pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
               <Link
                 key={link.href}
