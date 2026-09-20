@@ -130,7 +130,7 @@
     font-weight: 560;
   }
   aside.is-traveling {
-    transition: transform 0.95s cubic-bezier(0.33, 0, 0.12, 1);
+    transition: none;
   }
   @media (prefers-reduced-motion: reduce) {
     aside.is-traveling {

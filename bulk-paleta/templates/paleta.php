@@ -127,7 +127,8 @@ ob_start();
     </div>
 
     <div class="live-track">
-    <aside class="card live" data-live-panel aria-live="polite">
+    <aside class="card live">
+    <div class="live-body" data-live-panel aria-live="polite">
       <h2>Súhrn objednávky</h2>
       <p class="muted" data-live-empty>Pridajte aspoň jedno palivo od 100 kg. Každá karta ostáva zvlášť, tu pribudnú položky.</p>
       <ul class="live-lines" data-live-lines></ul>
@@ -169,6 +170,7 @@ ob_start();
         ·
         <a href="<?php echo vulcanus_e(vulcanus_fuels_shop_url()); ?>">Vrecia s doručením</a>
       </p>
+    </div>
     </aside>
     </div>
   </form>

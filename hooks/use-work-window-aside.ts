@@ -8,14 +8,23 @@ export function useWorkWindowAside(rootRef: RefObject<HTMLElement | null>) {
     if (!root) return;
     const live =
       root.querySelector<HTMLElement>("[data-live-panel]") ||
-      root.querySelector<HTMLElement>("aside");
+      root.querySelector<HTMLElement>(".live-body");
     const track = live?.closest<HTMLElement>(".live-track");
     if (!live || !track) return;
 
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const TAU_MOVE = 0.82;
+    const TAU_FOLLOW = 0.18;
+    const MOVE_START = 56;
+
     let lastWindow: HTMLElement | null = null;
-    let lastY = -1;
-    let travelTimer = 0;
+    let currentY = 0;
+    let targetY = 0;
+    let lastTs = 0;
+    let raf = 0;
+    let cruising = true;
     let ticking = false;
+    let snapped = false;
 
     function splitLayout() {
       const grid = root.querySelector("form") || root;
@@ -83,8 +92,8 @@ export function useWorkWindowAside(rootRef: RefObject<HTMLElement | null>) {
         const lastRect = lastWindow.getBoundingClientRect();
         const lastMid = (lastRect.top + lastRect.bottom) / 2;
         const lastDist = Math.abs(lastMid - viewMid);
-        const lastGone = lastOverlap < lastRect.height * 0.28;
-        if (!lastGone && lastDist <= bestDist + 70) return lastWindow;
+        const lastGone = lastOverlap < lastRect.height * 0.18;
+        if (!lastGone && lastDist <= bestDist + 140) return lastWindow;
       }
       return best;
     }
@@ -99,14 +108,63 @@ export function useWorkWindowAside(rootRef: RefObject<HTMLElement | null>) {
       return top + (rect.height - liveH) / 2;
     }
 
-    function place(fromTravel?: boolean) {
+    function applyY() {
+      live.style.marginTop = "0px";
+      live.style.transform = `translate3d(0,${currentY}px,0)`;
+    }
+
+    function stopLoop() {
+      if (raf) {
+        window.cancelAnimationFrame(raf);
+        raf = 0;
+      }
+      lastTs = 0;
+    }
+
+    function loop(ts: number) {
+      raf = 0;
+      if (!splitLayout()) return;
+      if (!lastTs) lastTs = ts;
+      const dt = Math.min(0.05, (ts - lastTs) / 1000);
+      lastTs = ts;
+      const dist = targetY - currentY;
+      const abs = Math.abs(dist);
+      if (reduceMotion.matches || abs < 0.35) {
+        currentY = targetY;
+        applyY();
+        cruising = true;
+        lastTs = 0;
+        return;
+      }
+      if (abs > MOVE_START) cruising = false;
+      const tau = cruising ? TAU_FOLLOW : TAU_MOVE;
+      currentY += dist * (1 - Math.exp(-dt / tau));
+      applyY();
+      raf = window.requestAnimationFrame(loop);
+    }
+
+    function kick() {
+      if (!raf) {
+        lastTs = 0;
+        raf = window.requestAnimationFrame(loop);
+      }
+    }
+
+    function resetFlow() {
+      stopLoop();
+      live.style.marginTop = "";
+      live.style.transform = "";
+      track.style.minHeight = "";
+      lastWindow = null;
+      currentY = 0;
+      targetY = 0;
+      cruising = true;
+      snapped = false;
+    }
+
+    function place() {
       if (!splitLayout()) {
-        live.classList.remove("is-traveling");
-        live.style.marginTop = "";
-        live.style.transform = "none";
-        track.style.minHeight = "";
-        lastY = -1;
-        lastWindow = null;
+        resetFlow();
         return;
       }
       syncTrackHeight();
@@ -123,20 +181,18 @@ export function useWorkWindowAside(rootRef: RefObject<HTMLElement | null>) {
         y = viewBottom - liveH - trackRect.top;
       }
       y = Math.max(0, Math.min(maxY, y));
-      y = Math.round(y);
-      const switched = target !== lastWindow;
       lastWindow = target;
-      if (switched && fromTravel !== false) {
-        live.classList.add("is-traveling");
-        window.clearTimeout(travelTimer);
-        travelTimer = window.setTimeout(() => {
-          live.classList.remove("is-traveling");
-        }, 1000);
+      if (!snapped || reduceMotion.matches) {
+        currentY = y;
+        targetY = y;
+        snapped = true;
+        cruising = true;
+        applyY();
+        return;
       }
-      if (y === lastY) return;
-      lastY = y;
-      live.style.marginTop = "0px";
-      live.style.transform = `translate3d(0,${y}px,0)`;
+      if (Math.abs(y - targetY) < 0.4 && Math.abs(currentY - y) < 0.4) return;
+      targetY = y;
+      kick();
     }
 
     function requestPlace() {
@@ -148,22 +204,10 @@ export function useWorkWindowAside(rootRef: RefObject<HTMLElement | null>) {
       });
     }
 
-    function onFocus() {
-      place();
-    }
-
-    function onClick(event: MouseEvent) {
-      if ((event.target as HTMLElement).closest("[data-live-panel]")) {
-        place();
-        return;
-      }
-      place();
-    }
-
     window.addEventListener("scroll", requestPlace, { passive: true, capture: true });
     window.addEventListener("resize", requestPlace);
-    root.addEventListener("focusin", onFocus);
-    root.addEventListener("click", onClick);
+    root.addEventListener("focusin", requestPlace);
+    root.addEventListener("click", requestPlace);
     const io =
       typeof IntersectionObserver === "function"
         ? new IntersectionObserver(requestPlace, {
@@ -177,17 +221,18 @@ export function useWorkWindowAside(rootRef: RefObject<HTMLElement | null>) {
     const stack = root.querySelector("[data-work-stack]");
     if (stack) ro?.observe(stack);
     ro?.observe(live);
+    ro?.observe(track);
     workWindows().forEach((win) => ro?.observe(win));
-    place(false);
+    place();
 
     return () => {
       window.removeEventListener("scroll", requestPlace, true);
       window.removeEventListener("resize", requestPlace);
-      root.removeEventListener("focusin", onFocus);
-      root.removeEventListener("click", onClick);
+      root.removeEventListener("focusin", requestPlace);
+      root.removeEventListener("click", requestPlace);
       io?.disconnect();
       ro?.disconnect();
-      window.clearTimeout(travelTimer);
+      stopLoop();
     };
   }, [rootRef]);
 }

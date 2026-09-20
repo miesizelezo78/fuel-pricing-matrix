@@ -1,5 +1,5 @@
-# Grok — 2.3.6 zip
+# Grok — 2.3.7 zip
 
-Pravý stĺpec dlhý ako štyri dlaždice. Súhrn: hore k hornej hrane, v strede na stred, dole k dolnej. Pomalý dojazd.
+Rámik súhrnu od hora po dol dlaždíc. Hýbe sa len obsah, pomaly s pribrzdením. V súhrne bez duplicitného „100 kg“.
 
-https://fighting-desirable-demands-classics.trycloudflare.com/vulcanus-bulk-paleta-2.3.6.zip
+https://fighting-desirable-demands-classics.trycloudflare.com/vulcanus-bulk-paleta-2.3.7.zip

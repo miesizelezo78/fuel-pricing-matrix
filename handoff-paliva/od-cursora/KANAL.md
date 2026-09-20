@@ -16,4 +16,4 @@ bulk-paleta/
 
 Ďalší bump: **jedna URL** v `HOTOVO.md` a v reply. Overiť HTTP 200 pred odoslaním.
 
-Ďalší drop: **2.3.6** — jeden HTTPS zip. Pravý stĺpec ako štyri dlaždice; súhrn hore / stred / dole.
+Ďalší drop: **2.3.7** — jeden HTTPS zip. Rámik od hora po dol; hýbe sa len obsah, s pribrzdením. Bez duplicitného kg v súhrne.

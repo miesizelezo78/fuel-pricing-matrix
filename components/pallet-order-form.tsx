@@ -15,7 +15,7 @@ import {
   getFuel,
   getProduct,
 } from "@/lib/catalog";
-import { formatBagCount, formatKg, formatMoney, formatPerKg } from "@/lib/format";
+import { formatKg, formatMoney, formatPerKg } from "@/lib/format";
 import { quoteBulkLines } from "@/lib/pricing";
 import { VAT_RATE } from "@/lib/catalog";
 import {
@@ -322,9 +322,10 @@ export function PalletOrderForm({
       </div>
 
       <div className="live-track min-w-0 max-[959px]:contents min-[960px]:relative min-[960px]:self-stretch">
-      <aside
+      <aside className="live z-[2] min-[960px]:h-full min-[960px]:min-h-full min-[960px]:overflow-hidden rounded-2xl bg-card ring-1 ring-foreground/10">
+      <div
         data-live-panel
-        className="z-[2] h-fit space-y-4 rounded-2xl bg-card p-6 ring-1 ring-foreground/10 min-[960px]:absolute min-[960px]:inset-x-0 min-[960px]:top-0 min-[960px]:p-8"
+        className="live-body space-y-4 p-6 min-[960px]:absolute min-[960px]:inset-x-0 min-[960px]:top-0 min-[960px]:p-8"
       >
         <h2 className="font-heading text-2xl">Súhrn objednávky</h2>
         {quote.lines.length === 0 ? (
@@ -344,8 +345,8 @@ export function PalletOrderForm({
                   <span className="tabular-nums">{formatMoney(line.goods)}</span>
                 </div>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  {formatKg(line.kg)} · {formatBagCount(line.bags)} ·{" "}
-                  {formatPerKg(line.pricePerKg)} · {line.tier.label}
+                  {formatKg(line.kg)} · {line.bags} × {line.fuel.bagKg} kg ·{" "}
+                  {formatPerKg(line.pricePerKg)}
                 </p>
                 {line.savings > 0 ? (
                   <p className="mt-1 text-xs font-semibold text-primary">
@@ -451,6 +452,7 @@ export function PalletOrderForm({
             Dva režimy predaja
           </Link>
         </p>
+      </div>
       </aside>
       </div>
     </form>
