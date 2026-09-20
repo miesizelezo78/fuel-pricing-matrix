@@ -1,6 +1,6 @@
 # Ako funguje Grok Bot
 
-Písané 20. 9. 2026. Slovenčina. Žiadna ruština.
+Písané 20. 9. 2026. Len slovenčina, len latinka.
 
 Toto je súpis **Grok Bota** v projekte VULCANUS palivá — ako ho táto Cursor relácia pozná, čo má robiť, čo vlastní, a prečo z tohto chatu nič nedostane, kým to nemá vo **svojom** zadaní alebo vo **svojom** gite.
 

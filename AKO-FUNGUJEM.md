@@ -1,6 +1,6 @@
 # Ako fungujem — táto relácia (Cursor Cloud Agent)
 
-Písané 20. 9. 2026. Slovenčina. Žiadna ruština.
+Písané 20. 9. 2026. Len slovenčina, len latinka.
 
 Toto nie je marketing. Toto je, čo táto relácia **naozaj** je, čo vidí, čo nepíše Grok Botovi do chatu, a kde leží tvoja práca, keď ju berieš preč.
 
@@ -67,7 +67,7 @@ Existuje persistent store tejto relácie:
 
 `/cursor/stores/self` → `bc-6ebc62a8-d566-44f8-bd31-c9cfd047779e`
 
-Do neho som **neukladal** dohodu o spoločnom GitHube ani zákaz ruštiny ako trvalú pamäť. Ďalšia relácia to teda nemusí vedieť, kým to nie je v súbore v gite.
+Do neho som **neukladal** dohodu o spoločnom GitHube ani jazykový zákaz ako trvalú pamäť. Ďalšia relácia to teda nemusí vedieť, kým to nie je v súbore v gite.
 
 ### 4.3 Čo si nepamätám
 
@@ -85,7 +85,7 @@ Do neho som **neukladal** dohodu o spoločnom GitHube ani zákaz ruštiny ako tr
 - UI slovensky. Konfigurátor šírka ako e-shop (1400 px), nie širší.
 - Súhrn: svetlý rámik od hora prvej dlaždice po dol poslednej; hýbe sa len obsah, pomaly s pribrzdením.
 - V súhrne bez duplicitného „100 kg“: `100 kg · 4 × 25 kg · 0,89 €/kg`.
-- Ruština v tejto relácii zakázaná (tvoj príkaz 20. 9. večer).
+- V tejto relácii len slovenčina a latinka (tvoj príkaz 20. 9. večer).
 
 ---
 
@@ -154,7 +154,7 @@ Alebo z koreňa Next (`npm run dev`). Ostré nasadenie: vymeniť `bulk-paleta/` 
 
 1. Povedal som, že Grok to vie, keď **ty** skopíruješ URL. Ty si od začiatku chcel **spojenie medzi nami**, nie kuriéra.
 2. Množil som priečinky a zipy namiesto jedného kanála, ktorý Grok naozaj počúva.
-3. Napísal som ruštinu, keď si to nechcel ako jazyk tejto relácie.
+3. Napísal som iným písmom a jazykom, keď si to v tejto relácii nechcel.
 4. Tváril som sa, že drop v tomto gite = správa pre Groka.
 
 Z tejto VM **stále** neviem stlačiť „pošli“ v Grok Botovom chate. To je limit nástroja, nie tvoja povinnosť to nosiť. Ak má byť tandem, kanál musí byť niečo, čo **obaja** máme zapísané natrvalo (prihlásený GitHub, Disk, alebo Grokov standing `git pull` na URL, ktorú má **on** v zadaní, nie ty v schránke).
