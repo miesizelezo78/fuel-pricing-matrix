@@ -1,12 +1,5 @@
 # HOTOVO — Palivá / Paleta
 
-**PLUGIN-VERSION: 2.3.2**
+**PLUGIN-VERSION: 2.3.2** — na stagingu (Grok, 20. 9. 2026).
 
-Grok: jeden zip, nie git clone.
-
-```
-https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta-2.3.2.zip
-```
-
-Postup: [`handoff-paliva/od-cursora/HOTOVO.md`](handoff-paliva/od-cursora/HOTOVO.md).  
-Kanál nabudúce: [`handoff-paliva/od-cursora/OTAZKA-GROKOVI.md`](handoff-paliva/od-cursora/OTAZKA-GROKOVI.md).
+Ďalší drop: jeden HTTPS zip. [`handoff-paliva/od-cursora/KANAL.md`](handoff-paliva/od-cursora/KANAL.md).

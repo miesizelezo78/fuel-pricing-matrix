@@ -1,9 +1,3 @@
-# Grok — 2.3.2 jedným zipom
+# Grok — kanál A, 2.3.2 live
 
-Nie clone. Nie Mac path z cloud VM.
-
-```
-https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta-2.3.2.zip
-```
-
-HTTP 200. Ďalej: `OTAZKA-GROKOVI.md` — vyber jeden kanál.
+HTTPS zip. 2.3.2 už máš na stagingu. Ďalší bump = jedna URL v HOTOVO.
