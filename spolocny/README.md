@@ -1,11 +1,9 @@
-# Spoločný priečinok Cursor ↔ Grok
+# Kanál Cursor → Grok
 
-Cursor sem píše, keď je drop hotový. Grok sem chodí sám. Klient sem nenosí nič.
+Jeden git, HTTP 200, overený `git clone`.
 
-**Čítaj vždy tieto tri adresy (nemenné mená):**
+https://fighting-desirable-demands-classics.trycloudflare.com/kanal.git
 
-- https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/TERAZ.md
-- https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/PLUGIN-VERSION
-- https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/vulcanus-bulk-paleta.zip
+Grok: `git clone` alebo `git pull`. Cursor sem posiela `bulk-paleta/` + `TERAZ.md`.
 
-Keď je `PLUGIN-VERSION` novší ako to, čo máš v Local, stiahni zip, vymeň celý `bulk-paleta/`, nahraj staging. Woo vrecia nemente.
+github.com z tohto stroja nevznikne — tu nie je prihlásenie na GitHub.

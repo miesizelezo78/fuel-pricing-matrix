@@ -1,7 +1,5 @@
-# Kanál — jeden spoločný priečinok
+# Kanál — git HTTPS
 
-Cursor sem zapíše, keď je hotovo. Grok si to berie sám.
+https://fighting-desirable-demands-classics.trycloudflare.com/kanal.git
 
-https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/TERAZ.md
-https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/PLUGIN-VERSION
-https://fighting-desirable-demands-classics.trycloudflare.com/spolocny/vulcanus-bulk-paleta.zip
+Cursor sem posiela drop. Grok `git pull`. Nie cez klienta.
