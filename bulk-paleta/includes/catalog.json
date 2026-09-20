@@ -24,7 +24,7 @@
       "palletBags": 40,
       "soloMaxBags": 3,
       "soloPrice": 28.9,
-      "presetsKg": [100, 250, 500, 1000],
+      "presetsKg": [100, 250, 500, 750, 1000],
       "color": "#2a2723",
       "speck": "#4a453c",
       "stitch": "#d4c4a8",
@@ -33,7 +33,7 @@
         { "minKg": 100, "pricePerKg": 0.89, "label": "100 kg" },
         { "minKg": 250, "pricePerKg": 0.82, "label": "250 kg" },
         { "minKg": 500, "pricePerKg": 0.75, "label": "500 kg" },
-        { "minKg": 1000, "pricePerKg": 0.68, "label": "1 t / paleta" }
+        { "minKg": 1000, "pricePerKg": 0.68, "label": "1 000 kg" }
       ]
     },
     "antracit": {
@@ -45,7 +45,7 @@
       "palletBags": 40,
       "soloMaxBags": 3,
       "soloPrice": 34.9,
-      "presetsKg": [100, 250, 500, 1000],
+      "presetsKg": [100, 250, 500, 750, 1000],
       "color": "#141820",
       "speck": "#3a4658",
       "stitch": "#c5d0d8",
@@ -54,7 +54,7 @@
         { "minKg": 100, "pricePerKg": 1.12, "label": "100 kg" },
         { "minKg": 250, "pricePerKg": 1.04, "label": "250 kg" },
         { "minKg": 500, "pricePerKg": 0.96, "label": "500 kg" },
-        { "minKg": 1000, "pricePerKg": 0.88, "label": "1 t / paleta" }
+        { "minKg": 1000, "pricePerKg": 0.88, "label": "1 000 kg" }
       ]
     },
     "koks": {
@@ -66,7 +66,7 @@
       "palletBags": 50,
       "soloMaxBags": 4,
       "soloPrice": 32.9,
-      "presetsKg": [100, 200, 500, 1000],
+      "presetsKg": [100, 200, 500, 800, 1000],
       "color": "#6a6358",
       "speck": "#9a9184",
       "stitch": "#eadcc4",
@@ -75,7 +75,7 @@
         { "minKg": 100, "pricePerKg": 1.25, "label": "100 kg" },
         { "minKg": 200, "pricePerKg": 1.15, "label": "200 kg" },
         { "minKg": 500, "pricePerKg": 1.05, "label": "500 kg" },
-        { "minKg": 1000, "pricePerKg": 0.95, "label": "1 t / paleta" }
+        { "minKg": 1000, "pricePerKg": 0.95, "label": "1 000 kg" }
       ]
     }
   },
@@ -123,7 +123,7 @@
       "fuelId": "antracit",
       "name": "Kováčsky antracit od 100 kg",
       "eyebrow": "Na objednávku · 25 kg vrecia",
-      "lead": "Tovar na objednávku, nie do košíka. Od 100 kg (4 vrecia). Plná paleta je 40 vriec, teda 1 000 kg."
+      "lead": "Tovar na objednávku, nie do košíka. Od 100 kg (4 vrecia). Čím viac kíl, tým nižšia cena za kilogram."
     },
     {
       "id": "koks-bulk",
@@ -132,7 +132,7 @@
       "fuelId": "koks",
       "name": "Kováčsky koks od 100 kg",
       "eyebrow": "Na objednávku · 20 kg vrecia",
-      "lead": "Tovar na objednávku, nie do košíka. Od 100 kg (5 vriec). Plná paleta je 50 vriec, teda 1 000 kg."
+      "lead": "Tovar na objednávku, nie do košíka. Od 100 kg (5 vriec). Čím viac kíl, tým nižšia cena za kilogram."
     }
   ],
   "freightPerPalletEur": [

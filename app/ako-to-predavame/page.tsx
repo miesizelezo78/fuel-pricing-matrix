@@ -54,9 +54,11 @@ export default function HowItWorksPage() {
           <li>Kováčsky koks — 20 kg</li>
         </ul>
         <p className="leading-relaxed text-muted-foreground">
-          100 kg a 200 kg idú na europaletu 80 × 120 cm. Väčšie množstvá na
-          paletu 110 × 120 cm — sem ide 40 vriec uhlia alebo antracitu, alebo
-          50 vriec koksu, teda jedna tona. Niekedy príde aj 110 × 110 cm.
+          100 kg a 200 kg idú na paletu 80 × 120 cm. Väčšie množstvá na paletu
+          110 × 120 cm — sem ide 40 vriec uhlia alebo antracitu, alebo 50 vriec
+          koksu, teda jedna tona. Niekedy príde aj 110 × 110 cm. Paleta je
+          jednorazová, nevratná a v cene tovaru — nič za ňu nedoplácate. Dve
+          stovky rôznych palív idú spolu na jednej palete 80 × 120 cm.
         </p>
       </section>
 
@@ -81,11 +83,11 @@ export default function HowItWorksPage() {
         <p className="leading-relaxed text-muted-foreground">
           V katalógu ostane e-shopová dlaždica „Kováčske uhlie od 100 kg“.
           Nie je to produkt. Klik ide rovno na objednávkovú podstránku s
-          konfigurátorom. Cenník ostáva: 100 kg, sadzba z kíl daného paliva.
-          Plus a mínus idú po jednom vreci. Uhlie, antracit a koks viete
-          skombinovať — každé má vlastnú kartu, v súhrne sú položky. 100 kg
-          antracitu + 100 kg koksu nie je 200 kg sadzba. Tlačidlo je „k
-          objednávke“.
+          konfigurátorom. Cenník ostáva: 100 / 250 / 500 / 750 / 1 000 kg
+          (koks 200 namiesto 250 a 800 namiesto 750). Plus a mínus idú po
+          jednom vreci. Uhlie, antracit a koks viete skombinovať — každé má
+          vlastnú kartu, v súhrne sú položky. 100 kg antracitu + 100 kg koksu
+          nie je 200 kg sadzba. Tlačidlo je „k objednávke“.
         </p>
         <p className="leading-relaxed text-muted-foreground">
           Formulár berie údaje, ktoré SuperFaktúra potrebuje na doklad (meno /
@@ -125,9 +127,10 @@ export default function HowItWorksPage() {
             <strong className="text-foreground">
               Od 100 kg = tovar na objednávku, nie produkt Woo.
             </strong>{" "}
-            Cenník 100 / 250 / 500 / 1 000 kg (koks 200 namiesto 250) ostáva
-            v konfigurátore. Doklad ide do SuperFaktúry. Woo košík na palety
-            nepoužívame práve kvôli odstúpeniu a drahému neprevzatiu.
+            Cenník 100 / 250 / 500 / 750 / 1 000 kg (koks 200 namiesto 250 a
+            800 namiesto 750) ostáva v konfigurátore. Doklad ide do
+            SuperFaktúry. Woo košík na palety nepoužívame práve kvôli
+            odstúpeniu a drahému neprevzatiu.
           </li>
           <li>
             <strong className="text-foreground">

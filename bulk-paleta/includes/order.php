@@ -125,7 +125,7 @@ function vulcanus_bulk_push_superfaktura($email, $api_key, $payload) {
         $net = vulcanus_bulk_round($line['pricePerKg'] / (1 + $vat / 100));
         $items[] = array(
             'name' => $line['fuelName'],
-            'description' => $line['bags'] . ' × ' . $line['bagKg'] . ' kg · ' . ($line['packing']['invoiceLabel'] ?? 'paleta') . ' · ' . $line['tierLabel'],
+            'description' => $line['bags'] . ' × ' . $line['bagKg'] . ' kg · ' . $line['tierLabel'],
             'quantity' => $line['kg'],
             'unit' => 'kg',
             'unit_price' => $net,
@@ -138,7 +138,7 @@ function vulcanus_bulk_push_superfaktura($email, $api_key, $payload) {
             'type' => 'order',
             'order_no' => $payload['orderId'],
             'invoice_currency' => 'EUR',
-            'header_comment' => 'Záväzná paletová objednávka, nie e-shopový košík. Každé palivo má vlastnú sadzbu z vlastných kíl. ' . $fulfillment_label,
+            'header_comment' => 'Záväzná paletová objednávka, nie e-shopový košík. Každé palivo má vlastnú sadzbu z vlastných kíl. ' . (!empty($quote['shipment']['note']) ? $quote['shipment']['note'] . ' ' : '') . $fulfillment_label,
         ),
         'InvoiceItem' => $items,
         'Client' => array(

@@ -9,6 +9,7 @@ import {
   getProductById,
   packingFor,
   palletKg,
+  shipmentPacking,
 } from "@/lib/catalog";
 import { formatBagCount, roundMoney } from "@/lib/format";
 
@@ -161,6 +162,9 @@ export function quoteBulkLines(
     freight,
     total: roundMoney(goods + freight),
     fulfillment,
+    shipment: shipmentPacking(
+      priced.map((line) => ({ kg: line.kg, shortName: line.fuel.shortName })),
+    ),
   };
 }
 

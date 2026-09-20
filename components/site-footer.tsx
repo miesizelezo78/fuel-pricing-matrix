@@ -28,7 +28,8 @@ export function SiteFooter() {
           </p>
           <p className="mt-2">SDS kuriér — solo vrecia, doprava v cene</p>
           <p className="text-background/70">
-            Europaleta 80 × 120 — 100 a 200 kg. Tona na 110 × 120 cm (niekedy 110 × 110).
+            100 a 200 kg na palete 80 × 120 cm. Tona na 110 × 120 cm, niekedy
+            110 × 110. Paleta je jednorazová, nevratná a v cene tovaru.
           </p>
         </div>
       </div>

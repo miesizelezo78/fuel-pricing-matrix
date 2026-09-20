@@ -8,7 +8,7 @@ Vetva: **main**
 git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
 ```
 
-Ostré podstránky pre existujúci web sú v **`bulk-paleta/`** (plugin 2.2.1): Palivá, Paleta, Ako to predávame. Plugin ich pri aktivácii založí ako WordPress Pages a kreslí celú stránku z náhľadu. Nie Woo. Solo Woo produkty **nemeniť**. Od 100 kg je záväzná objednávka mimo košíka, so **živým prepočtom** pri každom kliknutí. Plus/mínus ide po vreci. Mix palív sú položky v súhrne, sadzby sa nesčítavajú. 100–200 kg ide na europaletu, väčšie množstvá na 110 × 120 cm.
+Ostré podstránky pre existujúci web sú v **`bulk-paleta/`** (plugin 2.2.2): Palivá, Paleta, Ako to predávame. Plugin ich pri aktivácii založí ako WordPress Pages a kreslí celú stránku z náhľadu. Nie Woo. Solo Woo produkty **nemeniť**. Od 100 kg je záväzná objednávka mimo košíka, so **živým prepočtom** pri každom kliknutí. Plus/mínus ide po vreci. Mix palív sú položky v súhrne, sadzby sa nesčítavajú. 100–200 kg ide na paletu 80 × 120 cm, väčšie množstvá na 110 × 120 cm. Paleta je jednorazová, nevratná a v cene tovaru.
 
 Inštalácia a smoke test: [`HOTOVO.md`](HOTOVO.md).
 
@@ -44,7 +44,7 @@ Potom vymeň `vulcanus-shop-demo/bulk-paleta/` súbormi z `bulk-paleta/` (pozri 
 
 - Solo ceny už obsahujú balné a doručenie. Jedna zásielka má 3 vrecia uhlia/antracitu alebo 4 vrecia koksu — nie že kuriér viac neunesie, ale že ďalšie vrecia by kuriérom vyšli draho. Dobierka je zvlášť.
 - Od 100 kg je to záväzná objednávka, nie košík. Cena/kg klesá na 100 / 250 (uhlie, antracit) resp. 200 (koks) / 500 / 1 000 kg.
-- Paletovú dopravu naceníte podľa adresy, alebo osobný odber. Do SuperFaktúry ide najprv tovar.
+- Paletovú dopravu naceníte podľa adresy, alebo osobný odber. Do SuperFaktúry ide najprv tovar. Paleta je jednorazová, nevratná a v cene tovaru.
 
 Ceny upravíte v [`lib/catalog.ts`](lib/catalog.ts). Sú označené ako vzorové.
 

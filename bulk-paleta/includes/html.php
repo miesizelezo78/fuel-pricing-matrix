@@ -59,7 +59,7 @@ function vulcanus_render_document($page, $title, $content) {
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
     echo '<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">';
-    echo '<link rel="stylesheet" href="' . vulcanus_e(vulcanus_asset('site.css')) . '?ver=2.2.1">';
+    echo '<link rel="stylesheet" href="' . vulcanus_e(vulcanus_asset('site.css')) . '?ver=2.2.2">';
     echo '</head><body class="vulcanus-site">';
     echo '<header class="vulcanus-header"><div class="vulcanus-wrap vulcanus-header-inner">';
     echo '<a class="vulcanus-brand" href="' . vulcanus_e(vulcanus_url('paliva')) . '">';
@@ -78,9 +78,9 @@ function vulcanus_render_document($page, $title, $content) {
     echo '<div><p class="eyebrow light">Objednávky</p><p><a href="' . vulcanus_e(vulcanus_url('objednavka-paleta')) . '">Paletová objednávka</a></p>';
     echo '<p class="muted">Tieto tri podstránky nie sú Woo. Solo vrecia v e-shope sa nemenia.</p></div>';
     echo '<div><p class="eyebrow light">Doručenie</p><p>SDS kuriér — solo vrecia, doprava v cene</p>';
-    echo '<p class="muted">Europaleta 80 × 120 — 100 a 200 kg. Tona na 110 × 120 cm, niekedy 110 × 110.</p></div>';
+    echo '<p class="muted">100 a 200 kg na palete 80 × 120 cm. Tona na 110 × 120 cm, niekedy 110 × 110. Paleta je jednorazová, nevratná a v cene tovaru.</p></div>';
     echo '</div><p class="vulcanus-copy">Dobierka nie je v cene tovaru. <a href="' . vulcanus_e(vulcanus_url('ako-to-predavame')) . '">Ako je katalóg poskladaný</a></p>';
     echo '</footer>';
-    echo '<script src="' . vulcanus_e(vulcanus_asset('configurator.js')) . '?ver=2.2.1"></script>';
+    echo '<script src="' . vulcanus_e(vulcanus_asset('configurator.js')) . '?ver=2.2.2"></script>';
     echo '</body></html>';
 }

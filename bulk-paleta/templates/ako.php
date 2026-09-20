@@ -42,7 +42,7 @@ ob_start();
       <li>Kováčsky antracit — 25 kg</li>
       <li>Kováčsky koks — 20 kg</li>
     </ul>
-    <p class="muted">100 kg a 200 kg idú na europaletu 80 × 120 cm. Väčšie množstvá na paletu 110 × 120 cm — sem ide 40 vriec uhlia alebo antracitu, alebo 50 vriec koksu, teda jedna tona. Niekedy príde aj 110 × 110 cm.</p>
+    <p class="muted">100 kg a 200 kg idú na paletu 80 × 120 cm. Väčšie množstvá na paletu 110 × 120 cm — sem ide 40 vriec uhlia alebo antracitu, alebo 50 vriec koksu, teda jedna tona. Niekedy príde aj 110 × 110 cm. Paleta je jednorazová, nevratná a v cene tovaru — nič za ňu nedoplácate. Dve stovky rôznych palív idú spolu na jednej palete 80 × 120 cm.</p>
   </section>
 
   <section>
@@ -53,7 +53,7 @@ ob_start();
 
   <section>
     <h2>Od 100 kg: záväzná objednávka</h2>
-    <p class="muted">V katalógu ostane e-shopová dlaždica „Kováčske uhlie od 100 kg“. Nie je to produkt. Klik ide rovno na podstránku Paleta s konfigurátorom. Cenník ostáva: 100 kg, sadzba z kíl daného paliva. Plus a mínus idú po jednom vreci. Uhlie, antracit a koks viete skombinovať — každé má vlastnú kartu, v súhrne sú položky. 100 kg antracitu + 100 kg koksu nie je 200 kg sadzba. Tlačidlo je „k objednávke“.</p>
+    <p class="muted">V katalógu ostane e-shopová dlaždica „Kováčske uhlie od 100 kg“. Nie je to produkt. Klik ide rovno na podstránku Paleta s konfigurátorom. Cenník ostáva: 100 / 250 / 500 / 750 / 1 000 kg (koks 200 namiesto 250 a 800 namiesto 750). Plus a mínus idú po jednom vreci. Uhlie, antracit a koks viete skombinovať — každé má vlastnú kartu, v súhrne sú položky. 100 kg antracitu + 100 kg koksu nie je 200 kg sadzba. Tlačidlo je „k objednávke“.</p>
     <p class="muted">Formulár berie údaje, ktoré SuperFaktúra potrebuje na doklad. Zákazník zvolí osobný odber alebo paletovú prepravu. Dopravu naceníte až podľa miesta — do prvého dokladu ide tovar.</p>
   </section>
 
@@ -63,7 +63,7 @@ ob_start();
     <ol>
       <li><strong>Dve plochy, nie dve Woo položky.</strong> Solo dlaždice ostávajú v e-shope. Dlaždice „od 100 kg“ idú na podstránku Paleta.</li>
       <li><strong>Solo = simple product.</strong> Max 3 / 4 kusy. Doprava v cene. V detaile vreca musí byť dlaždica na objednávku od 100 kg.</li>
-      <li><strong>Od 100 kg = podstránka, nie produkt Woo.</strong> Cenník 100 / 250 / 500 / 1 000 kg (koks 200 namiesto 250) žije v konfigurátore. Doklad ide do SuperFaktúry.</li>
+      <li><strong>Od 100 kg = podstránka, nie produkt Woo.</strong> Cenník 100 / 250 / 500 / 750 / 1 000 kg (koks 200 namiesto 250 a 800 namiesto 750) žije v konfigurátore. Doklad ide do SuperFaktúry.</li>
       <li><strong>Nerobte simple product „100 kg“.</strong> Zákazník dá do košíka 10 kusov a Woo spočíta 10 × cenu stovky.</li>
     </ol>
   </section>

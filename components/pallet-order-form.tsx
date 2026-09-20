@@ -305,7 +305,7 @@ export function PalletOrderForm({
                 </div>
                 <p className="mt-0.5 text-xs text-muted-foreground">
                   {formatKg(line.kg)} · {formatBagCount(line.bags)} ·{" "}
-                  {line.packing.title} · {formatPerKg(line.pricePerKg)} · {line.tier.label}
+                  {formatPerKg(line.pricePerKg)} · {line.tier.label}
                 </p>
                 {line.savings > 0 ? (
                   <p className="mt-1 text-xs font-semibold text-primary">
@@ -316,6 +316,13 @@ export function PalletOrderForm({
             ))}
           </ul>
         )}
+        {quote.lines.length > 0 && quote.shipment?.note ? (
+          <p className="rounded-lg bg-muted/50 p-3 text-xs leading-relaxed text-muted-foreground">
+            <span className="font-medium text-foreground">{quote.shipment.title}</span>
+            {" · "}
+            {quote.shipment.note}
+          </p>
+        ) : null}
         <dl className="space-y-2 text-sm">
           <div className="flex justify-between gap-3 border-b border-foreground/10 py-1.5">
             <dt className="text-muted-foreground">Tovar s DPH</dt>

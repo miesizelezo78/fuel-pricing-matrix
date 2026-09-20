@@ -66,15 +66,15 @@ function vulcanus_bulk_packing($fuel, $kg) {
         $cap = vulcanus_bulk_euro_bags($fuel);
         return array(
             'kind' => 'euro',
-            'title' => 'Europaleta ' . $euro['widthCm'] . ' × ' . $euro['depthCm'] . ' cm',
+            'title' => 'Paleta ' . $euro['widthCm'] . ' × ' . $euro['depthCm'] . ' cm',
             'fraction' => $bags . ' / ' . $cap,
             'fill' => $cap > 0 ? min(1, $bags / $cap) : 0,
             'bags' => $bags,
             'capBags' => $cap,
             'extraPallets' => 0,
-            'note' => '100 kg a 200 kg idú na europaletu. Väčšie množstvo na paletu ' . $big['widthCm'] . ' × ' . $big['depthCm'] . ' cm, niekedy ' . $big['altWidthCm'] . ' × ' . $big['altDepthCm'] . ' cm.',
-            'ladderLabel' => 'Europaleta · ' . $bags . ' / ' . $cap,
-            'invoiceLabel' => 'europaleta ' . $euro['widthCm'] . ' × ' . $euro['depthCm'] . ' cm',
+            'note' => '100 kg a 200 kg idú na paletu ' . $euro['widthCm'] . ' × ' . $euro['depthCm'] . ' cm. Väčšie množstvo na paletu ' . $big['widthCm'] . ' × ' . $big['depthCm'] . ' cm, niekedy ' . $big['altWidthCm'] . ' × ' . $big['altDepthCm'] . ' cm. Paleta je jednorazová, nevratná a v cene tovaru.',
+            'ladderLabel' => $euro['widthCm'] . ' × ' . $euro['depthCm'] . ' cm',
+            'invoiceLabel' => 'paleta ' . $euro['widthCm'] . ' × ' . $euro['depthCm'] . ' cm, jednorazová, nevratná, v cene',
         );
     }
     $cap = (int) $fuel['palletBags'];
@@ -90,12 +90,11 @@ function vulcanus_bulk_packing($fuel, $kg) {
             'bags' => $bags,
             'capBags' => $cap,
             'extraPallets' => $extra,
-            'note' => 'Nad jednu tonu ide ďalšia paleta 110 × 120 cm (+' . $extra . '). Niekedy aj ' . $alt . '.',
-            'ladderLabel' => $bags . ' vriec · 110 × 120',
-            'invoiceLabel' => 'paleta ' . $size,
+            'note' => 'Nad jednu tonu ide ďalšia paleta 110 × 120 cm (+' . $extra . '). Niekedy aj ' . $alt . '. Palety sú jednorazové, nevratné a v cene tovaru.',
+            'ladderLabel' => '110 × 120 cm',
+            'invoiceLabel' => 'paleta ' . $size . ', jednorazová, nevratná, v cene',
         );
     }
-    $full = $bags >= $cap && $cap > 0;
     return array(
         'kind' => 'industrial',
         'title' => 'Paleta ' . $size,
@@ -104,15 +103,50 @@ function vulcanus_bulk_packing($fuel, $kg) {
         'bags' => $bags,
         'capBags' => $cap,
         'extraPallets' => 0,
-        'note' => 'Väčšie množstvá idú na paletu ' . $size . '. Niekedy aj ' . $alt . '. Jedna tona = ' . $cap . ' × ' . $bag . ' kg.',
-        'ladderLabel' => $full ? ('Plná paleta · ' . $bags . ' / ' . $cap) : ($bags . ' / ' . $cap . ' · 110 × 120'),
-        'invoiceLabel' => 'paleta ' . $size,
+        'note' => 'Väčšie množstvá idú na paletu ' . $size . '. Niekedy aj ' . $alt . '. Jedna tona = ' . $cap . ' × ' . $bag . ' kg. Paleta je jednorazová, nevratná a v cene tovaru.',
+        'ladderLabel' => $size,
+        'invoiceLabel' => 'paleta ' . $size . ', jednorazová, nevratná, v cene',
     );
 }
 
-function vulcanus_bulk_pallet_fill($fuel, $kg) {
-    $full = vulcanus_bulk_pallet_kg($fuel);
-    return $full > 0 ? ($kg / $full) : 0;
+function vulcanus_bulk_shipment_packing($priced) {
+    $kg = 0;
+    $names = array();
+    foreach ($priced as $line) {
+        $kg += (int) $line['kg'];
+        if (!empty($line['shortName'])) {
+            $names[] = $line['shortName'];
+        }
+    }
+    if ($kg <= 0) {
+        return array('kind' => 'euro', 'count' => 0, 'size' => '80 × 120 cm', 'title' => '', 'note' => '');
+    }
+    if ($kg <= 200) {
+        $size = '80 × 120 cm';
+        $note = count($priced) > 1 && count($names) > 1
+            ? implode(' a ', $names) . ' idú spolu na jednej palete ' . $size . '. Paleta je jednorazová, nevratná a v cene tovaru.'
+            : 'Paleta ' . $size . '. Paleta je jednorazová, nevratná a v cene tovaru.';
+        return array(
+            'kind' => 'euro',
+            'count' => 1,
+            'size' => $size,
+            'title' => '1 paleta ' . $size,
+            'note' => $note,
+        );
+    }
+    $count = max(1, (int) ceil($kg / 1000));
+    $size = '110 × 120 cm';
+    $word = $count === 1 ? 'paleta' : ($count <= 4 ? 'palety' : 'paliet');
+    $disposable = $count === 1 ? 'Paleta je jednorazová, nevratná a v cene tovaru.' : 'Palety sú jednorazové, nevratné a v cene tovaru.';
+    return array(
+        'kind' => 'industrial',
+        'count' => $count,
+        'size' => $size,
+        'title' => $count . ' ' . $word . ' ' . $size,
+        'note' => $count > 1
+            ? $count . ' ' . $word . ' ' . $size . '. ' . $disposable . ' Niekedy aj 110 × 110 cm.'
+            : 'Paleta ' . $size . '. ' . $disposable . ' Niekedy aj 110 × 110 cm.',
+    );
 }
 
 function vulcanus_bulk_money($value) {
@@ -263,6 +297,7 @@ function vulcanus_bulk_quote_order($lines, $fulfillment = 'pallet') {
         'total' => vulcanus_bulk_round($goods + $freight),
         'fulfillment' => $fulfillment,
         'fuelName' => implode(' + ', $names),
+        'shipment' => vulcanus_bulk_shipment_packing($priced),
         'vatIncluded' => true,
     );
 }

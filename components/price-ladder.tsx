@@ -96,8 +96,9 @@ export function PalletMeter({ fuel, kg }: { fuel: Fuel; kg: number }) {
       </div>
       {kg < fuel.bulkMinKg ? (
         <p className="mt-2 text-xs text-muted-foreground">
-          Paletový predaj začína od 100 kg na europalete (
-          {fuel.bulkMinKg / fuel.bagKg} vriec).
+          Paletový predaj začína od 100 kg na palete 80 × 120 cm (
+          {fuel.bulkMinKg / fuel.bagKg} vriec). Paleta je jednorazová, nevratná
+          a v cene tovaru.
         </p>
       ) : (
         <p className="mt-2 text-xs text-muted-foreground">{packing.note}</p>

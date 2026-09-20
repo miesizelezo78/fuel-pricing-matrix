@@ -197,7 +197,7 @@ export function buildSuperfakturaPayload(input: PalletOrderInput) {
     type: "order",
     order_no: orderId,
     invoice_currency: "EUR",
-    header_comment: `Záväzná paletová objednávka, nie e-shopový košík. Každé palivo má vlastnú sadzbu z vlastných kíl. ${fulfillmentLabel}`,
+    header_comment: `Záväzná paletová objednávka, nie e-shopový košík. Každé palivo má vlastnú sadzbu z vlastných kíl. ${quote.shipment?.note ? `${quote.shipment.note} ` : ""}${fulfillmentLabel}`,
     internal_comment: quote.lines
       .map((line) => `${line.fuel.id}=${line.kg}kg/${line.bags}v`)
       .concat(`fulfillment=${input.fulfillment}`)
@@ -211,7 +211,7 @@ export function buildSuperfakturaPayload(input: PalletOrderInput) {
 
   const items = quote.lines.map((line) => ({
     name: line.fuel.name,
-    description: `${line.bags} × ${line.fuel.bagKg} kg vrecia · ${line.packing.invoiceLabel} · ${line.tier.label}`,
+    description: `${line.bags} × ${line.fuel.bagKg} kg vrecia · ${line.tier.label}`,
     quantity: line.kg,
     unit: "kg",
     unit_price: netFromGross(line.pricePerKg),

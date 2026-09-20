@@ -27,7 +27,8 @@ ob_start();
     Rovnaký cenník ako v náhľade, ale tovar nejde do e-shopového košíka.
     Uhlie, antracit a koks viete dať do jednej objednávky — každé palivo
     má vlastnú kartu a vlastnú sadzbu z vlastných kíl. Súčet sa na zľavu
-    nesčíta. Paletovú dopravu naceníme, alebo si tovar vyzdvihnete.
+    nesčíta. Paleta je jednorazová, nevratná a v cene tovaru. Paletovú
+    dopravu naceníme, alebo si tovar vyzdvihnete.
   </p>
 
   <form id="vulcanus-bulk-form" class="grid-2" style="margin-top:1.5rem">

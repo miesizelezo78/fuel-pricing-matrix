@@ -108,6 +108,7 @@
       kg: kg,
       freight: ship,
       total: Math.round((goods + ship) * 100) / 100,
+      shipment: shipmentPacking(lines),
     };
   }
 
@@ -116,15 +117,19 @@
     const euro = catalog.euroPallet || { widthCm: 80, depthCm: 120, maxKg: 200 };
     const big = catalog.industrialPallet || { widthCm: 110, depthCm: 120, altWidthCm: 110, altDepthCm: 110 };
     const bags = kg > 0 ? kg / f.bagKg : 0;
+    const disposable = "Paleta je jednorazová, nevratná a v cene tovaru.";
     if (kg <= euro.maxKg) {
       const cap = euro.maxKg / f.bagKg;
+      const size = euro.widthCm + " × " + euro.depthCm + " cm";
       return {
         kind: "euro",
-        title: "Europaleta " + euro.widthCm + " × " + euro.depthCm + " cm",
+        title: "Paleta " + size,
         fraction: bags + " / " + cap,
         fill: cap > 0 ? Math.min(1, bags / cap) : 0,
         note:
-          "100 kg a 200 kg idú na europaletu. Väčšie množstvo na paletu " +
+          "100 kg a 200 kg idú na paletu " +
+          size +
+          ". Väčšie množstvo na paletu " +
           big.widthCm +
           " × " +
           big.depthCm +
@@ -132,8 +137,9 @@
           big.altWidthCm +
           " × " +
           big.altDepthCm +
-          " cm.",
-        ladderLabel: "Europaleta · " + bags + " / " + cap,
+          " cm. " +
+          disposable,
+        ladderLabel: size,
       };
     }
     const cap = f.palletBags;
@@ -146,11 +152,15 @@
         title: 1 + extra + " palety " + size,
         fraction: bags + " vriec",
         fill: 1,
-        note: "Nad jednu tonu ide ďalšia paleta 110 × 120 cm (+" + extra + "). Niekedy aj " + alt + ".",
-        ladderLabel: bags + " vriec · 110 × 120",
+        note:
+          "Nad jednu tonu ide ďalšia paleta 110 × 120 cm (+" +
+          extra +
+          "). Niekedy aj " +
+          alt +
+          ". Palety sú jednorazové, nevratné a v cene tovaru.",
+        ladderLabel: size,
       };
     }
-    const full = bags >= cap && cap > 0;
     return {
       kind: "industrial",
       title: "Paleta " + size,
@@ -165,8 +175,46 @@
         cap +
         " × " +
         f.bagKg +
-        " kg.",
-      ladderLabel: full ? "Plná paleta · " + bags + " / " + cap : bags + " / " + cap + " · 110 × 120",
+        " kg. " +
+        disposable,
+      ladderLabel: size,
+    };
+  }
+
+  function shipmentPacking(lines) {
+    const kg = lines.reduce(function (sum, line) {
+      return sum + line.kg;
+    }, 0);
+    if (kg <= 0) return { title: "", note: "" };
+    if (kg <= 200) {
+      const size = "80 × 120 cm";
+      const names = lines.map(function (line) {
+        return line.shortName;
+      });
+      return {
+        title: "1 paleta " + size,
+        note:
+          lines.length > 1 && names.length > 1
+            ? names.join(" a ") +
+              " idú spolu na jednej palete " +
+              size +
+              ". Paleta je jednorazová, nevratná a v cene tovaru."
+            : "Paleta " + size + ". Paleta je jednorazová, nevratná a v cene tovaru.",
+      };
+    }
+    const count = Math.max(1, Math.ceil(kg / 1000));
+    const size = "110 × 120 cm";
+    const word = count === 1 ? "paleta" : count <= 4 ? "palety" : "paliet";
+    const disposable =
+      count === 1
+        ? "Paleta je jednorazová, nevratná a v cene tovaru."
+        : "Palety sú jednorazové, nevratné a v cene tovaru.";
+    return {
+      title: count + " " + word + " " + size,
+      note:
+        (count > 1 ? count + " " + word + " " + size + ". " : "Paleta " + size + ". ") +
+        disposable +
+        " Niekedy aj 110 × 110 cm.",
     };
   }
   function renderLadder(card, id, selectedKg) {
@@ -280,7 +328,9 @@
     if (meterNote) {
       if (!included) {
         meterNote.textContent =
-          "Paletový predaj začína od 100 kg na europalete (" + 100 / f.bagKg + " vriec).";
+          "Paletový predaj začína od 100 kg na palete 80 × 120 cm (" +
+          100 / f.bagKg +
+          " vriec). Paleta je jednorazová, nevratná a v cene tovaru.";
       } else {
         meterNote.textContent = packing.note;
       }
@@ -306,8 +356,6 @@
             " × " +
             line.bagKg +
             " kg · " +
-            line.packing.title +
-            " · " +
             money.format(line.pricePerKg) +
             "/kg · " +
             line.tierLabel +
@@ -321,6 +369,14 @@
           );
         })
         .join("");
+      if (order.shipment && order.shipment.note) {
+        list.innerHTML +=
+          '<li class="live-line packing"><p class="muted" style="margin:0;font-size:.8rem"><strong>' +
+          order.shipment.title +
+          "</strong> · " +
+          order.shipment.note +
+          "</p></li>";
+      }
     }
     root.querySelector("[data-live-goods]").textContent = money.format(order.goods);
     root.querySelector("[data-live-freight]").textContent =

@@ -21,7 +21,7 @@ ob_start();
   <dl class="stats">
     <div class="stat"><dt>Vrece uhlia / antracitu</dt><dd>25 kg</dd></div>
     <div class="stat"><dt>Vrece koksu</dt><dd>20 kg</dd></div>
-    <div class="stat"><dt>Europaleta</dt><dd>80 × 120 cm</dd></div>
+    <div class="stat"><dt>100–200 kg</dt><dd>80 × 120 cm</dd></div>
     <div class="stat"><dt>1 tona</dt><dd>110 × 120 cm</dd></div>
   </dl>
 </div>
@@ -63,7 +63,7 @@ ob_start();
 <section class="block">
   <div class="block-head">
     <div>
-      <p class="eyebrow">Europaleta, potom 110 × 120 cm</p>
+      <p class="eyebrow">80 × 120 cm, potom 110 × 120 cm</p>
       <h2>Na objednávku od 100 kg</h2>
     </div>
     <p class="muted" style="max-width:24rem;font-size:.9rem">

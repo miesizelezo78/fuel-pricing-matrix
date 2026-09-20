@@ -28,8 +28,9 @@ export function PalletOrderScreen({
           Klik z dlaždice „od 100 kg“ aj z detailu 25 kg vreca končí tu:
           konfigurátor, údaje pre SuperFaktúru, záväzná objednávka. Uhlie,
           antracit a koks viete dať do jednej objednávky — každé palivo má
-          vlastnú kartu a vlastnú sadzbu. Paletovú dopravu naceníme, alebo
-          si tovar vyzdvihnete.
+          vlastnú kartu a vlastnú sadzbu. Paleta je jednorazová, nevratná a
+          v cene tovaru. Paletovú dopravu naceníme, alebo si tovar
+          vyzdvihnete.
         </p>
       </div>
       <PalletOrderForm initialFuelId={fuelId} initialKg={kg} />
