@@ -59,7 +59,7 @@ function vulcanus_render_document($page, $title, $content) {
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
     echo '<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">';
-    echo '<link rel="stylesheet" href="' . vulcanus_e(vulcanus_asset('site.css')) . '?ver=2.2.2">';
+    echo '<link rel="stylesheet" href="' . vulcanus_e(vulcanus_asset('site.css')) . '?ver=2.2.4">';
     echo '</head><body class="vulcanus-site">';
     echo '<header class="vulcanus-header"><div class="vulcanus-wrap vulcanus-header-inner">';
     echo '<a class="vulcanus-brand" href="' . vulcanus_e(vulcanus_url('paliva')) . '">';
@@ -81,6 +81,37 @@ function vulcanus_render_document($page, $title, $content) {
     echo '<p class="muted">100 a 200 kg na palete 80 × 120 cm. Tona na 110 × 120 cm, niekedy 110 × 110. Paleta je jednorazová, nevratná a v cene tovaru.</p></div>';
     echo '</div><p class="vulcanus-copy">Dobierka nie je v cene tovaru. <a href="' . vulcanus_e(vulcanus_url('ako-to-predavame')) . '">Ako je katalóg poskladaný</a></p>';
     echo '</footer>';
-    echo '<script src="' . vulcanus_e(vulcanus_asset('configurator.js')) . '?ver=2.2.2"></script>';
+    echo '<script src="' . vulcanus_e(vulcanus_asset('configurator.js')) . '?ver=2.2.4"></script>';
     echo '</body></html>';
+}
+
+function vulcanus_bulk_enqueue_assets() {
+    wp_enqueue_style(
+        'vulcanus-bulk-site',
+        vulcanus_asset('site.css'),
+        array(),
+        '2.2.4'
+    );
+    wp_enqueue_script(
+        'vulcanus-bulk-configurator',
+        vulcanus_asset('configurator.js'),
+        array(),
+        '2.2.4',
+        true
+    );
+}
+
+function vulcanus_render_in_theme($page, $title, $content) {
+    if (!function_exists('get_header') || !function_exists('get_footer')) {
+        vulcanus_render_document($page, $title, $content);
+        return;
+    }
+    vulcanus_bulk_enqueue_assets();
+    add_filter('pre_get_document_title', function () use ($title) {
+        $site = wp_strip_all_tags(get_bloginfo('name'));
+        return $site ? $title . ' · ' . $site : $title;
+    }, 99);
+    get_header();
+    echo '<div class="vulcanus-main">' . $content . '</div>';
+    get_footer();
 }

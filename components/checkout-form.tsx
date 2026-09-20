@@ -136,7 +136,7 @@ export function CheckoutForm() {
           error={errors.street}
           onChange={(value) => update("street", value)}
         />
-        <div className="grid gap-4 sm:grid-cols-[1fr_8rem]">
+        <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,9.5rem)]">
           <Field
             label="Mesto"
             value={form.city}
@@ -218,7 +218,7 @@ function Field({
 }) {
   const id = label.toLowerCase().replace(/\s+/g, "-");
   return (
-    <div className="grid gap-1.5">
+    <div className="grid min-w-0 gap-1.5">
       <Label htmlFor={id}>{label}</Label>
       <Input
         id={id}

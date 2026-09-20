@@ -150,7 +150,7 @@ export function PalletOrderForm({
 
   return (
     <form onSubmit={submit} className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
-      <div className="space-y-6">
+      <div className="min-w-0 space-y-6">
         {BULK_PRODUCTS.map((item) => {
           const fuel = getFuel(item.fuelId);
           const kg = kgByFuel[item.fuelId];
@@ -192,7 +192,7 @@ export function PalletOrderForm({
           </p>
         ) : null}
 
-        <section className="space-y-4 rounded-2xl bg-card p-5 ring-1 ring-foreground/10 sm:p-7">
+        <section className="min-w-0 space-y-4 rounded-2xl bg-card p-5 ring-1 ring-foreground/10 sm:p-7">
           <h2 className="font-heading text-2xl">Údaje pre SuperFaktúru</h2>
           <p className="text-sm text-muted-foreground">
             Polia kopírujú klienta na doklade: meno, adresa, IČO, DIČ, IČ DPH,
@@ -258,7 +258,7 @@ export function PalletOrderForm({
             error={fieldErrors.street}
             onChange={(value) => setForm((current) => ({ ...current, street: value }))}
           />
-          <div className="grid gap-4 sm:grid-cols-[1fr_8rem]">
+          <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,9.5rem)]">
             <Field
               label="Mesto"
               value={form.city}
@@ -413,7 +413,7 @@ function Field({
 }) {
   const id = label.toLowerCase().replace(/[^a-záäčďéíľňóôŕšťúýž0-9]+/gi, "-");
   return (
-    <div className="grid gap-1.5">
+    <div className="grid min-w-0 gap-1.5">
       <Label htmlFor={id}>{label}</Label>
       <Input
         id={id}

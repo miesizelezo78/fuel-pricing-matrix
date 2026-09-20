@@ -103,7 +103,7 @@ ob_start();
           <label><input type="radio" name="buyerType" value="company"> Firma / živnosť</label>
         </div>
         <div class="fields">
-          <label>Meno / firma <input name="name" required></label>
+          <label><span data-name-label>Meno a priezvisko</span> <input name="name" required></label>
           <div class="fields-2">
             <label>E-mail <input type="email" name="email" required></label>
             <label>Telefón <input name="phone" required></label>

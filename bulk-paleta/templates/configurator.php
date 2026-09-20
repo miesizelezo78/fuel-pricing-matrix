@@ -61,7 +61,7 @@ $asset_js = htmlspecialchars($asset_js, ENT_QUOTES, 'UTF-8');
             <label><input type="radio" name="buyerType" value="company"> Firma / živnosť</label>
           </div>
           <div class="vulcanus-fields">
-            <label>Meno / firma <input name="name" required></label>
+            <label><span data-name-label>Meno a priezvisko</span> <input name="name" required></label>
             <label>E-mail <input type="email" name="email" required></label>
             <label>Telefón <input name="phone" required></label>
             <div data-company-fields hidden>

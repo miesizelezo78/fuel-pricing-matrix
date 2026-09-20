@@ -2,7 +2,7 @@
 /**
  * Plugin Name: VULCANUS Bulk Paleta
  * Description: Samostatné WordPress podstránky Palivá, Paleta a Ako to predávame. Celý konfigurátor. Nie Woo. Solo produkty nemení.
- * Version: 2.2.2
+ * Version: 2.2.4
  * Author: VULCANUS
  * Text Domain: vulcanus-bulk-paleta
  */
@@ -106,5 +106,9 @@ function vulcanus_bulk_emit($page, $palivo_slug = '') {
     list($title, $file) = $map[$page];
     $nav = $page === 'form' || $page === 'done' ? 'paleta' : ($page === 'palivo' ? 'paliva' : $page);
     $content = include VULCANUS_BULK_DIR . 'templates/' . $file;
-    vulcanus_render_document($nav, $title, $content);
+    if (defined('VULCANUS_BULK_STANDALONE') && VULCANUS_BULK_STANDALONE) {
+        vulcanus_render_document($nav, $title, $content);
+        return;
+    }
+    vulcanus_render_in_theme($nav, $title, $content);
 }

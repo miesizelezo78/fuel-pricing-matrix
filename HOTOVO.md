@@ -1,6 +1,6 @@
 # HOTOVO — Palivá / Paleta / Ako to predávame
 
-Vetva: **`main`** · plugin **2.2.2**
+Vetva: **`main`** · plugin **2.2.4**
 
 Grok ťahá sám. Klient nič nekopíruje. Solo Woo produkty **nemeniť**.
 
@@ -15,7 +15,7 @@ cd vulcanus-bulk-paleta
 
 ## Čo vymeniť v `vulcanus-shop-demo/bulk-paleta/`
 
-Vymeň **celý** priečinok pluginu. Ak tam už je starý shortcode / polovičný formulár, aj tak ho vymeň — 2.2.2 stránku prekreslí celú.
+Vymeň **celý** priečinok pluginu. Ak tam už je starý shortcode / polovičný formulár, aj tak ho vymeň — 2.2.4 stránku prekreslí. Od 2.2.4 plugin na WordPresse **neprepisuje hlavičku ani pätičku** — volá `get_header()` / `get_footer()`.
 
 ```
 bulk-paleta/bulk-paleta.php
@@ -35,7 +35,7 @@ bulk-paleta/templates/palivo.php
 bulk-paleta/templates/hotovo.php
 ```
 
-1. wp-admin → Plugins → deaktivuj a znova aktivuj **VULCANUS Bulk Paleta** (alebo nahraj 2.2.2 a daj Activate).
+1. wp-admin → Plugins → deaktivuj a znova aktivuj **VULCANUS Bulk Paleta** (alebo nahraj 2.2.4 a daj Activate).
 2. Settings → Permalinks → Save.
 3. Pages: musia tam byť **Palivá**, **Paleta**, **Ako to predávame** (a dieťa Palety: Objednávka odoslaná). Ak Grok predtým spravil Woo produkt / polovičný formulár na tých istých slugoch, podstránky plugin preberie — **Woo z nich nerob**.
 4. Solo Woo SKU (25 kg / 20 kg vrecia) **nemente, nemažte, neimportujte paletové SKU**.

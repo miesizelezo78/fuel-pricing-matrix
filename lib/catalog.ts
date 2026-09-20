@@ -256,52 +256,53 @@ export function packingSizeCm(kind: PackingKind) {
 
 export function packingFor(fuel: Fuel, kg: number): Packing {
   const bags = kg > 0 ? kg / fuel.bagKg : 0;
-  if (kg <= EURO_PALLET.maxKg) {
-    const cap = euroPalletBags(fuel);
-    const size = packingSizeCm("euro");
+  const euroCap = euroPalletBags(fuel);
+  const euroSize = packingSizeCm("euro");
+  const bigSize = packingSizeCm("industrial");
+  const alt = `${INDUSTRIAL_PALLET.altWidthCm} × ${INDUSTRIAL_PALLET.altDepthCm} cm`;
+  /** 100 kg stays on 80 × 120 (4/8 or 5/10). From 200 kg the fill is against the 1 t pallet. */
+  if (kg <= fuel.bulkMinKg) {
     return {
       kind: "euro",
-      title: `Paleta ${size}`,
-      fraction: `${bags} / ${cap}`,
-      fill: Math.min(1, bags / cap),
+      title: `Paleta ${euroSize}`,
+      fraction: `${bags} / ${euroCap}`,
+      fill: euroCap > 0 ? Math.min(1, bags / euroCap) : 0,
       bags,
-      capBags: cap,
+      capBags: euroCap,
       extraPallets: 0,
-      note: `100 kg a 200 kg idú na paletu ${size}. Väčšie množstvo na paletu ${packingSizeCm("industrial")}, niekedy ${INDUSTRIAL_PALLET.altWidthCm} × ${INDUSTRIAL_PALLET.altDepthCm} cm. ${PALLET_DISPOSABLE}`,
-      ladderLabel: size,
-      invoiceLabel: `paleta ${size}, jednorazová, nevratná, v cene`,
+      note: `100 kg ide na paletu ${euroSize}. Od 200 kg na paletu ${bigSize}, niekedy ${alt}. ${PALLET_DISPOSABLE}`,
+      ladderLabel: euroSize,
+      invoiceLabel: `paleta ${euroSize}, jednorazová, nevratná, v cene`,
     };
   }
   const cap = fuel.palletBags;
   const extraPallets = bags > 0 ? Math.max(0, Math.ceil(bags / cap) - 1) : 0;
   const fill = cap > 0 ? bags / cap : 0;
-  const size = packingSizeCm("industrial");
-  const alt = `${INDUSTRIAL_PALLET.altWidthCm} × ${INDUSTRIAL_PALLET.altDepthCm} cm`;
   if (extraPallets > 0) {
     return {
       kind: "industrial",
-      title: `${1 + extraPallets} palety ${size}`,
-      fraction: `${bags} vriec`,
+      title: `${1 + extraPallets} palety ${bigSize}`,
+      fraction: `${bags} / ${cap}`,
       fill: 1,
       bags,
       capBags: cap,
       extraPallets,
-      note: `Nad jednu tonu ide ďalšia paleta ${size} (+${extraPallets}). Niekedy aj ${alt}. ${PALLETS_DISPOSABLE}`,
-      ladderLabel: size,
-      invoiceLabel: `paleta ${size}, jednorazová, nevratná, v cene`,
+      note: `Nad jednu tonu ide ďalšia paleta ${bigSize} (+${extraPallets}). Niekedy aj ${alt}. ${PALLETS_DISPOSABLE}`,
+      ladderLabel: bigSize,
+      invoiceLabel: `paleta ${bigSize}, jednorazová, nevratná, v cene`,
     };
   }
   return {
     kind: "industrial",
-    title: `Paleta ${size}`,
-    fraction: bags > 0 ? `${bags} / ${cap}` : `0 / ${cap}`,
+    title: `Paleta ${bigSize}`,
+    fraction: `${bags} / ${cap}`,
     fill: Math.min(1, fill),
     bags,
     capBags: cap,
     extraPallets: 0,
-    note: `Väčšie množstvá idú na paletu ${size}. Niekedy aj ${alt}. Jedna tona = ${cap} × ${fuel.bagKg} kg. ${PALLET_DISPOSABLE}`,
-    ladderLabel: size,
-    invoiceLabel: `paleta ${size}, jednorazová, nevratná, v cene`,
+    note: `Od 200 kg ide tovar na paletu ${bigSize}. Niekedy aj ${alt}. Jedna tona = ${cap} × ${fuel.bagKg} kg. ${PALLET_DISPOSABLE}`,
+    ladderLabel: bigSize,
+    invoiceLabel: `paleta ${bigSize}, jednorazová, nevratná, v cene`,
   };
 }
 
@@ -333,7 +334,8 @@ export function shipmentPacking(
       note: "",
     };
   }
-  if (kg <= EURO_PALLET.maxKg) {
+  const allSmall = active.every((line) => line.kg <= 100);
+  if (kg <= EURO_PALLET.maxKg && allSmall) {
     const size = packingSizeCm("euro");
     const names = active.map((line) => line.shortName).filter(Boolean);
     return {
@@ -350,6 +352,7 @@ export function shipmentPacking(
   const count = Math.max(1, Math.ceil(kg / 1000));
   const size = packingSizeCm("industrial");
   const disposable = count === 1 ? PALLET_DISPOSABLE : PALLETS_DISPOSABLE;
+  const alt = `${INDUSTRIAL_PALLET.altWidthCm} × ${INDUSTRIAL_PALLET.altDepthCm} cm`;
   return {
     kind: "industrial",
     count,
@@ -357,8 +360,8 @@ export function shipmentPacking(
     title: `${count} ${palletWord(count)} ${size}`,
     note:
       count > 1
-        ? `${count} ${palletWord(count)} ${size}. ${disposable} Niekedy aj ${INDUSTRIAL_PALLET.altWidthCm} × ${INDUSTRIAL_PALLET.altDepthCm} cm.`
-        : `Paleta ${size}. ${disposable} Niekedy aj ${INDUSTRIAL_PALLET.altWidthCm} × ${INDUSTRIAL_PALLET.altDepthCm} cm.`,
+        ? `${count} ${palletWord(count)} ${size}. ${disposable} Niekedy aj ${alt}.`
+        : `Paleta ${size}. ${disposable} Niekedy aj ${alt}.`,
   };
 }
 

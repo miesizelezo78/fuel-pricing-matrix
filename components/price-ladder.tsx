@@ -51,6 +51,9 @@ export function PriceLadder({
                 <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
                   {packing.ladderLabel}
                 </span>
+                <span className="block text-xs font-normal tabular-nums text-muted-foreground">
+                  {packing.fraction}
+                </span>
               </TableCell>
               <TableCell>
                 {bags} × {fuel.bagKg} kg
@@ -96,9 +99,8 @@ export function PalletMeter({ fuel, kg }: { fuel: Fuel; kg: number }) {
       </div>
       {kg < fuel.bulkMinKg ? (
         <p className="mt-2 text-xs text-muted-foreground">
-          Paletový predaj začína od 100 kg na palete 80 × 120 cm (
-          {fuel.bulkMinKg / fuel.bagKg} vriec). Paleta je jednorazová, nevratná
-          a v cene tovaru.
+          Paletový predaj začína od 100 kg na palete 80 × 120 cm.
+          Paleta je jednorazová, nevratná a v cene tovaru.
         </p>
       ) : (
         <p className="mt-2 text-xs text-muted-foreground">{packing.note}</p>

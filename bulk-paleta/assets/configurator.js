@@ -126,19 +126,7 @@
         title: "Paleta " + size,
         fraction: bags + " / " + cap,
         fill: cap > 0 ? Math.min(1, bags / cap) : 0,
-        note:
-          "100 kg a 200 kg idú na paletu " +
-          size +
-          ". Väčšie množstvo na paletu " +
-          big.widthCm +
-          " × " +
-          big.depthCm +
-          " cm, niekedy " +
-          big.altWidthCm +
-          " × " +
-          big.altDepthCm +
-          " cm. " +
-          disposable,
+        note: disposable,
         ladderLabel: size,
       };
     }
@@ -150,14 +138,9 @@
       return {
         kind: "industrial",
         title: 1 + extra + " palety " + size,
-        fraction: bags + " vriec",
+        fraction: bags + " / " + cap,
         fill: 1,
-        note:
-          "Nad jednu tonu ide ďalšia paleta 110 × 120 cm (+" +
-          extra +
-          "). Niekedy aj " +
-          alt +
-          ". Palety sú jednorazové, nevratné a v cene tovaru.",
+        note: "Palety sú jednorazové, nevratné a v cene tovaru.",
         ladderLabel: size,
       };
     }
@@ -166,17 +149,7 @@
       title: "Paleta " + size,
       fraction: bags > 0 ? bags + " / " + cap : "0 / " + cap,
       fill: cap > 0 ? Math.min(1, bags / cap) : 0,
-      note:
-        "Väčšie množstvá idú na paletu " +
-        size +
-        ". Niekedy aj " +
-        alt +
-        ". Jedna tona = " +
-        cap +
-        " × " +
-        f.bagKg +
-        " kg. " +
-        disposable,
+      note: disposable + " Niekedy aj " + alt + ".",
       ladderLabel: size,
     };
   }
@@ -196,10 +169,8 @@
         note:
           lines.length > 1 && names.length > 1
             ? names.join(" a ") +
-              " idú spolu na jednej palete " +
-              size +
-              ". Paleta je jednorazová, nevratná a v cene tovaru."
-            : "Paleta " + size + ". Paleta je jednorazová, nevratná a v cene tovaru.",
+              " idú spolu. Paleta je jednorazová, nevratná a v cene tovaru."
+            : "Paleta je jednorazová, nevratná a v cene tovaru.",
       };
     }
     const count = Math.max(1, Math.ceil(kg / 1000));
@@ -211,10 +182,7 @@
         : "Palety sú jednorazové, nevratné a v cene tovaru.";
     return {
       title: count + " " + word + " " + size,
-      note:
-        (count > 1 ? count + " " + word + " " + size + ". " : "Paleta " + size + ". ") +
-        disposable +
-        " Niekedy aj 110 × 110 cm.",
+      note: disposable + " Niekedy aj 110 × 110 cm.",
     };
   }
   function renderLadder(card, id, selectedKg) {
@@ -328,9 +296,7 @@
     if (meterNote) {
       if (!included) {
         meterNote.textContent =
-          "Paletový predaj začína od 100 kg na palete 80 × 120 cm (" +
-          100 / f.bagKg +
-          " vriec). Paleta je jednorazová, nevratná a v cene tovaru.";
+          "Od 100 kg. Paleta je jednorazová, nevratná a v cene tovaru.";
       } else {
         meterNote.textContent = packing.note;
       }
@@ -402,6 +368,11 @@
     if (fulfillmentInput) fulfillmentInput.value = state.fulfillment;
     const company = root.querySelector("[data-company-fields]");
     if (company) company.classList.toggle("hidden", state.buyerType !== "company");
+    const nameLabel = root.querySelector("[data-name-label]");
+    if (nameLabel) {
+      nameLabel.textContent =
+        state.buyerType === "company" ? "Názov firmy" : "Meno a priezvisko";
+    }
   }
 
   root.addEventListener("click", function (event) {
