@@ -125,7 +125,7 @@ function vulcanus_bulk_push_superfaktura($email, $api_key, $payload) {
         $net = vulcanus_bulk_round($line['pricePerKg'] / (1 + $vat / 100));
         $items[] = array(
             'name' => $line['fuelName'],
-            'description' => $line['bags'] . ' × ' . $line['bagKg'] . ' kg · ' . $line['tierLabel'],
+            'description' => $line['bags'] . ' × ' . $line['bagKg'] . ' kg · ' . ($line['packing']['invoiceLabel'] ?? 'paleta') . ' · ' . $line['tierLabel'],
             'quantity' => $line['kg'],
             'unit' => 'kg',
             'unit_price' => $net,

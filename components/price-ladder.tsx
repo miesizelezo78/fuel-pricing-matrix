@@ -1,7 +1,8 @@
 import { cn } from "cn";
 import type { Fuel } from "@/lib/catalog";
-import { formatMoney, formatPerKg, formatPercent } from "@/lib/format";
-import { bulkGoodsPrice, palletFill } from "@/lib/pricing";
+import { packingFor } from "@/lib/catalog";
+import { formatMoney, formatPerKg } from "@/lib/format";
+import { bulkGoodsPrice } from "@/lib/pricing";
 import {
   Table,
   TableBody,
@@ -34,7 +35,7 @@ export function PriceLadder({
           const kg = tier.minKg;
           const bags = kg / fuel.bagKg;
           const priced = bulkGoodsPrice(fuel, kg);
-          const fill = palletFill(fuel, kg);
+          const packing = packingFor(fuel, kg);
           const active =
             selectedKg >= fuel.bulkMinKg &&
             selectedKg >= tier.minKg &&
@@ -48,9 +49,7 @@ export function PriceLadder({
               <TableCell>
                 {tier.label}
                 <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
-                  {fill >= 1
-                    ? "Plná paleta"
-                    : `Paleta ${formatPercent(fill)}`}
+                  {packing.ladderLabel}
                 </span>
               </TableCell>
               <TableCell>
@@ -81,35 +80,27 @@ function nextMin(fuel: Fuel, minKg: number) {
 }
 
 export function PalletMeter({ fuel, kg }: { fuel: Fuel; kg: number }) {
-  const bags = kg / fuel.bagKg;
-  const fill = Math.min(1, palletFill(fuel, kg));
-  const extra = Math.max(0, bags / fuel.palletBags - 1);
+  const packing = packingFor(fuel, Math.max(0, kg));
 
   return (
     <div className="rounded-xl bg-muted/70 p-4">
-      <div className="flex items-center justify-between text-sm">
-        <span>Paleta {fuel.palletBags} vriec · 110 × 120 cm</span>
-        <span className="tabular-nums">{formatPercent(palletFill(fuel, kg))}</span>
+      <div className="flex items-center justify-between gap-3 text-sm">
+        <span>{packing.title}</span>
+        <span className="shrink-0 tabular-nums">{packing.fraction}</span>
       </div>
       <div className="mt-3 h-3 overflow-hidden rounded-full bg-background ring-1 ring-foreground/10">
         <div
           className="h-full rounded-full bg-primary transition-[width]"
-          style={{ width: `${Math.min(100, fill * 100)}%` }}
+          style={{ width: `${Math.min(100, packing.fill * 100)}%` }}
         />
       </div>
       {kg < fuel.bulkMinKg ? (
         <p className="mt-2 text-xs text-muted-foreground">
-          Paletový predaj začína od 100 kg ({fuel.bulkMinKg / fuel.bagKg} vriec).
-        </p>
-      ) : extra > 0 ? (
-        <p className="mt-2 text-xs text-muted-foreground">
-          Nad jednu tonu ide ďalšia paleta (+{Math.ceil(extra)}).
+          Paletový predaj začína od 100 kg na europalete (
+          {fuel.bulkMinKg / fuel.bagKg} vriec).
         </p>
       ) : (
-        <p className="mt-2 text-xs text-muted-foreground">
-          {bags} z {fuel.palletBags} vriec na paletu. Jedna tona ={" "}
-          {fuel.palletBags} × {fuel.bagKg} kg.
-        </p>
+        <p className="mt-2 text-xs text-muted-foreground">{packing.note}</p>
       )}
     </div>
   );

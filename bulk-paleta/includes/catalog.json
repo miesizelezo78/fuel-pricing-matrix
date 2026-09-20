@@ -3,6 +3,17 @@
   "bulkMinKg": 100,
   "bulkMaxKg": 10000,
   "bulkStepKg": "bag",
+  "euroPallet": {
+    "widthCm": 80,
+    "depthCm": 120,
+    "maxKg": 200
+  },
+  "industrialPallet": {
+    "widthCm": 110,
+    "depthCm": 120,
+    "altWidthCm": 110,
+    "altDepthCm": 110
+  },
   "fuels": {
     "uhlie": {
       "id": "uhlie",

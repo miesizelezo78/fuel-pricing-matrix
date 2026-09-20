@@ -71,6 +71,7 @@
       tierLabel: tier.label,
       goods: goods,
       savings: savings,
+      packing: packingFor(id, kg),
     };
   }
 
@@ -110,6 +111,64 @@
     };
   }
 
+  function packingFor(id, kg) {
+    const f = fuelOf(id);
+    const euro = catalog.euroPallet || { widthCm: 80, depthCm: 120, maxKg: 200 };
+    const big = catalog.industrialPallet || { widthCm: 110, depthCm: 120, altWidthCm: 110, altDepthCm: 110 };
+    const bags = kg > 0 ? kg / f.bagKg : 0;
+    if (kg <= euro.maxKg) {
+      const cap = euro.maxKg / f.bagKg;
+      return {
+        kind: "euro",
+        title: "Europaleta " + euro.widthCm + " × " + euro.depthCm + " cm",
+        fraction: bags + " / " + cap,
+        fill: cap > 0 ? Math.min(1, bags / cap) : 0,
+        note:
+          "100 kg a 200 kg idú na europaletu. Väčšie množstvo na paletu " +
+          big.widthCm +
+          " × " +
+          big.depthCm +
+          " cm, niekedy " +
+          big.altWidthCm +
+          " × " +
+          big.altDepthCm +
+          " cm.",
+        ladderLabel: "Europaleta · " + bags + " / " + cap,
+      };
+    }
+    const cap = f.palletBags;
+    const extra = bags > 0 && cap > 0 ? Math.max(0, Math.ceil(bags / cap) - 1) : 0;
+    const size = big.widthCm + " × " + big.depthCm + " cm";
+    const alt = big.altWidthCm + " × " + big.altDepthCm + " cm";
+    if (extra > 0) {
+      return {
+        kind: "industrial",
+        title: 1 + extra + " palety " + size,
+        fraction: bags + " vriec",
+        fill: 1,
+        note: "Nad jednu tonu ide ďalšia paleta 110 × 120 cm (+" + extra + "). Niekedy aj " + alt + ".",
+        ladderLabel: bags + " vriec · 110 × 120",
+      };
+    }
+    const full = bags >= cap && cap > 0;
+    return {
+      kind: "industrial",
+      title: "Paleta " + size,
+      fraction: bags > 0 ? bags + " / " + cap : "0 / " + cap,
+      fill: cap > 0 ? Math.min(1, bags / cap) : 0,
+      note:
+        "Väčšie množstvá idú na paletu " +
+        size +
+        ". Niekedy aj " +
+        alt +
+        ". Jedna tona = " +
+        cap +
+        " × " +
+        f.bagKg +
+        " kg.",
+      ladderLabel: full ? "Plná paleta · " + bags + " / " + cap : bags + " / " + cap + " · 110 × 120",
+    };
+  }
   function renderLadder(card, id, selectedKg) {
     const body = card.querySelector("[data-ladder]");
     if (!body) return;
@@ -120,7 +179,7 @@
         const kg = tier.minKg;
         const bags = kg / f.bagKg;
         const goods = Math.round(kg * tier.pricePerKg * 100) / 100;
-        const fill = kg / (f.bagKg * f.palletBags);
+        const packing = packingFor(id, kg);
         const on =
           selectedKg >= 100 && selectedKg >= tier.minKg && selectedKg < nextMin(id, tier.minKg)
             ? " is-on"
@@ -130,14 +189,13 @@
           perKgSave > 0
             ? '<span class="save">−' + money.format(perKgSave) + "/kg</span>"
             : "";
-        const fillLabel = fill >= 1 ? "Plná paleta" : "Paleta " + Math.round(fill * 100) + " %";
         return (
           "<tr class='" +
           on +
           "'><td>" +
           tier.label +
           '<span class="muted" style="display:block;font-size:.75rem">' +
-          fillLabel +
+          packing.ladderLabel +
           "</span></td><td>" +
           bags +
           " × " +
@@ -211,35 +269,20 @@
             : "");
       }
     }
-    const fill = included ? Math.min(1, q.kg / (q.bagKg * q.palletBags)) : 0;
-    const extra = included ? Math.max(0, q.bags / q.palletBags - 1) : 0;
+    const packing = included ? packingFor(id, q.kg) : packingFor(id, 0);
     const meterFill = card.querySelector("[data-meter-fill]");
-    if (meterFill) meterFill.style.width = Math.min(100, fill * 100) + "%";
+    if (meterFill) meterFill.style.width = Math.min(100, packing.fill * 100) + "%";
     const meterLabel = card.querySelector("[data-meter-label]");
-    if (meterLabel) meterLabel.textContent = "Paleta " + f.palletBags + " vriec · 110 × 120 cm";
+    if (meterLabel) meterLabel.textContent = packing.title;
     const meterPct = card.querySelector("[data-meter-pct]");
-    if (meterPct) {
-      meterPct.textContent = included
-        ? Math.round((q.kg / (q.bagKg * q.palletBags)) * 100) + " %"
-        : "0 %";
-    }
+    if (meterPct) meterPct.textContent = packing.fraction;
     const meterNote = card.querySelector("[data-meter-note]");
     if (meterNote) {
       if (!included) {
         meterNote.textContent =
-          "Paletový predaj začína od 100 kg (" + 100 / f.bagKg + " vriec).";
-      } else if (extra > 0) {
-        meterNote.textContent = "Nad jednu tonu ide ďalšia paleta (+" + Math.ceil(extra) + ").";
+          "Paletový predaj začína od 100 kg na europalete (" + 100 / f.bagKg + " vriec).";
       } else {
-        meterNote.textContent =
-          q.bags +
-          " z " +
-          q.palletBags +
-          " vriec na paletu. Jedna tona = " +
-          q.palletBags +
-          " × " +
-          q.bagKg +
-          " kg.";
+        meterNote.textContent = packing.note;
       }
     }
   }
@@ -263,6 +306,8 @@
             " × " +
             line.bagKg +
             " kg · " +
+            line.packing.title +
+            " · " +
             money.format(line.pricePerKg) +
             "/kg · " +
             line.tierLabel +

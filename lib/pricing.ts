@@ -7,6 +7,7 @@ import {
   getFuel,
   getProduct,
   getProductById,
+  packingFor,
   palletKg,
 } from "@/lib/catalog";
 import { formatBagCount, roundMoney } from "@/lib/format";
@@ -180,6 +181,7 @@ export function quoteBulk(product: CatalogProduct, kgInput: number) {
     pricePerKg: priced.pricePerKg,
     savings: savingsVsFirstTier(fuel, kg),
     palletFill: palletFill(fuel, kg),
+    packing: packingFor(fuel, kg),
   };
 }
 

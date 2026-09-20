@@ -211,7 +211,7 @@ export function buildSuperfakturaPayload(input: PalletOrderInput) {
 
   const items = quote.lines.map((line) => ({
     name: line.fuel.name,
-    description: `${line.bags} × ${line.fuel.bagKg} kg vrecia · paleta 110 × 120 cm · ${line.tier.label}`,
+    description: `${line.bags} × ${line.fuel.bagKg} kg vrecia · ${line.packing.invoiceLabel} · ${line.tier.label}`,
     quantity: line.kg,
     unit: "kg",
     unit_price: netFromGross(line.pricePerKg),

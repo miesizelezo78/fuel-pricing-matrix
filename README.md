@@ -8,7 +8,7 @@ Vetva: **main**
 git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
 ```
 
-Ostré podstránky pre existujúci web sú v **`bulk-paleta/`** (plugin 2.2.0): Palivá, Paleta, Ako to predávame. Plugin ich pri aktivácii založí ako WordPress Pages a kreslí celú stránku z náhľadu. Nie Woo. Solo Woo produkty **nemeniť**. Od 100 kg je záväzná objednávka mimo košíka, so **živým prepočtom** pri každom kliknutí. Plus/mínus ide po vreci. Mix palív sú položky v súhrne, sadzby sa nesčítavajú.
+Ostré podstránky pre existujúci web sú v **`bulk-paleta/`** (plugin 2.2.1): Palivá, Paleta, Ako to predávame. Plugin ich pri aktivácii založí ako WordPress Pages a kreslí celú stránku z náhľadu. Nie Woo. Solo Woo produkty **nemeniť**. Od 100 kg je záväzná objednávka mimo košíka, so **živým prepočtom** pri každom kliknutí. Plus/mínus ide po vreci. Mix palív sú položky v súhrne, sadzby sa nesčítavajú. 100–200 kg ide na europaletu, väčšie množstvá na 110 × 120 cm.
 
 Inštalácia a smoke test: [`HOTOVO.md`](HOTOVO.md).
 

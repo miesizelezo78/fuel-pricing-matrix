@@ -28,7 +28,7 @@ export function SiteFooter() {
           </p>
           <p className="mt-2">SDS kuriér — solo vrecia, doprava v cene</p>
           <p className="text-background/70">
-            Paleta 110 × 120 cm — 40 vriec uhlia / 50 vriec koksu = 1 t
+            Europaleta 80 × 120 — 100 a 200 kg. Tona na 110 × 120 cm (niekedy 110 × 110).
           </p>
         </div>
       </div>

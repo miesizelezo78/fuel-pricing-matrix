@@ -36,7 +36,25 @@ export type CatalogProduct = {
   lead: string;
 };
 
-export const PALLET_CM = { width: 110, depth: 120 } as const;
+/** 100 kg and 200 kg pack on a EUR pallet. */
+export const EURO_PALLET = {
+  widthCm: 80,
+  depthCm: 120,
+  maxKg: 200,
+} as const;
+
+/** Larger lots go on 110 × 120 cm; 110 × 110 cm happens too. */
+export const INDUSTRIAL_PALLET = {
+  widthCm: 110,
+  depthCm: 120,
+  altWidthCm: 110,
+  altDepthCm: 110,
+} as const;
+
+export const PALLET_CM = {
+  width: INDUSTRIAL_PALLET.widthCm,
+  depth: INDUSTRIAL_PALLET.depthCm,
+} as const;
 
 /** Sample COD fee. Payment-method charges are never bundled into product prices. */
 export const COD_FEE_EUR = 2.9;
@@ -202,6 +220,78 @@ export function getProductById(id: string) {
 
 export function palletKg(fuel: Fuel) {
   return fuel.bagKg * fuel.palletBags;
+}
+
+export function euroPalletBags(fuel: Fuel) {
+  return EURO_PALLET.maxKg / fuel.bagKg;
+}
+
+export type PackingKind = "euro" | "industrial";
+
+export type Packing = {
+  kind: PackingKind;
+  title: string;
+  fraction: string;
+  fill: number;
+  bags: number;
+  capBags: number;
+  extraPallets: number;
+  note: string;
+  ladderLabel: string;
+  invoiceLabel: string;
+};
+
+export function packingFor(fuel: Fuel, kg: number): Packing {
+  const bags = kg > 0 ? kg / fuel.bagKg : 0;
+  if (kg <= EURO_PALLET.maxKg) {
+    const cap = euroPalletBags(fuel);
+    return {
+      kind: "euro",
+      title: `Europaleta ${EURO_PALLET.widthCm} × ${EURO_PALLET.depthCm} cm`,
+      fraction: `${bags} / ${cap}`,
+      fill: Math.min(1, bags / cap),
+      bags,
+      capBags: cap,
+      extraPallets: 0,
+      note: `100 kg a 200 kg idú na europaletu. Väčšie množstvo na paletu ${INDUSTRIAL_PALLET.widthCm} × ${INDUSTRIAL_PALLET.depthCm} cm, niekedy ${INDUSTRIAL_PALLET.altWidthCm} × ${INDUSTRIAL_PALLET.altDepthCm} cm.`,
+      ladderLabel: `Europaleta · ${bags} / ${cap}`,
+      invoiceLabel: `europaleta ${EURO_PALLET.widthCm} × ${EURO_PALLET.depthCm} cm`,
+    };
+  }
+  const cap = fuel.palletBags;
+  const extraPallets = bags > 0 ? Math.max(0, Math.ceil(bags / cap) - 1) : 0;
+  const fill = cap > 0 ? bags / cap : 0;
+  const size = `${INDUSTRIAL_PALLET.widthCm} × ${INDUSTRIAL_PALLET.depthCm} cm`;
+  const alt = `${INDUSTRIAL_PALLET.altWidthCm} × ${INDUSTRIAL_PALLET.altDepthCm} cm`;
+  if (extraPallets > 0) {
+    return {
+      kind: "industrial",
+      title: `${1 + extraPallets} palety ${size}`,
+      fraction: `${bags} vriec`,
+      fill: 1,
+      bags,
+      capBags: cap,
+      extraPallets,
+      note: `Nad jednu tonu ide ďalšia paleta 110 × 120 cm (+${extraPallets}). Niekedy aj ${alt}.`,
+      ladderLabel: `${bags} vriec · 110 × 120`,
+      invoiceLabel: `paleta ${size}`,
+    };
+  }
+  const full = bags >= cap && cap > 0;
+  return {
+    kind: "industrial",
+    title: `Paleta ${size}`,
+    fraction: bags > 0 ? `${bags} / ${cap}` : `0 / ${cap}`,
+    fill: Math.min(1, fill),
+    bags,
+    capBags: cap,
+    extraPallets: 0,
+    note: `Väčšie množstvá idú na paletu ${size}. Niekedy aj ${alt}. Jedna tona = ${cap} × ${fuel.bagKg} kg.`,
+    ladderLabel: full
+      ? `Plná paleta · ${bags} / ${cap}`
+      : `${bags} / ${cap} · 110 × 120`,
+    invoiceLabel: `paleta ${size}`,
+  };
 }
 
 export function bagsForKg(bagKg: number, kg: number) {

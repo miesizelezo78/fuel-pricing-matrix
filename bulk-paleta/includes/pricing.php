@@ -48,6 +48,68 @@ function vulcanus_bulk_pallet_kg($fuel) {
     return (int) $fuel['bagKg'] * (int) $fuel['palletBags'];
 }
 
+function vulcanus_bulk_euro_bags($fuel) {
+    $catalog = vulcanus_bulk_catalog();
+    $max = (int) ($catalog['euroPallet']['maxKg'] ?? 200);
+    $bag = (int) $fuel['bagKg'];
+    return $bag > 0 ? (int) ($max / $bag) : 0;
+}
+
+function vulcanus_bulk_packing($fuel, $kg) {
+    $catalog = vulcanus_bulk_catalog();
+    $euro = $catalog['euroPallet'] ?? array('widthCm' => 80, 'depthCm' => 120, 'maxKg' => 200);
+    $big = $catalog['industrialPallet'] ?? array('widthCm' => 110, 'depthCm' => 120, 'altWidthCm' => 110, 'altDepthCm' => 110);
+    $kg = (int) $kg;
+    $bag = (int) $fuel['bagKg'];
+    $bags = $bag > 0 && $kg > 0 ? $kg / $bag : 0;
+    if ($kg <= (int) $euro['maxKg']) {
+        $cap = vulcanus_bulk_euro_bags($fuel);
+        return array(
+            'kind' => 'euro',
+            'title' => 'Europaleta ' . $euro['widthCm'] . ' × ' . $euro['depthCm'] . ' cm',
+            'fraction' => $bags . ' / ' . $cap,
+            'fill' => $cap > 0 ? min(1, $bags / $cap) : 0,
+            'bags' => $bags,
+            'capBags' => $cap,
+            'extraPallets' => 0,
+            'note' => '100 kg a 200 kg idú na europaletu. Väčšie množstvo na paletu ' . $big['widthCm'] . ' × ' . $big['depthCm'] . ' cm, niekedy ' . $big['altWidthCm'] . ' × ' . $big['altDepthCm'] . ' cm.',
+            'ladderLabel' => 'Europaleta · ' . $bags . ' / ' . $cap,
+            'invoiceLabel' => 'europaleta ' . $euro['widthCm'] . ' × ' . $euro['depthCm'] . ' cm',
+        );
+    }
+    $cap = (int) $fuel['palletBags'];
+    $extra = $bags > 0 && $cap > 0 ? max(0, (int) ceil($bags / $cap) - 1) : 0;
+    $size = $big['widthCm'] . ' × ' . $big['depthCm'] . ' cm';
+    $alt = $big['altWidthCm'] . ' × ' . $big['altDepthCm'] . ' cm';
+    if ($extra > 0) {
+        return array(
+            'kind' => 'industrial',
+            'title' => (1 + $extra) . ' palety ' . $size,
+            'fraction' => $bags . ' vriec',
+            'fill' => 1,
+            'bags' => $bags,
+            'capBags' => $cap,
+            'extraPallets' => $extra,
+            'note' => 'Nad jednu tonu ide ďalšia paleta 110 × 120 cm (+' . $extra . '). Niekedy aj ' . $alt . '.',
+            'ladderLabel' => $bags . ' vriec · 110 × 120',
+            'invoiceLabel' => 'paleta ' . $size,
+        );
+    }
+    $full = $bags >= $cap && $cap > 0;
+    return array(
+        'kind' => 'industrial',
+        'title' => 'Paleta ' . $size,
+        'fraction' => $bags > 0 ? $bags . ' / ' . $cap : '0 / ' . $cap,
+        'fill' => $cap > 0 ? min(1, $bags / $cap) : 0,
+        'bags' => $bags,
+        'capBags' => $cap,
+        'extraPallets' => 0,
+        'note' => 'Väčšie množstvá idú na paletu ' . $size . '. Niekedy aj ' . $alt . '. Jedna tona = ' . $cap . ' × ' . $bag . ' kg.',
+        'ladderLabel' => $full ? ('Plná paleta · ' . $bags . ' / ' . $cap) : ($bags . ' / ' . $cap . ' · 110 × 120'),
+        'invoiceLabel' => 'paleta ' . $size,
+    );
+}
+
 function vulcanus_bulk_pallet_fill($fuel, $kg) {
     $full = vulcanus_bulk_pallet_kg($fuel);
     return $full > 0 ? ($kg / $full) : 0;
@@ -234,6 +296,7 @@ function vulcanus_bulk_quote($fuel_id, $kg, $fulfillment = 'pallet') {
         'fulfillment' => $fulfillment,
         'presetsKg' => $fuel['presetsKg'],
         'savings' => vulcanus_bulk_savings($fuel, $kg, $price),
+        'packing' => vulcanus_bulk_packing($fuel, $kg),
         'vatIncluded' => true,
     );
 }

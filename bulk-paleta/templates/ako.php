@@ -42,7 +42,7 @@ ob_start();
       <li>Kováčsky antracit — 25 kg</li>
       <li>Kováčsky koks — 20 kg</li>
     </ul>
-    <p class="muted">Na paletu 110 × 120 cm ide 40 vriec uhlia alebo antracitu, alebo 50 vriec koksu. Obidve cesty dajú jednu tonu.</p>
+    <p class="muted">100 kg a 200 kg idú na europaletu 80 × 120 cm. Väčšie množstvá na paletu 110 × 120 cm — sem ide 40 vriec uhlia alebo antracitu, alebo 50 vriec koksu, teda jedna tona. Niekedy príde aj 110 × 110 cm.</p>
   </section>
 
   <section>

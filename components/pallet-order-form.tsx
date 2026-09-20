@@ -305,7 +305,7 @@ export function PalletOrderForm({
                 </div>
                 <p className="mt-0.5 text-xs text-muted-foreground">
                   {formatKg(line.kg)} · {formatBagCount(line.bags)} ·{" "}
-                  {formatPerKg(line.pricePerKg)} · {line.tier.label}
+                  {line.packing.title} · {formatPerKg(line.pricePerKg)} · {line.tier.label}
                 </p>
                 {line.savings > 0 ? (
                   <p className="mt-1 text-xs font-semibold text-primary">

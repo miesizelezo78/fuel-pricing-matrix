@@ -30,8 +30,8 @@ export function PalivaHome() {
         <dl className="grid grid-cols-2 gap-3 text-sm">
           <Stat label="Vrece uhlia / antracitu" value="25 kg" />
           <Stat label="Vrece koksu" value="20 kg" />
-          <Stat label="Paleta" value="110 × 120 cm" />
-          <Stat label="Plná paleta" value="1 tona" />
+          <Stat label="Europaleta" value="80 × 120 cm" />
+          <Stat label="1 tona" value="110 × 120 cm" />
         </dl>
       </section>
       <CatalogGrid />

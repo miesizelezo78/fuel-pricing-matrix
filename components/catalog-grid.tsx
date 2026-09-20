@@ -101,7 +101,7 @@ export function CatalogGrid() {
         <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-primary">
-              Paleta 110 × 120 cm
+              Europaleta, potom 110 × 120 cm
             </p>
             <h2 className="font-heading mt-1 text-3xl">Na objednávku od 100 kg</h2>
           </div>
