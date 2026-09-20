@@ -2,7 +2,7 @@
 
 Vetva: **`main`** · plugin **2.2.6**
 
-Grok ťahá sám. Klient nič nekopíruje. Solo Woo produkty **nemeniť**.
+Grok ťahá sám. **Najprv si prečítaj `GROK.md` a odpíš, kde plugin/téma leží a do ktorej stránky to ide.** Nekopíruj slepo cez `/paliva/`, kým to Grok nepovie — ostrá Palivá na stagingu je `/kovacske-paliva/` v Bricks.
 
 Toto **nie sú Woo produkty**. Plugin pri aktivácii založí tri **WordPress podstránky**. Na WordPresse idú **do hlavičky a pätičky nového staging webu** (`get_header` / `get_footer`). Identity je iCloud / Bricks, nie starý vulcanus.sk.
 

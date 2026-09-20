@@ -1,13 +1,20 @@
-# GROK.md — jeden zdroj
+# Otázka na Groka — nenechávam si vymýšľať cestu
 
-**Zdroj identity a chrome:** nový staging (Bricks / vulcanus-g3-design) + priečinok **VULCANUS Identity v iCloude**. Nie starý vulcanus.sk. Nie Google Drive. Nie vlastný obal z tohto náhľadu.
+Grok, **nenahadzujem ti nový web a netýkam sa tvojej hlavičky, pätičky, zaoblenia ani farieb.** Staging, ktorý už máš doladený, je zdroj. Cursor drží len logiku palív (kg, rebrík, SuperFaktúra, fyzická osoba vs firma, PSČ).
 
-Repo: `git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git`
+Predtým, než niečo vymeníš v plugine, odpíš sem / do chatu:
 
-1. Vymeň celý `vulcanus-shop-demo/bulk-paleta/` (zoznam v `HOTOVO.md`). Plugin **2.2.6**.
-2. Deaktivuj a znova aktivuj **VULCANUS Bulk Paleta**. Permalinks → Save.
-3. Plugin **sám** založí WordPress podstránky Palivá, Paleta, Ako to predávame. Nie Woo produkty.
-4. **Hlavička, pätička, fonty, zaoblenie, farby = téma na stagingu.** Plugin volá `get_header()` / `get_footer()`. Nekreslí druhý web, nenaťahuje fonty zo starého e-shopu.
-5. Pätička témy: **nemeň celú**. Do existujúceho stĺpca Doručenie doplň jednu vetu: „Paleta je jednorazová, nevratná a v cene tovaru.“
-6. Solo Woo SKU nemente. Paletové Woo SKU / variable „100 kg“ nevytváraj.
-7. Over `/paliva/`, `/objednavka-paleta/`, `/ako-to-predavame/` — **tá istá hlavička a pätička ako zvyšok nového webu**, vnútri konfigurátor. Fyzická osoba = „Meno a priezvisko“. Firma / živnosť = „Názov firmy“ + IČO. PSČ nesmie vytŕčať z dlaždice.
+1. **Kde to máš uložené?** Presná cesta na stagingu (napr. `wp-content/plugins/…`, `vulcanus-shop-demo/bulk-paleta/`, child theme, Bricks template). Nechcem hádzať do zlého priečinka.
+2. **Ktorá stránka je ostrá Palivá?** Na stagingu vidím tvoju Bricks stránku [`/kovacske-paliva/`](https://staging.vulcanus.sk/kovacske-paliva/) — E-shop / Corten / Kontakt, pätička Žilina + Bytča. To nechám. Zároveň `/paliva/` a `/objednavka-paleta/` teraz kreslia **starý plugin vlastný obal** (Figtree, „Kováčske palivá“, pole „Meno / firma“). Mám tie slugy nechať, zmazať, alebo konfigurátor vsunúť **do** `/kovacske-paliva/` / existujúcej Palety?
+3. **Ako to mám odovzdať?** Shortcode do Bricks? Template v téme? Plugin, ktorý volá len `get_header()` / `get_footer()` a **nesmie** kresliť druhú lištu? Napíš postup, ktorý ty používaš.
+4. **Identity** je v iCloude (`VULCANUS Identity`), nie na Google Drive. Ty ju už v Bricks používaš — potvrď. Cursor ju na tomto stroji nemá.
+
+Repo s logikou (nie s chrome):
+
+```
+git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
+```
+
+Plugin v `bulk-paleta/` je **2.2.6**: výpočty, mix palív, zlomky na palete, formulár. **Tému, menu a pätičku nemeň.** Solo Woo SKU nemente.
+
+Keď napíšeš cestu a spôsob, Cursor prispôsobí odovzdávku tomu — nie naopak.
