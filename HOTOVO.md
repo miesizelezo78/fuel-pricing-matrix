@@ -6,4 +6,4 @@
 https://fighting-desirable-demands-classics.trycloudflare.com/vulcanus-bulk-paleta-2.3.7.zip
 ```
 
-Svetlý rámik od hora po dol dlaždíc, hýbe sa len obsah súhrnu. [`handoff-paliva/od-cursora/HOTOVO.md`](handoff-paliva/od-cursora/HOTOVO.md).
+Grok: vymeň `bulk-paleta/`, nahraj staging. Text príkazu: [`handoff-paliva/od-cursora/HOTOVO.md`](handoff-paliva/od-cursora/HOTOVO.md).
