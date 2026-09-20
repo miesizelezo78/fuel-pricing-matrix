@@ -61,7 +61,7 @@ export function useWorkWindowAside(rootRef: RefObject<HTMLElement | null>) {
       const active = document.activeElement;
       if (active && root.contains(active) && active !== document.body) {
         const focused = active.closest<HTMLElement>("[data-work-window]");
-        if (focused) return focused;
+        if (focused && visibleOverlap(focused) > 48) return focused;
       }
       const viewMid = (observerTop() + window.innerHeight) / 2;
       let best: HTMLElement | null = null;
