@@ -1,6 +1,6 @@
 # Mapa ciest — kováčske palivá
 
-**Stav: návrh.** Staging sa nemení, kým to klient neodobrí. Potom to kreslí Grok Bot do existujúceho webu; Cursor drží konfigurátor.
+**Stav: schválené.** Landing homepage sa graficky nemení. Ľavá dlaždica „Kováčske palivá“ ostáva vizuálne ako je a posiela na sprievodcu `/kovacske-paliva/`. Odtiaľ sa cesty rozdelia.
 
 Pozreté naostro 20. 9. 2026:
 
@@ -9,6 +9,26 @@ Pozreté naostro 20. 9. 2026:
 - Woo produkty: [uhlie](https://staging.vulcanus.sk/produkt/kovacske-cierne-uhlie-25-kg), [antracit](https://staging.vulcanus.sk/produkt/kovacsky-antracit-25-kg), [koks](https://staging.vulcanus.sk/produkt/kovacsky-koks-20-kg)
 - [Paletová objednávka](https://staging.vulcanus.sk/objednavka-paleta/) — dnes **iný web** (vlastná hlavička Figtree / Fraunces)
 - [`/paliva/`](https://staging.vulcanus.sk/paliva/) — **tretí katalóg**, ktorý nikto v G3 menu nechce
+
+---
+
+## Od homepage (landing)
+
+Homepage (`/`) sa **nekreslí znova**. Tri veľké dlaždice 01 / 02 / 03, hero, sortiment dole — ostávajú.
+
+Ľavá dlaždica **01 / PRE REMESLO · Kováčske palivá** už ide na `/kovacske-paliva/` (sprievodca). To je správny vstup do tejto cesty. **Nepresmerúvať ju na e-shopový filter** s troma vrecami — tam by človek obišiel video a charaktery ohňa.
+
+Dole na homepage je celý obchod (Pantarol, Owatrol, tri vrecia…). To nie je tá cesta z ľavej dlaždice. Kto chce rovno košík, ide cez E-shop / filter. Kto klikne Kováčske palivá, ide **najprv čítať**, potom sa rozhodne.
+
+Klik na ľavú dlaždicu **nie je** vstup do troch Woo dlaždíc, sprievodcu a 100 kg v jednom gride. To by bolo obídenie videa. Tri vrecia + tri karty od 100 kg + sprievodca dole sú **v obchode**, iné dvere.
+
+```
+Homepage ──ľavá dlaždica Kováčske palivá──► Sprievodca /kovacske-paliva/
+                                              │
+                                              ├── Pozrieť uhlie / antracit / koks → Woo vrece → košík
+                                              ├── Vrecia s doručením → obchod, filter Kováčske palivá
+                                              └── Od 100 kg → konfigurátor (?palivo=)
+```
 
 ---
 
@@ -38,11 +58,11 @@ Sprievodca ──chcem vrece──► Obchod ──Do košíka──► Woo prod
 
 ### 1. „Aké palivo do vyhne?“
 
-Landing → video + tri portréty (Uhlie / Antracit / Koks).  
-Tlačidlo na portréte: **Pozrieť vrece** → príslušný Woo produkt.  
-Dole: **Vrecia s doručením** → obchod s filtrom Kováčske palivá.
+Landing homepage **nekreslí** nové palivové karty. Ľavá dlaždica ostáva sprievodcom.
 
-Landing **nekreslí** druhý rad „od 100 kg“ v tvare e-shopu. Jedna veta stačí: *Od 100 kg to nie je košík — v obchode je záväzná objednávka.* Odkaz ide na obchod, nie rovno do prázdneho konfigurátora, aby videl obe voľby vedľa seba.
+Na **sprievodcovi** `/kovacske-paliva/` sú tri portréty (Uhlie / Antracit / Koks), nie cenník.  
+Tlačidlo na portréte: **Pozrieť vrece** → Woo produkt.  
+Dole: **Vrecia s doručením** → obchod s filtrom Kováčske palivá. Jedna cesta **od 100 kg** na konfigurátor.
 
 ### 2. „Chcem 1–4 vrecia kuriérom.“
 
@@ -52,7 +72,11 @@ Klik z landingu „Pozrieť uhlie“ ide **na ten istý** `/produkt/kovacske-cie
 
 ### 3. „Chcem od 100 kg.“
 
-V obchode, **pod** tými istými troma kartami, tri karty v **tom istom** `vd-card` jazyku:
+V obchode (filter Kováčske palivá) je poradie **nákup hore, čítanie dole**:
+
+1. tri Woo vrecia s doručením  
+2. tri karty od 100 kg (ten istý `vd-card`)  
+3. až potom dlaždica sprievodcu — kto už kupuje, sprievodcu hľadá ako druhú vec  
 
 | Ako vyzerá Woo karta dnes | Ako vyzerá karta od 100 kg |
 | --- | --- |

@@ -77,4 +77,4 @@ Viac na stránke **Ako to predávame**.
 
 ## Grok Bot (existujúci web)
 
-Tento Next náhľad **nie je** ostrý web. Mapa ciest: [`UX-MAPA.md`](UX-MAPA.md). Ostrý / staging stavia Grok Bot. Mechanický postup: [`HOTOVO.md`](HOTOVO.md). Kým klient nepovie „kreslite“, staging sa neprepisuje.
+Tento Next náhľad **nie je** ostrý web. Mapa ciest: [`UX-MAPA.md`](UX-MAPA.md) — **schválená**. Ostrý / staging stavia Grok Bot. Mechanický postup: [`HOTOVO.md`](HOTOVO.md). Homepage `/` sa graficky nemení; ľavá dlaždica ide na sprievodcu `/kovacske-paliva/`.

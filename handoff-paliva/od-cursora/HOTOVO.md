@@ -66,8 +66,8 @@ Obsah existujúcej Bricks stránky `/objednavka-paleta/` plugin **neprepisuje**.
 
 ## Čo urobíš ty (G3), ja to nemám
 
-1. **Hub** `/kovacske-paliva/` nesahej na chrome. Ostáva info + video. CTA: vrecia s doručením → shop filter; od 100 kg môže ísť na shop (kde sú tri karty) alebo rovno na konfigurátor s `?palivo=`.
-2. **Obchod** `?rodina=kovacske-paliva` hneď zapni filter. Shortcode kariet od 100 kg daj do tej istej mriežky ako Woo `vd-card`.
+1. **Hub** `/kovacske-paliva/` nesahej na chrome. Ostáva info + video. CTA: vrecia s doručením → shop filter; od 100 kg na konfigurátor s `?palivo=`. Homepage `/` sa graficky nemení. Ľavá dlaždica **nie je** vstup do Woo mriežky — ide na tento hub, a až tam sa cesty rozdelia.
+2. **Obchod** `?rodina=kovacske-paliva` hneď zapni filter. Poradie: **3 vrecia s doručením → 3 karty od 100 kg → až potom sprievodca dole.** Shortcode `[vulcanus_paleta_karty]` hneď pod Woo karty palív, nie pod sprievodcu. Homepage ľavú dlaždicu Kováčske palivá **nemente** (grafika ani href `/kovacske-paliva/`).
 3. **Pätička** (existujúca, stĺpec Obchod / Nákup), **jedna veta:**  
    *Paleta je jednorazová, nevratná a v cene tovaru.*  
    + odkaz na `/objednavka-paleta/`. Nič iné. Pätičku z náhľadu nezobrazuj.
