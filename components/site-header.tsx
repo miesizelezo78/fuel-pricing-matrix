@@ -19,18 +19,17 @@ export function SiteHeader() {
   const count = ready ? priced.itemCount : 0;
 
   return (
-    <header className="sticky top-0 z-40 bg-[#030303] text-white">
-      <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:min-h-[4.5rem] sm:px-6">
-        <Link href="/" className="flex min-w-0 shrink-0 items-center">
-          <img
-            src="/vulcanus-logo-white.png"
-            alt="VULCANUS"
-            className="h-7 w-auto sm:h-8"
-            width={252}
-            height={28}
-          />
+    <header className="sticky top-0 z-40 border-b border-foreground/10 bg-[color-mix(in_oklch,var(--background)_88%,white)] backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:h-[4.25rem] sm:px-6">
+        <Link href="/" className="flex items-baseline gap-2 tracking-tight">
+          <span className="font-heading text-xl text-foreground sm:text-2xl">
+            Kováčske palivá
+          </span>
+          <span className="hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">
+            Uhlie · koks · antracit
+          </span>
         </Link>
-        <nav className="flex min-w-0 flex-wrap items-center justify-end gap-1 sm:gap-2">
+        <nav className="flex items-center gap-1 sm:gap-2">
           {links.map((link) => {
             const active =
               link.href === "/paliva"
@@ -43,10 +42,10 @@ export function SiteHeader() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "rounded-none px-2.5 py-1.5 text-sm tracking-wide uppercase transition-colors sm:px-3",
+                  "rounded-full px-3 py-1.5 text-sm transition-colors",
                   active
-                    ? "bg-primary text-white"
-                    : "text-white/80 hover:bg-white/10 hover:text-white",
+                    ? "bg-foreground text-background"
+                    : "text-foreground/75 hover:bg-foreground/5 hover:text-foreground",
                 )}
               >
                 {link.label}
@@ -63,14 +62,7 @@ export function SiteHeader() {
                 ? "default"
                 : "outline"
             }
-            className={cn(
-              "ml-1 rounded-none border-white/30",
-              pathname === "/kosik" ||
-                (pathname.startsWith("/objednavka") &&
-                  !pathname.startsWith("/objednavka-paleta"))
-                ? ""
-                : "bg-transparent text-white hover:bg-white/10 hover:text-white",
-            )}
+            className="ml-1"
           >
             <ShoppingBag />
             Košík
