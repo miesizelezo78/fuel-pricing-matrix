@@ -539,7 +539,6 @@ function bindLiveCompanion(root) {
   if (!live || !track) return;
 
   let lastWindow = null;
-  let lockedWindow = null;
   let lastY = -1;
   let travelTimer = 0;
   let ticking = false;
@@ -567,70 +566,89 @@ function bindLiveCompanion(root) {
     return Array.prototype.slice.call(root.querySelectorAll("[data-work-window]"));
   }
 
-  function stillInView(win) {
-    if (!win || !win.isConnected) return false;
+  function syncTrackHeight() {
+    const stack = root.querySelector("[data-work-stack]");
+    if (!splitLayout() || !stack) {
+      track.style.minHeight = "";
+      return;
+    }
+    track.style.minHeight = stack.offsetHeight + "px";
+  }
+
+  function visibleOverlap(win) {
     const rect = win.getBoundingClientRect();
     const top = observerTop();
-    return rect.bottom > top + 48 && rect.top < window.innerHeight - 48;
+    const bottom = window.innerHeight - 16;
+    return Math.max(0, Math.min(rect.bottom, bottom) - Math.max(rect.top, top));
   }
 
   function pickWindow() {
     const wins = workWindows();
     if (!wins.length) return null;
-    if (lockedWindow && stillInView(lockedWindow)) return lockedWindow;
-    lockedWindow = null;
     const active = document.activeElement;
-    if (active && root.contains(active)) {
+    if (active && root.contains(active) && active !== document.body) {
       const focused = active.closest("[data-work-window]");
       if (focused) return focused;
     }
-    const top = observerTop();
-    const line = top + Math.min(160, Math.max(72, (window.innerHeight - top) * 0.22));
-    let containing = null;
-    let best = wins[0];
+    const viewMid = (observerTop() + window.innerHeight) / 2;
+    let best = null;
     let bestDist = Infinity;
     wins.forEach(function (win) {
+      const overlap = visibleOverlap(win);
+      if (overlap < 48) return;
       const rect = win.getBoundingClientRect();
-      if (rect.bottom <= top + 8 || rect.top >= window.innerHeight - 8) return;
-      if (rect.top <= line && rect.bottom > line + 20) containing = win;
-      const mid = (rect.top + Math.min(rect.bottom, window.innerHeight)) / 2;
-      const dist = Math.abs(mid - line);
+      const mid = (rect.top + rect.bottom) / 2;
+      const dist = Math.abs(mid - viewMid);
       if (dist < bestDist) {
         bestDist = dist;
         best = win;
       }
     });
-    const next = containing || best;
-    if (lastWindow && lastWindow !== next && stillInView(lastWindow) && !containing) {
-      return lastWindow;
+    if (!best) best = wins[0];
+    if (lastWindow && lastWindow !== best && lastWindow.isConnected) {
+      const lastOverlap = visibleOverlap(lastWindow);
+      const lastRect = lastWindow.getBoundingClientRect();
+      const lastMid = (lastRect.top + lastRect.bottom) / 2;
+      const lastDist = Math.abs(lastMid - viewMid);
+      const lastGone = lastOverlap < lastRect.height * 0.28;
+      if (!lastGone && lastDist <= bestDist + 70) return lastWindow;
     }
-    return next;
+    return best;
+  }
+
+  function alignY(win, liveH, trackRect) {
+    const wins = workWindows();
+    const index = wins.indexOf(win);
+    const rect = win.getBoundingClientRect();
+    const top = rect.top - trackRect.top;
+    if (index <= 0) return top;
+    if (index === wins.length - 1) return top + rect.height - liveH;
+    return top + (rect.height - liveH) / 2;
   }
 
   function place(fromTravel) {
     if (!splitLayout()) {
       live.classList.remove("is-traveling");
-      live.style.marginTop = "0px";
+      live.style.marginTop = "";
       live.style.transform = "none";
+      track.style.minHeight = "";
       lastY = -1;
       lastWindow = null;
       return;
     }
+    syncTrackHeight();
     const target = pickWindow();
     if (!target) return;
-    const stack = root.querySelector("[data-work-stack]") || track;
     const liveH = live.offsetHeight;
-    const maxY = Math.max(0, stack.offsetHeight - 64);
-    const origin = track.getBoundingClientRect().top;
+    const trackRect = track.getBoundingClientRect();
+    const maxY = Math.max(0, track.clientHeight - liveH);
     const viewTop = observerTop();
     const viewBottom = window.innerHeight - 16;
-    const targetRect = target.getBoundingClientRect();
-    let desired = targetRect.top;
-    if (desired < viewTop) desired = viewTop;
-    if (desired + liveH > viewBottom) {
-      desired = Math.max(viewTop, viewBottom - liveH);
+    let y = alignY(target, liveH, trackRect);
+    if (trackRect.top + y < viewTop) y = viewTop - trackRect.top;
+    if (trackRect.top + y + liveH > viewBottom) {
+      y = viewBottom - liveH - trackRect.top;
     }
-    let y = desired - origin;
     y = Math.max(0, Math.min(maxY, y));
     y = Math.round(y);
     const switched = target !== lastWindow;
@@ -640,12 +658,12 @@ function bindLiveCompanion(root) {
       clearTimeout(travelTimer);
       travelTimer = window.setTimeout(function () {
         live.classList.remove("is-traveling");
-      }, 600);
+      }, 1000);
     }
     if (y === lastY) return;
     lastY = y;
-    live.style.transform = "none";
-    live.style.marginTop = y + "px";
+    live.style.marginTop = "0px";
+    live.style.transform = "translate3d(0," + y + "px,0)";
   }
 
   function requestPlace() {
@@ -662,9 +680,7 @@ function bindLiveCompanion(root) {
   root.addEventListener("vulcanus-render", function () {
     place();
   });
-  root.addEventListener("focusin", function (event) {
-    const win = event.target.closest("[data-work-window]");
-    if (win) lockedWindow = win;
+  root.addEventListener("focusin", function () {
     place();
   });
   root.addEventListener("click", function (event) {
@@ -672,21 +688,20 @@ function bindLiveCompanion(root) {
       place();
       return;
     }
-    const win = event.target.closest("[data-work-window]");
-    if (win) lockedWindow = win;
     place();
   });
   if (typeof IntersectionObserver === "function") {
     const io = new IntersectionObserver(function () {
       requestPlace();
-    }, { root: null, rootMargin: "-12% 0px -35% 0px", threshold: [0, 0.2, 0.45, 0.75, 1] });
+    }, { root: null, threshold: [0, 0.15, 0.35, 0.5, 0.7, 1] });
     workWindows().forEach(function (win) {
       io.observe(win);
     });
   }
   if (typeof ResizeObserver === "function") {
     const ro = new ResizeObserver(requestPlace);
-    ro.observe(track);
+    const stack = root.querySelector("[data-work-stack]");
+    if (stack) ro.observe(stack);
     ro.observe(live);
     workWindows().forEach(function (win) {
       ro.observe(win);

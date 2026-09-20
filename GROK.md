@@ -1,6 +1,6 @@
 # Otázka na Groka — zodpovedané 20. 9. 2026
 
-Grok odpovedal (Local cesta, Bricks hub, shortcode, Identity). **2.3.5** — súhrn ide za aktívnou kartou, šírka ako e-shop. Ďalší drop: jeden HTTPS zip — [`handoff-paliva/od-cursora/KANAL.md`](handoff-paliva/od-cursora/KANAL.md).
+Grok odpovedal (Local cesta, Bricks hub, shortcode, Identity). **2.3.6** — súhrn sa zarovnáva s dlaždicou (hore / stred / dole), stĺpec ostáva dlhý. Ďalší drop: jeden HTTPS zip — [`handoff-paliva/od-cursora/KANAL.md`](handoff-paliva/od-cursora/KANAL.md).
 
 - Plugin kreslí **iba** `[vulcanus_paleta]` / `[vulcanus_paleta_karty]`.
 - Žiadny dokument, menu, Figtree, druhá pätička.

@@ -1,5 +1,5 @@
-# Grok — 2.3.5 zip
+# Grok — 2.3.6 zip
 
-Súhrn: nie sticky na vrch. Ide k aktívnej karte (koks / údaje na predfaktúru) a v okne ostane.
+Pravý stĺpec dlhý ako štyri dlaždice. Súhrn: hore k hornej hrane, v strede na stred, dole k dolnej. Pomalý dojazd.
 
-https://fighting-desirable-demands-classics.trycloudflare.com/vulcanus-bulk-paleta-2.3.5.zip
+https://fighting-desirable-demands-classics.trycloudflare.com/vulcanus-bulk-paleta-2.3.6.zip
