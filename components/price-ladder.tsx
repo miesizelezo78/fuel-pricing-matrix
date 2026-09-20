@@ -55,9 +55,20 @@ export function PriceLadder({
               <TableCell>
                 {formatPerKg(priced.pricePerKg)}
                 {priced.pricePerKg < first.pricePerKg ? (
-                  <span className="mt-0.5 block text-xs text-primary">
-                    −{formatMoney(first.pricePerKg - priced.pricePerKg)}/kg
-                  </span>
+                  <>
+                    <span className="mt-0.5 block text-xs font-semibold text-primary">
+                      −{formatMoney(first.pricePerKg - priced.pricePerKg)}/kg
+                    </span>
+                    <span className="block text-xs font-medium text-primary">
+                      −
+                      {formatMoney(
+                        Math.round(
+                          (first.pricePerKg - priced.pricePerKg) * kg * 100,
+                        ) / 100,
+                      )}{" "}
+                      oproti 100 kg
+                    </span>
+                  </>
                 ) : null}
               </TableCell>
               <TableCell className="text-right tabular-nums">

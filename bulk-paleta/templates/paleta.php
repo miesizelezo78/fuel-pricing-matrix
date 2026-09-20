@@ -17,7 +17,7 @@ ob_start();
   data-vulcanus-bulk
   data-catalog="<?php echo vulcanus_e(json_encode($catalog, JSON_UNESCAPED_UNICODE)); ?>"
   data-fuel="<?php echo vulcanus_e($quote['fuelId']); ?>"
-  data-kg="<?php echo (int) $quote['kg']; ?>"
+  data-initial-kg="<?php echo (int) $quote['kg']; ?>"
   data-order-url="<?php echo vulcanus_e($order_url); ?>"
   data-done-url="<?php echo vulcanus_e($done_url); ?>"
 >

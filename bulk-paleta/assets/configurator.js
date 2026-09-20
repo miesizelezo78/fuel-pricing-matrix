@@ -8,7 +8,7 @@
 
   const state = {
     fuelId: root.getAttribute("data-fuel") || "uhlie",
-    kg: Number(root.getAttribute("data-kg") || 100),
+    kg: Number(root.getAttribute("data-initial-kg") || root.getAttribute("data-kg") || 100),
     fulfillment: "pallet",
     buyerType: "person",
   };
@@ -101,11 +101,16 @@
         const goods = Math.round(kg * tier.pricePerKg * 100) / 100;
         const fill = kg / (fuel().bagKg * fuel().palletBags);
         const on = q.kg >= tier.minKg && q.kg < nextMin(tier.minKg) ? " is-on" : "";
+        const perKgSave = first.pricePerKg - tier.pricePerKg;
+        const totalSave = Math.round(perKgSave * kg * 100) / 100;
         const save =
-          tier.pricePerKg < first.pricePerKg
-            ? '<span class="muted" style="display:block;font-size:.75rem">−' +
-              money.format(first.pricePerKg - tier.pricePerKg) +
-              "/kg</span>"
+          perKgSave > 0
+            ? '<span class="save">−' +
+              money.format(perKgSave) +
+              "/kg</span>" +
+              '<span class="save-total">−' +
+              money.format(totalSave) +
+              " oproti 100 kg</span>"
             : "";
         const fillLabel = fill >= 1 ? "Plná paleta" : "Paleta " + Math.round(fill * 100) + " %";
         return (
@@ -194,23 +199,30 @@
   root.addEventListener("click", function (event) {
     const fuelBtn = event.target.closest("[data-fuel-btn]");
     if (fuelBtn) {
+      event.preventDefault();
       state.fuelId = fuelBtn.getAttribute("data-fuel-btn");
       state.kg = fuel().presetsKg[0];
       render();
       return;
     }
-    const kgBtn = event.target.closest("[data-kg]");
-    if (kgBtn) {
-      state.kg = Number(kgBtn.getAttribute("data-kg"));
+    const minus = event.target.closest("[data-kg-minus]");
+    if (minus) {
+      event.preventDefault();
+      state.kg = clampKg(state.kg - 100);
       render();
       return;
     }
-    if (event.target.closest("[data-kg-minus]")) {
-      state.kg = clampKg(state.kg - 100);
-      render();
-    }
-    if (event.target.closest("[data-kg-plus]")) {
+    const plus = event.target.closest("[data-kg-plus]");
+    if (plus) {
+      event.preventDefault();
       state.kg = clampKg(state.kg + 100);
+      render();
+      return;
+    }
+    const kgBtn = event.target.closest("button[data-kg]");
+    if (kgBtn) {
+      event.preventDefault();
+      state.kg = Number(kgBtn.getAttribute("data-kg"));
       render();
     }
   });
