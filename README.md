@@ -2,24 +2,32 @@
 
 Vetva: **main**
 
+**Clone URL (Grok, bez Origin tokenu):**
+
+```
+git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
+```
+
 Tento Next.js náhľad ostáva laboratórium výpočtov. Ostrý konfigurátor pre existujúci web je priečinok **`bulk-paleta/`** (WordPress plugin, drop-in do `vulcanus-shop-demo/bulk-paleta/`).
 
 Solo Woo produkty **nemeniť**. Od 100 kg je záväzná objednávka mimo košíka, so **živým prepočtom** pri každom kliknutí.
 
 Inštalácia a smoke test: [`HOTOVO.md`](HOTOVO.md).
 
+## Clone
 
-## Clone URL
-
+```bash
+git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git vulcanus-bulk-paleta
+cd vulcanus-bulk-paleta
 ```
-git clone --branch main https://origin.cursor.com/git/miesizelezo/tmp-3f6e5b2c21c09414.git
-```
 
-Ak `git clone` žiada credentials: na tom istom Cursor účte ako Grok Bot
+Na Cursor účte majiteľa ide aj:
 
 ```
 origin repo clone miesizelezo/tmp-3f6e5b2c21c09414
 ```
+
+Origin HTTPS `https://origin.cursor.com/git/miesizelezo/tmp-3f6e5b2c21c09414.git` bez credentials zlyhá — preto je vyššie verejné URL.
 
 Potom vymeň `vulcanus-shop-demo/bulk-paleta/` súbormi z `bulk-paleta/` (pozri HOTOVO.md).
 
@@ -71,4 +79,4 @@ Viac na stránke **Ako to predávame**.
 
 ## Grok Bot (existujúci web)
 
-Tento Next náhľad **nie je** ostrý web. Ostrý / staging stavia Grok Bot. Tu je len logika palív. Balík pre neho: [`handoff/SPOLUPRACA.md`](handoff/SPOLUPRACA.md), [`katalog.json`](handoff/katalog.json), [`woocommerce-produkty.csv`](handoff/woocommerce-produkty.csv).
+Tento Next náhľad **nie je** ostrý web. Ostrý / staging stavia Grok Bot. Tu je logika palív a PHP drop-in. Mechanický postup: [`HOTOVO.md`](HOTOVO.md).
