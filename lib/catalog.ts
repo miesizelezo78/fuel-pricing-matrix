@@ -77,7 +77,7 @@ export function isFuelId(value: unknown): value is FuelId {
 export const FUELS: Record<FuelId, Fuel> = {
   uhlie: {
     id: "uhlie",
-    name: "Kováčske uhlie",
+    name: "Kováčske čierne uhlie",
     shortName: "Uhlie",
     adjective: "kováčskeho uhlia",
     bagKg: 25,

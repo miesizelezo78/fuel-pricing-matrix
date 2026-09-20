@@ -22,7 +22,7 @@ function vulcanus_bulk_ensure_pages() {
     $paleta_id = vulcanus_bulk_find_page_id('objednavka-paleta');
     if (!$paleta_id) {
         $paleta_id = wp_insert_post(array(
-            'post_title' => 'Paletová objednávka',
+            'post_title' => 'Kováčske palivá od 100 kg',
             'post_name' => 'objednavka-paleta',
             'post_status' => 'publish',
             'post_type' => 'page',
@@ -34,6 +34,13 @@ function vulcanus_bulk_ensure_pages() {
     if (!is_wp_error($paleta_id) && $paleta_id) {
         $ids['objednavka-paleta'] = (int) $paleta_id;
         update_post_meta((int) $paleta_id, '_vulcanus_bulk_page', 'paleta');
+        $existing = get_post($paleta_id);
+        if ($existing && $existing->post_title === 'Paletová objednávka') {
+            wp_update_post(array(
+                'ID' => (int) $paleta_id,
+                'post_title' => 'Kováčske palivá od 100 kg',
+            ));
+        }
     }
 
     if (!empty($ids['objednavka-paleta'])) {

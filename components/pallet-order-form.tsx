@@ -163,14 +163,14 @@ export function PalletOrderForm({
           return (
             <section
               key={item.id}
-              className="rounded-2xl bg-card p-5 ring-1 ring-foreground/10 sm:p-7"
+              className="rounded-2xl bg-card p-6 ring-1 ring-foreground/10 sm:p-8"
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-primary">
-                    {fuel.bagKg} kg / vrece
+                  <p className="text-sm uppercase tracking-[0.14em] text-primary">
+                    Od 100 kg · {fuel.bagKg} kg vrece
                   </p>
-                  <h2 className="font-heading mt-1 text-2xl">{fuel.name}</h2>
+                  <h2 className="font-heading mt-1 text-2xl sm:text-3xl">{fuel.name}</h2>
                 </div>
                 <Button
                   type="button"
@@ -197,7 +197,7 @@ export function PalletOrderForm({
           </p>
         ) : null}
 
-        <section className="min-w-0 space-y-4 rounded-2xl bg-card p-5 ring-1 ring-foreground/10 sm:p-7">
+        <section className="min-w-0 space-y-4 rounded-2xl bg-card p-6 ring-1 ring-foreground/10 sm:p-8">
           <h2 className="font-heading text-2xl">Údaje na predfaktúru</h2>
           <p className="text-sm text-muted-foreground">
             Meno, adresa, e-mail, telefón. Firma doplní IČO. Ak ste platca DPH,
@@ -309,7 +309,7 @@ export function PalletOrderForm({
         </section>
       </div>
 
-      <aside className="h-fit space-y-4 rounded-2xl bg-card p-5 ring-1 ring-foreground/10 sm:sticky sm:top-24">
+      <aside className="h-fit space-y-4 rounded-2xl bg-card p-6 ring-1 ring-foreground/10 sm:sticky sm:top-24 sm:p-8">
         <h2 className="font-heading text-2xl">Živý prepočet</h2>
         {quote.lines.length === 0 ? (
           <p className="text-sm text-muted-foreground">

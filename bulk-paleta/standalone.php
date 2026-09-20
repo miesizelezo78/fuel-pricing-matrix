@@ -4,7 +4,7 @@
  * WordPress uses shortcodes, never this file.
  */
 define('VULCANUS_BULK_STANDALONE', true);
-define('VULCANUS_BULK_VERSION', '2.3.1');
+define('VULCANUS_BULK_VERSION', '2.3.2');
 require_once __DIR__ . '/includes/pricing.php';
 require_once __DIR__ . '/includes/order.php';
 require_once __DIR__ . '/includes/html.php';
@@ -68,7 +68,7 @@ if (preg_match('#^/objednavka-paleta/hotovo#', $uri) || strpos($uri, '/hotovo') 
 }
 
 $map = array(
-    'paleta' => array('Paletová objednávka', 'paleta.php'),
+    'paleta' => array('Kováčske palivá od 100 kg', 'paleta.php'),
     'done' => array('Objednávka', 'hotovo.php'),
 );
 list($title, $file) = $map[$page];

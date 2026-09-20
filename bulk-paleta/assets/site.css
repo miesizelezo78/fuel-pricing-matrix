@@ -28,9 +28,9 @@ body.vulcanus-site a,
 .vulcanus-main a { color: inherit; }
 .vulcanus-wrap {
   width: 100%;
-  max-width: 72rem;
+  max-width: 86rem;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 1.25rem;
 }
 @media (min-width: 640px) {
   .vulcanus-wrap { padding: 0 1.5rem; }
@@ -72,7 +72,7 @@ body.vulcanus-site a,
 }
 .vulcanus-nav-link:hover { background: rgba(42, 34, 24, 0.06); color: var(--fg); }
 .vulcanus-nav-link.is-on { background: var(--fg); color: var(--bg); }
-.vulcanus-main { flex: 1; padding: 2rem 1.25rem 3rem; max-width: 72rem; margin: 0 auto; width: 100%; box-sizing: border-box; }
+.vulcanus-main { flex: 1; padding: 2rem 1.25rem 3rem; max-width: 86rem; margin: 0 auto; width: 100%; box-sizing: border-box; }
 body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 .eyebrow {
   letter-spacing: 0.2em;
@@ -183,8 +183,8 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 }
 .grid-2 { display: grid; gap: 1.5rem; min-width: 0; }
 .grid-2 > * { min-width: 0; }
-@media (min-width: 900px) {
-  .grid-2 { grid-template-columns: 1.15fr 0.85fr; }
+@media (min-width: 1100px) {
+  .grid-2 { grid-template-columns: minmax(0, 1.25fr) minmax(22rem, 0.75fr); }
 }
 .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0 1rem; }
 .chips button, .stepper button {
@@ -342,3 +342,95 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 @media (max-width: 640px) {
   .vulcanus-nav-link { padding: 0.35rem 0.65rem; font-size: 0.85rem; }
 }
+
+/* Shortcode v G3: plná šírka rodiča, čitateľná stupnica. Bricks nesmie obaliť úzkym stĺpcom. */
+.vulcanus-config {
+  width: 100%;
+  max-width: none;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+.vulcanus-config h1 {
+  font-size: clamp(2.15rem, 4vw, 3.4rem);
+  line-height: 1.12;
+  max-width: none;
+  margin: 0.35rem 0 0.9rem;
+}
+.vulcanus-config .lead {
+  max-width: 48rem;
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+.vulcanus-config .eyebrow {
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+}
+.vulcanus-config .muted {
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.vulcanus-config .fuel-card-head h2 {
+  font-size: clamp(1.5rem, 2.2vw, 1.95rem);
+  line-height: 1.2;
+}
+.vulcanus-config .card {
+  padding: 1.75rem 1.85rem;
+}
+.vulcanus-config .ladder {
+  font-size: 1.02rem;
+}
+.vulcanus-config .ladder .save,
+.vulcanus-config .ladder .save-total,
+.vulcanus-config .facts .save,
+.vulcanus-config .live .save {
+  font-size: 0.95rem;
+}
+.vulcanus-config .fields label,
+.vulcanus-config .binding,
+.vulcanus-config .radio label {
+  font-size: 1.02rem;
+}
+.vulcanus-config .fields input,
+.vulcanus-config .fields textarea {
+  padding: 0.7rem 0.85rem;
+  font-size: 1.02rem;
+}
+.vulcanus-config .submit {
+  font-size: 1.08rem;
+  padding: 0.9rem 1rem;
+}
+.vulcanus-config .live .total {
+  font-size: clamp(2rem, 3vw, 2.55rem);
+}
+.vulcanus-config .live .total-kicker,
+.vulcanus-config .field-hint {
+  font-size: 0.95rem;
+}
+.vulcanus-config .stepper span {
+  font-size: 1.85rem;
+}
+.vulcanus-config .chips button,
+.vulcanus-config .stepper button {
+  font-size: 1.02rem;
+  padding: 0.55rem 0.95rem;
+}
+.vulcanus-config .meter-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+.vulcanus-config .meter-note {
+  margin: 0.65rem 0 0;
+}
+.vulcanus-config .radio-sub {
+  display: block;
+  font-size: 1rem;
+}
+.vulcanus-config .legal-note {
+  margin-top: 0.85rem;
+  font-size: 1rem;
+}
+.vulcanus-config .live-line .muted {
+  font-size: 1rem;
+}
+

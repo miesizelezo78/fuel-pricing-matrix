@@ -210,7 +210,7 @@
           on +
           "'><td>" +
           tier.label +
-          '<span class="muted" style="display:block;font-size:.75rem">' +
+          '<span class="muted" style="display:block">' +
           packing.ladderLabel +
           "</span></td><td>" +
           bags +
@@ -334,7 +334,7 @@
             line.fuelName +
             "</span><span>" +
             money.format(line.goods) +
-            '</span></div><p class="muted" style="margin:.2rem 0 0;font-size:.8rem">' +
+            '</span></div><p class="muted" style="margin:.2rem 0 0">' +
             num.format(line.kg) +
             " kg · " +
             line.bags +
@@ -356,7 +356,7 @@
         .join("");
       if (order.shipment && order.shipment.note) {
         list.innerHTML +=
-          '<li class="live-line packing"><p class="muted" style="margin:0;font-size:.8rem"><strong>' +
+          '<li class="live-line packing"><p class="muted" style="margin:0"><strong>' +
           order.shipment.title +
           "</strong> · " +
           order.shipment.note +

@@ -22,7 +22,7 @@ ob_start();
   data-done-url="<?php echo vulcanus_e($done_url); ?>"
 >
   <p class="eyebrow">Nie košík · záväzná objednávka</p>
-  <h1>Paletový predaj od 100 kg</h1>
+  <h1>Kováčske palivá od 100 kg</h1>
   <p class="lead">
     Vrecia s doručením ostávajú v e-shope. Od 100 kg to nie je košík —
     uhlie, antracit a koks viete dať do jednej objednávky. Každé palivo
@@ -37,20 +37,20 @@ ob_start();
         <section class="card fuel-card" data-fuel-card="<?php echo vulcanus_e($id); ?>">
           <div class="fuel-card-head">
             <div>
-              <p class="eyebrow"><?php echo (int) $item['bagKg']; ?> kg / vrece</p>
+              <p class="eyebrow">Od 100 kg · <?php echo (int) $item['bagKg']; ?> kg vrece</p>
               <h2><?php echo vulcanus_e($item['name']); ?></h2>
             </div>
             <button type="button" class="btn btn-outline" data-fuel-toggle>
               Pridať od 100 kg
             </button>
           </div>
-          <p class="muted" style="font-size:.9rem">
+          <p class="muted">
             Sadzba ide z kíl tohto paliva, nie zo súčtu objednávky. Plus a mínus
             pridávajú jedno vrece (<?php echo (int) $item['bagKg']; ?> kg).
           </p>
           <div class="chips" data-presets></div>
           <div class="stepper-row">
-            <p class="muted" style="margin:0;font-size:.9rem">
+            <p class="muted" style="margin:0">
               Vlastné množstvo po <?php echo (int) $item['bagKg']; ?> kg (1 vrece)
             </p>
             <div class="stepper">
@@ -60,7 +60,7 @@ ob_start();
             </div>
           </div>
           <?php if ($id === 'koks') : ?>
-            <p class="muted" data-koks-hint style="font-size:.8rem;margin-top:.6rem">
+            <p class="muted" data-koks-hint style="margin-top:.6rem">
               Koks je vo 20 kg vreciach, preto tu nie je tlačidlo 250 kg — nevyšlo
               by to na celé vrecia. Presety sú 200 kg (10 vriec) a 500 kg. Plusom
               idete 220, 240, 260 kg.
@@ -76,12 +76,12 @@ ob_start();
             <tbody data-ladder></tbody>
           </table>
           <div class="meter">
-            <div style="display:flex;justify-content:space-between;font-size:.9rem">
+            <div class="meter-head">
               <span data-meter-label>Paleta</span>
               <span data-meter-pct></span>
             </div>
             <div class="meter-bar"><div class="meter-fill" data-meter-fill></div></div>
-            <p class="muted" style="font-size:.75rem;margin:.6rem 0 0" data-meter-note></p>
+            <p class="muted meter-note" data-meter-note></p>
           </div>
           <div class="facts" style="margin-top:1rem">
             <div><dt class="muted">Vrecia</dt><dd data-fact-bags>—</dd></div>
@@ -92,7 +92,7 @@ ob_start();
 
       <section class="card" style="margin-top:1rem">
         <h2>Údaje na predfaktúru</h2>
-        <p class="muted" style="font-size:.9rem">
+        <p class="muted">
           Meno, adresa, e-mail, telefón. Firma doplní IČO. Ak ste platca DPH,
           doplňte IČ DPH — v súhrne sa rozpíše daň. Neplatičom stačí IČO.
         </p>
@@ -102,7 +102,7 @@ ob_start();
           <label><input type="radio" name="buyerType" value="person" checked> Fyzická osoba</label>
           <label><input type="radio" name="buyerType" value="company"> Firma / živnosť</label>
         </div>
-        <p class="muted" data-buyer-hint style="font-size:.8rem;margin:-.35rem 0 .7rem">
+        <p class="muted" data-buyer-hint style="margin:-.35rem 0 .7rem">
           Fyzická osoba: meno a priezvisko. Ceny v súhrne sú konečné, vrátane DPH, bez rozpisu dane.
         </p>
         <div class="fields">
@@ -142,18 +142,18 @@ ob_start();
       </dl>
       <p class="total-kicker">Spolu k úhrade</p>
       <p class="total" data-live-total>0,00 €</p>
-      <p class="muted" data-live-vat-note style="font-size:.8rem">
+      <p class="muted" data-live-vat-note>
         Ceny sú konečné, vrátane DPH. Zľava za množstvo sa na palivá nesčítava.
         Do predfaktúry ide najprv tovar.
       </p>
       <div class="radio">
         <label>
           <input type="radio" name="fulfillmentChoice" value="pickup">
-          <span><strong>Prídem osobne</strong><span class="muted" style="display:block;font-size:.8rem">Bez paletovej prepravy</span></span>
+          <span><strong>Prídem osobne</strong><span class="muted radio-sub">Bez paletovej prepravy</span></span>
         </label>
         <label>
           <input type="radio" name="fulfillmentChoice" value="pallet" checked>
-          <span><strong>Pošlite paletou</strong><span class="muted" style="display:block;font-size:.8rem">Dopravu naceníme podľa adresy</span></span>
+          <span><strong>Pošlite paletou</strong><span class="muted radio-sub">Dopravu naceníme podľa adresy</span></span>
         </label>
       </div>
       <label class="binding">
@@ -162,7 +162,7 @@ ob_start();
       </label>
       <p class="err hidden" data-form-error></p>
       <button class="submit" type="submit">Odoslať záväznú objednávku</button>
-      <p class="muted" style="font-size:.75rem;margin-top:.8rem">
+      <p class="muted legal-note">
         Ostrý doklad ide cez SuperFaktúra API. Bez kľúčov ostane náhľad.
         <a href="<?php echo vulcanus_e(vulcanus_fuels_hub_url()); ?>">Sprievodca palivami</a>
         ·

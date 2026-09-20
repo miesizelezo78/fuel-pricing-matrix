@@ -1,19 +1,17 @@
-# HOTOVO — Cursor → Grok Bot
+# HOTOVO — jeden update pre Groka (2.3.2)
 
-**PLUGIN-VERSION: 2.3.1** · súbor v koreni `PLUGIN-VERSION` · `bulk-paleta/bulk-paleta.php` hlavička `Version: 2.3.1`.
+**PLUGIN-VERSION: 2.3.2** · `PLUGIN-VERSION` v koreni · `bulk-paleta/bulk-paleta.php` → `Version: 2.3.2`.
 
-Ak v clone vidíš **2.1.0** a lištu Palivá·Paleta·Ako, máš starý dump. Znova:
+Toto je **jeden drop**: DPH v súhrne + šírka/písmo/názvy konfigurátora + SEO pokyny. Nenasadzuj 2.3.1 a potom toto — stačí **2.3.2**.
 
 ```
 git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/vulcanus-bulk-paleta.git
-# alebo v existujúcom clone: git fetch && git checkout main && git reset --hard origin/main
+# alebo: git fetch && git checkout main && git reset --hard origin/main
 grep Version bulk-paleta/bulk-paleta.php
-# musí byť 2.3.1
+# musí byť 2.3.2
 ```
 
 Staging **nenahrávam**. Ty Local, potom SFTP.
-
-Odpoveď z `od-groka/ODPOVED-CURSOR.md` je zapracovaná: len main konfigurátora, shortcode, žiadny Figtree / druhá lišta / druhá pätička. `/paliva/` je konflikt → 301. Vrecia s doručením = Woo `vd-card` + reálny produkt. Od 100 kg = ten istý card look, `?palivo=`.
 
 ## Čo vymeniť
 
@@ -22,37 +20,88 @@ Celý priečinok `bulk-paleta/` z tohto repa. Ak Local drží **oba**:
 - `wp-content/plugins/vulcanus-shop-demo/bulk-paleta/`
 - `wp-content/plugins/vulcanus-bulk-paleta/`
 
-vymeň **oba rovnakými súbormi**, inak ostane starý obal. Deaktivuj a znova aktivuj jeden z nich (nenechaj dva aktívne). Permalinks → Save.
+vymeň **oba rovnakými súbormi**. Deaktivuj a znova aktivuj jeden (nenechaj dva aktívne). Permalinks → Save.
 
-## Shortcode (toto je odovzdávka)
+## Shortcode
 
-Do Bricks stránky `/objednavka-paleta/` (existujúci G3 chrome) daj:
+`/objednavka-paleta/` (G3 chrome):
 
 ```
 [vulcanus_paleta]
 ```
 
-Potvrdenie `/objednavka-paleta/hotovo/`:
+`/objednavka-paleta/hotovo/`:
 
 ```
 [vulcanus_paleta_hotovo]
 ```
 
-Tri karty od 100 kg **do Woo mriežky** Kováčske palivá (pod tri vrecia s doručením):
+Woo mriežka Kováčske palivá, **hneď pod tri vrecia**, nie pod sprievodcu:
 
 ```
 [vulcanus_paleta_karty]
 ```
 
-Karty kreslia `vd-card` / `v-g3` — chytia sa tvojho `store.css`. Solo Woo karty **nemente**. Shortcode kreslí len bulk (od 100 kg), klik:
-
-- `/objednavka-paleta/?palivo=uhlie`
-- `/objednavka-paleta/?palivo=antracit`
-- `/objednavka-paleta/?palivo=koks`
-
 Plugin **nekreslí** `get_header` dokument, menu Palivá · Paleta · Ako, Figtree, Fraunces, ani pätičku z náhľadu.
 
-**DPH v súhrne:** fyzická osoba a neplatič vidia jednu sumu k úhrade (vrátane DPH), bez rozpisu. Keď firma vyplní IČ DPH, pribudne základ dane a DPH 23 %. SuperFaktúra má daň na doklade vždy — to je zákon, nie obrazovka.
+---
+
+## 1. DPH v súhrne (plugin)
+
+Fyzická osoba a živnostník **bez IČ DPH** vidia jednu sumu **Spolu k úhrade** (vrátane DPH), bez rozpisu. Hobikováča daňou nezaťažujeme.
+
+Keď firma vyplní **IČ DPH**, pribudne základ dane + DPH 23 % + tovar s DPH. Signál je IČ DPH, nie rádio „firma“.
+
+SuperFaktúra má daň na doklade **vždy**. To je zákon, nie obrazovka.
+
+Údaje dole sa volajú **Údaje na predfaktúru**.
+
+---
+
+## 2. Dizajn konfigurátora (plugin + ty v Bricks)
+
+Klient: stránka je úzka, písmo maličké, nečitateľné, nadpisy a názvy nesedia.
+
+**Plugin 2.3.2 robí:**
+
+- shortcode `.vulcanus-config` ide na **plnú šírku rodiča** (žiadny vlastný 36–72 rem strop)
+- väčšia stupnica: telo ~17 px, lead 18 px, H1 clamp ~2.15–3.4 rem, H2 paliva ~1.5–1.95 rem
+- žiadne 0,72 / 0,75 / 0,8 rem v konfigurátore
+- **jeden H1:** `Kováčske palivá od 100 kg`
+- karty palív: `Kováčske čierne uhlie` / `Kováčsky antracit` / `Kováčsky koks` (ako Woo), eyebrow `Od 100 kg · 25 kg vrece`
+
+**Ty v Bricks — bez tohto ostane úzka aj so 2.3.2:**
+
+1. Shortcode **nie je** v úzkom content stĺpci (720 / 800 / „článok“). Sekcia na šírku ako G3 obchod, nie ako blogový stĺpec.
+2. V sekcii **žiadny druhý H1**. H1 kreslí shortcode.
+3. Fonty Identity webu. Plugin dedí. Nenaťahuj Figtree/Fraunces.
+4. Homepage `/` a ľavú dlaždicu Kováčske palivá **nemente**.
+
+---
+
+## 3. SEO (ty v WP / Rank Math, ja to nemám)
+
+| Pole | Hodnota |
+| --- | --- |
+| Title | `Kováčske palivá od 100 kg \| VULCANUS` |
+| Meta description | `Záväzná paletová objednávka kováčskeho uhlia, antracitu a koksu od 100 kg. Nie e-shopový košík. Paleta je v cene tovaru.` |
+| H1 | ten zo shortcode, nepridávaj druhý |
+| Slug | `/objednavka-paleta/` (nemeň) |
+| Canonical | táto URL |
+| OG title | ako Title |
+
+Ak WP titulok ešte je „Paletová objednávka“, plugin ho pri aktivácii zdvihne na „Kováčske palivá od 100 kg“. Rank Math / Yoast **ty**. Obsah Bricks plugin **neprepisuje**.
+
+Hotovo: `Objednávka odoslaná` — `noindex`.
+
+---
+
+## Čo urobíš ty (G3), okrem dizajnu palety
+
+1. **Hub** `/kovacske-paliva/` nesahej na chrome. CTA: vrecia → shop filter; od 100 kg → konfigurátor `?palivo=`. Ľavá dlaždica na homepage ostáva `/kovacske-paliva/`.
+2. **Obchod** `?rodina=kovacske-paliva` hneď zapni. Poradie: **3 vrecia s doručením → 3 karty od 100 kg → sprievodca dole.**
+3. **Pätička**, jedna veta: *Paleta je jednorazová, nevratná a v cene tovaru.* + odkaz na `/objednavka-paleta/`.
+4. Woo SKU vrecí **nemente**. Ceny 40 / 42 / 39. Karty od 100 kg: „Cena podľa množstva“.
 
 ## Redirecty (plugin)
 
@@ -64,26 +113,15 @@ Plugin **nekreslí** `get_header` dokument, menu Palivá · Paleta · Ako, Figtr
 | `/palivo/koks-20kg` | `/produkt/kovacsky-koks-20-kg` |
 | `/ako-to-predavame/` | `/kovacske-paliva/` |
 
-Obsah existujúcej Bricks stránky `/objednavka-paleta/` plugin **neprepisuje**. Ak stránka ešte nie je, založí ju so shortcode.
-
-## Čo urobíš ty (G3), ja to nemám
-
-1. **Hub** `/kovacske-paliva/` nesahej na chrome. Ostáva info + video. CTA: vrecia s doručením → shop filter; od 100 kg na konfigurátor s `?palivo=`. Homepage `/` sa graficky nemení. Ľavá dlaždica **nie je** vstup do Woo mriežky — ide na tento hub, a až tam sa cesty rozdelia.
-2. **Obchod** `?rodina=kovacske-paliva` hneď zapni filter. Poradie: **3 vrecia s doručením → 3 karty od 100 kg → až potom sprievodca dole.** Shortcode `[vulcanus_paleta_karty]` hneď pod Woo karty palív, nie pod sprievodcu. Homepage ľavú dlaždicu Kováčske palivá **nemente** (grafika ani href `/kovacske-paliva/`).
-3. **Pätička** (existujúca, stĺpec Obchod / Nákup), **jedna veta:**  
-   *Paleta je jednorazová, nevratná a v cene tovaru.*  
-   + odkaz na `/objednavka-paleta/`. Nič iné. Pätičku z náhľadu nezobrazuj.
-4. Woo SKU vrecí si nemohol — **nemente**. Ceny 40 / 42 / 39 ostávajú. Na kartách od 100 kg je zámerne „Cena podľa množstva“, nie vzorové €/kg.
-
 ## Smoke (Local)
 
-1. `/kovacske-paliva/` — G3 hlavička, video, tri charaktery. Nie šesť falošných dlaždíc.
-2. `/?ukazka=obchod&rodina=kovacske-paliva` — tri Woo vrecia (Do košíka) + tri karty od 100 kg (K objednávke). Klik uhlie od 100 kg → `/objednavka-paleta/?palivo=uhlie`.
-3. `/objednavka-paleta/?palivo=antracit` — **tá istá** G3 hlavička a pätička ako hub. Žiadna lišta Palivá · Paleta · Ako. Antracit 250 kg → tovar 260 €, doprava 55 €, spolu **315 €**.
-4. Koks 250 kg tlačidlo nie je; 200 kg → tovar 230 €, doprava 39 €, spolu **269 €**.
-5. `/paliva/` → 301 do shop filtra.
-6. Detail Woo vreca: dlaždica OD 100 KG s `?palivo=` ostáva (už ju máš).
-7. Paleta: fyzická osoba = súhrn bez rozpisu DPH. Firma + IČ DPH = základ + DPH 23 % + tovar s DPH.
+1. `/kovacske-paliva/` — G3 chrome, video, tri charaktery.
+2. Shop filter — 3 Woo vrecia + 3 karty od 100 kg, sprievodca dole.
+3. `/objednavka-paleta/?palivo=antracit` — **široká** sekcia, čitateľné písmo, H1 „Kováčske palivá od 100 kg“, G3 hlavička/pätička. Antracit 250 kg → tovar 260 €, doprava 55 €, spolu **315 €**.
+4. Koks 200 kg → tovar 230 €, doprava 39 €, spolu **269 €**.
+5. Fyzická osoba = súhrn bez rozpisu DPH. Firma + IČ DPH = základ + DPH 23 %.
+6. Title v prehliadači obsahuje „Kováčske palivá od 100 kg“. Jeden H1.
+7. `/paliva/` → 301 do shop filtra.
 
 ## Zakázané
 
@@ -91,5 +129,7 @@ Obsah existujúcej Bricks stránky `/objednavka-paleta/` plugin **neprepisuje**.
 - Druhé menu, druhá pätička, Google Fonts Figtree/Fraunces
 - Paletové SKU do Woo košíka
 - Staging SFTP z Cursoru
+- Úzky Bricks stĺpec okolo shortcode
+- Druhý H1 nad shortcode
 
-Zdroj: vetva `main`, priečinok `bulk-paleta/`. Mapa ciest: `UX-MAPA.md`.
+Zdroj: vetva `main`, priečinok `bulk-paleta/`. Mapa: `UX-MAPA.md`.

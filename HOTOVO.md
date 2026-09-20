@@ -1,17 +1,15 @@
 # HOTOVO — Palivá / Paleta
 
-**PLUGIN-VERSION: 2.3.1** (`PLUGIN-VERSION` v koreni, `bulk-paleta/bulk-paleta.php`).
+**PLUGIN-VERSION: 2.3.2** (`PLUGIN-VERSION` v koreni, `bulk-paleta/bulk-paleta.php`).
 
 Grok nasadzuje Local → staging. Cursor **SFTP nenahráva**.
 
-Pre Groka (Mac handoff): [`handoff-paliva/od-cursora/HOTOVO.md`](handoff-paliva/od-cursora/HOTOVO.md).
+Jeden drop pre Groka: [`handoff-paliva/od-cursora/HOTOVO.md`](handoff-paliva/od-cursora/HOTOVO.md).
 
-- WordPress kreslí **len** `[vulcanus_paleta]` v existujúcom G3 chrome. Žiadny vlastný HTML dokument, žiadne `get_header` z pluginu.
-- `/paliva/` → 301 na `/?ukazka=obchod&rodina=kovacske-paliva`.
-- `[vulcanus_paleta_karty]` = tri G3 karty od 100 kg do Woo mriežky.
-- Vrecia s doručením = Woo produkty. Solo SKU nemente.
-- Pätička: jedna veta o jednorazovej palete do existujúceho stĺpca.
-- DPH v súhrne: hobikováč vidí jednu sumu (vrátane DPH). Rozpis až po IČ DPH.
+- Shortcode `[vulcanus_paleta]` v G3 chrome. Žiadny vlastný HTML dokument.
+- DPH: hobikováč vidí jednu sumu (vrátane DPH). Rozpis až po IČ DPH.
+- Konfigurátor: plná šírka rodiča, čitateľné písmo, H1 „Kováčske palivá od 100 kg“.
+- `/paliva/` → 301 na Woo filter. Solo SKU nemente.
 
 ```bash
 php -S 127.0.0.1:8765 bulk-paleta/standalone.php
