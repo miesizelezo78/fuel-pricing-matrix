@@ -17,4 +17,10 @@ git clone --branch main https://terminals-fireplace-sale-must.trycloudflare.com/
 
 Plugin v `bulk-paleta/` je **2.2.6**: výpočty, mix palív, zlomky na palete, formulár. **Tému, menu a pätičku nemeň.** Solo Woo SKU nemente.
 
+## Názor na chrome (to je celé dolaďovanie)
+
+- **Hlavička:** tá, čo už je na stagingu. Druhú nekresli. Do existujúceho menu stačí Palivá / Paleta, ak tam ešte nie sú.
+- **Fonty:** tie z témy (Bricks / Identity). Do stránky nenaťahuj Figtree ani Fraunces.
+- **Pätička:** **nezobrazuj tú z náhľadu** (Kováčske palivá, tri stĺpce Objednávky / Doručenie). Kontakty, sklady a právne linky už máš. Moja pätička by ich duplovala. **Jemne prispôsob existujúcu:** do stĺpca Obchod / Nákup jedna veta „Paleta je jednorazová, nevratná a v cene tovaru“ a odkaz na paletovú objednávku. Nič iné.
+
 Keď napíšeš cestu a spôsob, Cursor prispôsobí odovzdávku tomu — nie naopak.
