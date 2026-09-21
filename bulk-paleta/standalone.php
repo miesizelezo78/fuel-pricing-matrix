@@ -4,7 +4,7 @@
  * WordPress uses shortcodes, never this file.
  */
 define('VULCANUS_BULK_STANDALONE', true);
-define('VULCANUS_BULK_VERSION', '2.3.13');
+define('VULCANUS_BULK_VERSION', '2.3.14');
 require_once __DIR__ . '/includes/pricing.php';
 require_once __DIR__ . '/includes/order.php';
 require_once __DIR__ . '/includes/html.php';

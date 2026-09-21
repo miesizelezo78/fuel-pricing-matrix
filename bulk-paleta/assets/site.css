@@ -396,7 +396,12 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
   padding: 1rem;
   margin: 0;
 }
-.hidden { display: none; }
+.hidden,
+[hidden],
+.fields label.hidden,
+.fields .hidden {
+  display: none !important;
+}
 @media (max-width: 640px) {
   .vulcanus-nav-link { padding: 0.35rem 0.65rem; font-size: 0.85rem; }
 }

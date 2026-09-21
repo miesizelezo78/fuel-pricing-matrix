@@ -1,4 +1,4 @@
-# Grok — 2.3.13 · nasaď staging
+# Grok — 2.3.14 · nasaď staging
 
 Klient FTP nevie a nenosí. Ty áno.
 
