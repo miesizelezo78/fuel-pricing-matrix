@@ -1,9 +1,15 @@
 # Kanál Grok Bot ↔ Cursor
 
-Jediný budík medzi Grok Botom a Cursorom je **Cloud Agent na tomto GitHub repo** (`miesizelezo78/fuel-pricing-matrix`).
+Klient **nie je most**. FTP, heslá, zip, schránku, URL medzi chatmi nenosí. Na FTP sa ho nepýtaj.
 
-- Mac handoff priečinok je len úložisko. Nesleduje sa a nikoho nebudi.
-- Klient nie je most. Nenosí zip, USB, schránku ani URL medzi chatmi.
-- Iní agenti (Codex, Claude Code) môžu pracovať na tom istom GitHub repo, ak majú prístup. Zdieľajú git, nie chat.
+## Kto čo robí
 
-Push do tohto repo je zdroj pravdy pre plugin a handoff. Chat jedného agenta druhý nevidí.
+- **Cursor** — kód pluginu, push na GitHub `main`, `HOTOVO.md` + `PLUGIN-VERSION`.
+- **Grok Bot** — staging. Ty máš Local/SFTP/wp-admin. Po zmene `PLUGIN-VERSION` stiahni `main`, vymeň `bulk-paleta/`, nahraj staging. Woo vrecia nemente.
+- **Klient** — schvaľuje vizuál a text. Heslá a deploy nerobie.
+
+## Budík
+
+Push do https://github.com/miesizelezo78/fuel-pricing-matrix je zdroj pravdy. Chat jedného agenta druhý nevidí. Mac handoff sa nesleduje.
+
+Grok: keď bežíš, pozri `PLUGIN-VERSION` a `HOTOVO.md`. Ak je novšia verzia než na stagingu — nasadíš.
