@@ -1,11 +1,13 @@
 :root {
   --bg: #f3ebe0;
-  --fg: #3a3228;
-  --card: #fbf7f0;
-  --muted: #6b6258;
-  --line: rgba(42, 34, 24, 0.12);
-  --primary: #b4532a;
+  --fg: #2c261f;
+  --card: #fffefc;
+  --muted: #3f3830;
+  --line: #d8d2ca;
+  --primary: #cf3b22;
   --primary-fg: #fffaf3;
+  --fire: #cf3b22;
+  --fire-deep: #b4321e;
   --radius: 1rem;
 }
 * { box-sizing: border-box; }
@@ -103,13 +105,32 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
   border-radius: 0.7rem;
   padding: 0.55rem 1rem;
   font: inherit;
+  font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  border: 1px solid transparent;
+  border: 2px solid var(--fire);
+  background: #fff;
+  color: var(--fg);
 }
-.btn-primary { background: var(--primary); color: var(--primary-fg); }
-.btn-outline { background: transparent; border-color: var(--line); color: var(--fg); }
-.btn.is-on, button.btn.is-on { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn-primary {
+  background: var(--fire);
+  color: var(--primary-fg);
+  border-color: var(--fire-deep);
+}
+.btn-primary:hover { background: var(--fire-deep); border-color: var(--fire-deep); }
+.btn-outline {
+  background: #fff;
+  border-color: var(--fire);
+  color: var(--fg);
+}
+.btn-outline:hover {
+  background: color-mix(in srgb, var(--fire) 8%, #fff);
+}
+.btn.is-on, button.btn.is-on {
+  background: var(--fire);
+  color: #fff;
+  border-color: var(--fire-deep);
+}
 .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 .stat {
   background: var(--card);
@@ -206,13 +227,23 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 }
 .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0 1rem; }
 .chips button, .stepper button {
-  border: 1px solid #d9cfc2;
+  border: 2px solid var(--fire);
   background: #fff;
+  color: var(--fg);
   border-radius: 0.6rem;
   padding: 0.45rem 0.8rem;
   cursor: pointer;
   font: inherit;
+  font-weight: 600;
   min-width: 4.6rem;
+}
+.chips button:hover, .stepper button:hover {
+  background: color-mix(in srgb, var(--fire) 8%, #fff);
+}
+.chips button.is-on {
+  background: var(--fire);
+  color: #fff;
+  border-color: var(--fire-deep);
 }
 .stepper { display: flex; align-items: center; gap: 0.6rem; }
 .stepper span { font-size: 1.6rem; min-width: 7rem; text-align: center; font-weight: 600; }
@@ -250,8 +281,8 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 .live .row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; border-bottom: 1px solid var(--line); }
 .live .row[hidden], .live .row.hidden { display: none; }
 .live .total { font-size: 2rem; margin: 0.35rem 0 0.7rem; font-weight: 600; }
-.live .total-kicker { margin: 0.7rem 0 0; font-size: 0.8rem; color: var(--muted); }
-.field-hint { font-size: 0.75rem; color: var(--muted); font-weight: 400; }
+.live .total-kicker { margin: 0.7rem 0 0; font-size: 0.9rem; color: var(--muted); font-weight: 500; }
+.field-hint { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
 .muted { color: var(--muted); }
 .fields { display: grid; gap: 0.7rem; }
 .fields label { display: grid; gap: 0.25rem; font-size: 0.9rem; }
@@ -271,32 +302,40 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 .submit {
   width: 100%;
   margin-top: 0.5rem;
-  background: var(--primary);
+  background: var(--fire);
   color: #fff;
-  border: 0;
+  border: 2px solid var(--fire-deep);
   border-radius: 0.7rem;
   padding: 0.75rem;
   font: inherit;
   font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
 }
-.ladder { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 1rem 0; }
+.submit:hover { background: var(--fire-deep); }
+.ladder { width: 100%; border-collapse: collapse; font-size: 0.98rem; margin: 1rem 0; }
 .ladder th, .ladder td { text-align: left; padding: 0.55rem 0.4rem; border-bottom: 1px solid var(--line); }
-.ladder th { color: var(--muted); font-weight: 500; }
-.ladder .is-on { background: color-mix(in srgb, var(--primary) 10%, transparent); font-weight: 600; }
+.ladder th { color: var(--muted); font-weight: 600; }
+.ladder tbody tr { cursor: default; }
+.ladder .is-on {
+  background: color-mix(in srgb, var(--fg) 5%, var(--card));
+  box-shadow: inset 3px 0 0 var(--fire);
+  font-weight: 600;
+  color: var(--fg);
+}
 .ladder .right { text-align: right; }
 .ladder .save {
   display: block;
   margin-top: 0.15rem;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--fire-deep);
 }
 .ladder .save-total {
   display: block;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  color: var(--primary);
+  color: var(--fire-deep);
 }
 .meter { background: color-mix(in srgb, #efe4d2 70%, white); border-radius: 0.9rem; padding: 1rem; }
 .meter-bar { height: 0.7rem; background: #fff; border-radius: 999px; box-shadow: 0 0 0 1px var(--line); overflow: hidden; margin-top: 0.7rem; }
@@ -426,9 +465,19 @@ body:has(.vulcanus-config) {
   font-size: 0.8125rem;
   letter-spacing: 0.14em;
 }
-.vulcanus-config .muted {
-  font-size: 1rem;
+.vulcanus-config .muted,
+.vulcanus-config .field-hint,
+.vulcanus-config .live .total-kicker,
+.vulcanus-config .meter-note,
+.vulcanus-config .legal-note {
+  color: var(--muted);
+  font-size: 1.02rem;
   line-height: 1.5;
+}
+.vulcanus-config .card,
+.vulcanus-config .live.card {
+  background: var(--card);
+  box-shadow: 0 0 0 1px var(--line);
 }
 .vulcanus-config .fuel-card-head h2 {
   font-size: clamp(1.35rem, 3vw, 2rem);
@@ -467,10 +516,30 @@ body:has(.vulcanus-config) {
   font-size: 1rem;
   min-height: 2.75rem;
 }
+.vulcanus-config .submit,
+.vulcanus-config .btn,
+.vulcanus-config .chips button,
+.vulcanus-config .stepper button {
+  border: 2px solid var(--fire);
+}
+.vulcanus-config .submit,
+.vulcanus-config .btn-primary,
+.vulcanus-config .chips button.is-on,
+.vulcanus-config .btn.is-on {
+  background: var(--fire);
+  color: #fff;
+  border-color: var(--fire-deep);
+}
 .vulcanus-config .submit {
   font-size: 1.05rem;
   padding: 0.9rem 1rem;
   min-height: 2.85rem;
+  font-weight: 700;
+}
+.vulcanus-config .ladder .is-on {
+  background: color-mix(in srgb, var(--fg) 5%, var(--card));
+  box-shadow: inset 3px 0 0 var(--fire);
+  color: var(--fg);
 }
 .vulcanus-config .live .total {
   font-size: clamp(1.85rem, 4vw, 2.55rem);

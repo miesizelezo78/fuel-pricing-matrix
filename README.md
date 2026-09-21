@@ -2,7 +2,7 @@
 
 GitHub repo pre WordPress plugin **bulk-paleta**: konfigurátor paletovej objednávky od 100 kg na existujúci VULCANUS e-shop (`/objednavka-paleta/`).
 
-**Verzia tohto repo: 2.3.11** — jedna pravda v `PLUGIN-VERSION` a v hlavičke `bulk-paleta/bulk-paleta.php`. Pravý rámik súhrnu má pevnú výšku ako štyri dlaždice. Hýbe sa len obsah.
+**Verzia tohto repo: 2.3.12** — jedna pravda v `PLUGIN-VERSION` a v hlavičke `bulk-paleta/bulk-paleta.php`. Pravý rámik súhrnu má pevnú výšku; hýbe sa len obsah. Dlaždice svetlé, tlačidlá s ohnivým okrajom.
 
 ## Plugin
 

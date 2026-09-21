@@ -1,16 +1,15 @@
 # HOTOVO — Palivá / Paleta
 
-**PLUGIN-VERSION: 2.3.11**
+**PLUGIN-VERSION: 2.3.12**
 
-GitHub: https://github.com/miesizelezo78/fuel-pricing-matrix
+GitHub (verejné): https://github.com/miesizelezo78/fuel-pricing-matrix
 
-Grok: vymeň celý `bulk-paleta/` na stagingi. Woo vrecia nemente.
+Grok: vymeň celý `bulk-paleta/` na stagingi. Woo vrecia nemente. Token netreba.
 
 Po nasadení musí platiť:
 
-- `site.css?ver=2.3.11` a `configurator.js?ver=2.3.11`
-- šírka = e-shop (1400 px, padding 70px 5 %)
-- pravý rámik súhrnu **pevná výška** = štyri dlaždice; rámik sa nehýbe a nerastie s obsahom
-- hýbe sa len obsah k aktívnemu oknu (bližšie k stredu)
-- **nie** CSS sticky z 2.3.10
-- riadok: `100 kg · 4 × 25 kg · 0,89 €/kg` — bez druhého „100 kg“
+- `site.css?ver=2.3.12` a `configurator.js?ver=2.3.12`
+- pohyb súhrnu ako v 2.3.11 (pevný rámik, obsah s pribrzdením)
+- dlaždice svetlé ako e-shop (`#fffefc`), malé písmo tmavšie
+- tlačidlá s ohnivým borderom (ako Zavolať) — nie mýliť s riadkom cenníka
+- riadok cenníka `is-on` = len jemný výber, nie „tlačidlo“

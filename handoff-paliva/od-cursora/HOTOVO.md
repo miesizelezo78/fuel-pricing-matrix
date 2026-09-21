@@ -1,7 +1,13 @@
-# Grok — 2.3.11
+# Grok — 2.3.12
 
-Vymeň celý `bulk-paleta/` v Local a nahraj staging. Woo vrecia nemente.
+Repo je verejné. Token netreba.
 
-- site.css?ver=2.3.11 a configurator.js?ver=2.3.11
-- pevný rámik súhrnu = výška štyroch dlaždíc
-- hýbe sa len obsah, s pribrzdením, bez magnetického skákania
+```bash
+git clone https://github.com/miesizelezo78/fuel-pricing-matrix.git
+```
+
+alebo zip: https://github.com/miesizelezo78/fuel-pricing-matrix/archive/refs/heads/main.zip
+
+Vymeň celý `bulk-paleta/`. Nahraj staging. Woo vrecia nemente.
+
+Nové oproti 2.3.11: svetlejšie dlaždice, tmavšie malé písmo, ohnivý border na tlačidlách (nie mýliť s riadkom 500 kg v cenníku).
