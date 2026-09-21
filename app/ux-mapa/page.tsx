@@ -291,7 +291,7 @@ export default function UxMapPage() {
                 je táto stránka.
               </p>
               <p>
-                Zmluva pre Groka je v GROK.md. Celý text mapy v UX-MAPA.md.
+                Mapa ciest je UX-MAPA.md. Kanál medzi agentmi je KANAL.md.
               </p>
             </CardContent>
           </Card>

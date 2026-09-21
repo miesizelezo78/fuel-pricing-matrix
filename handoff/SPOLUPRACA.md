@@ -18,7 +18,7 @@ Paletový cenník v JSON je na sadzby a zákaz 250 kg koksu. **Nie** na Woo koš
 
 ## Čo má Grok urobiť
 
-0. Prečítaj `UX-MAPA.md` a `GROK.md` v koreni. Kým klient nepovie „kreslite“, **nič na stagingu neprepisuj**.
+0. Prečítaj `UX-MAPA.md` v koreni. Kým klient nepovie „kreslite“, **nič na stagingu neprepisuj**. Kanál: [`../KANAL.md`](../KANAL.md).
 1. Nezačínaj nový projekt. Otvor **už existujúci** staging webu.
 2. Vrecia s doručením (25 kg / 20 kg) ostávajú v e-shopovom košíku. Jedna zásielka = 3 vrecia uhlia/antracitu alebo 4 vrecia koksu. Woo SKU nemente.
 3. Od 100 kg **nie je** produkt košíka. V obchode (`?rodina=kovacske-paliva`) tri G3 karty v dizajne `vd-card` s odkazom na `/objednavka-paleta/?palivo=…`. Paletové SKU do košíka nevytváraj.

@@ -6,4 +6,4 @@ WordPress modul **2.3.7**: shortcode `[vulcanus_paleta]` do Bricks / G3. Paleta 
 - `[vulcanus_paleta_karty]` — tri karty od 100 kg v jazyku `vd-card`
 - `/paliva/` na webe redirectuje do Woo
 
-Vrecia s doručením nemente. Inštalácia: [`../handoff-paliva/od-cursora/HOTOVO.md`](../handoff-paliva/od-cursora/HOTOVO.md).
+Vrecia s doručením nemente. Inštalácia a kontrola: [`../HOTOVO.md`](../HOTOVO.md).
