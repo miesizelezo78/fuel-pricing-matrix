@@ -1,0 +1,132 @@
+.vulcanus-bulk {
+  font-family: inherit;
+  color: inherit;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+.vulcanus-bulk h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  margin: 0.25rem 0 0.75rem;
+}
+.vulcanus-bulk .eyebrow {
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: #b4532a;
+}
+.vulcanus-bulk .lead {
+  color: #6b6258;
+  max-width: 40rem;
+}
+.vulcanus-bulk-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+@media (min-width: 900px) {
+  .vulcanus-bulk-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+}
+.vulcanus-card {
+  background: #fbf7f0;
+  border: 1px solid rgba(42, 34, 24, 0.12);
+  border-radius: 1rem;
+  padding: 1.25rem 1.35rem;
+}
+.vulcanus-fuel,
+.vulcanus-kg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0 1rem;
+}
+.vulcanus-kg button {
+  min-width: 5.2rem;
+}
+.vulcanus-bulk button {
+  border: 1px solid #d9cfc2;
+  background: #fff;
+  border-radius: 0.6rem;
+  padding: 0.45rem 0.8rem;
+  cursor: pointer;
+  font: inherit;
+}
+.vulcanus-bulk button.is-on,
+.vulcanus-bulk button[aria-pressed="true"] {
+  background: #b4532a;
+  color: #fff;
+  border-color: #b4532a;
+}
+.vulcanus-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.vulcanus-stepper span {
+  font-size: 1.6rem;
+  min-width: 7rem;
+  text-align: center;
+}
+.vulcanus-live {
+  position: sticky;
+  top: 1rem;
+}
+.vulcanus-live dl {
+  margin: 0.75rem 0 0;
+}
+.vulcanus-live .row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(42, 34, 24, 0.08);
+}
+.vulcanus-live .total {
+  font-size: 2rem;
+  margin-top: 0.75rem;
+}
+.vulcanus-live .hint {
+  font-size: 0.8rem;
+  color: #6b6258;
+}
+.vulcanus-fields {
+  display: grid;
+  gap: 0.7rem;
+}
+.vulcanus-fields label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+.vulcanus-fields input,
+.vulcanus-fields textarea {
+  border: 1px solid #d9cfc2;
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.6rem;
+  font: inherit;
+}
+.vulcanus-error {
+  color: #9f1239;
+  font-size: 0.85rem;
+}
+.vulcanus-submit {
+  width: 100%;
+  margin-top: 0.75rem;
+  background: #b4532a !important;
+  color: #fff !important;
+  border: 0 !important;
+  padding: 0.7rem !important;
+  font-size: 1rem !important;
+}
+.vulcanus-radio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0.5rem 0 1rem;
+}
+.vulcanus-done {
+  padding: 2rem 0;
+}

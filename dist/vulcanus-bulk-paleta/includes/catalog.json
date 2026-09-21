@@ -1,0 +1,144 @@
+{
+  "vatPercent": 23,
+  "bulkMinKg": 100,
+  "bulkMaxKg": 10000,
+  "bulkStepKg": "bag",
+  "euroPallet": {
+    "widthCm": 80,
+    "depthCm": 120,
+    "maxKg": 200
+  },
+  "industrialPallet": {
+    "widthCm": 110,
+    "depthCm": 120,
+    "altWidthCm": 110,
+    "altDepthCm": 110
+  },
+  "fuels": {
+    "uhlie": {
+      "id": "uhlie",
+      "name": "Kováčske čierne uhlie",
+      "shortName": "Uhlie",
+      "adjective": "kováčskeho uhlia",
+      "bagKg": 25,
+      "palletBags": 40,
+      "soloMaxBags": 3,
+      "soloPrice": 28.9,
+      "presetsKg": [100, 250, 500, 750, 1000],
+      "color": "#2a2723",
+      "speck": "#4a453c",
+      "stitch": "#d4c4a8",
+      "summary": "Klasické čierne uhlie do vyhne. Silný žiar, o čosi viac dymu ako koks — obľúbené u hobby kováčov a nožiarov.",
+      "tiers": [
+        { "minKg": 100, "pricePerKg": 0.89, "label": "100 kg" },
+        { "minKg": 250, "pricePerKg": 0.82, "label": "250 kg" },
+        { "minKg": 500, "pricePerKg": 0.75, "label": "500 kg" },
+        { "minKg": 1000, "pricePerKg": 0.68, "label": "1 000 kg" }
+      ]
+    },
+    "antracit": {
+      "id": "antracit",
+      "name": "Kováčsky antracit",
+      "shortName": "Antracit",
+      "adjective": "kováčskeho antracitu",
+      "bagKg": 25,
+      "palletBags": 40,
+      "soloMaxBags": 3,
+      "soloPrice": 34.9,
+      "presetsKg": [100, 250, 500, 750, 1000],
+      "color": "#141820",
+      "speck": "#3a4658",
+      "stitch": "#c5d0d8",
+      "summary": "Tvrdý antracit s dlhým horením a nízkym dymom. Na dlhšiu prácu vo vyhni, keď treba stály žiar.",
+      "tiers": [
+        { "minKg": 100, "pricePerKg": 1.12, "label": "100 kg" },
+        { "minKg": 250, "pricePerKg": 1.04, "label": "250 kg" },
+        { "minKg": 500, "pricePerKg": 0.96, "label": "500 kg" },
+        { "minKg": 1000, "pricePerKg": 0.88, "label": "1 000 kg" }
+      ]
+    },
+    "koks": {
+      "id": "koks",
+      "name": "Kováčsky koks",
+      "shortName": "Koks",
+      "adjective": "kováčskeho koksu",
+      "bagKg": 20,
+      "palletBags": 50,
+      "soloMaxBags": 4,
+      "soloPrice": 32.9,
+      "presetsKg": [100, 200, 500, 800, 1000],
+      "color": "#6a6358",
+      "speck": "#9a9184",
+      "stitch": "#eadcc4",
+      "summary": "Koks do vyhne: vysoká teplota, málo dymu. Vrecia po 20 kg — na paletu 110 × 120 cm ide 50 vriec, teda jedna tona.",
+      "tiers": [
+        { "minKg": 100, "pricePerKg": 1.25, "label": "100 kg" },
+        { "minKg": 200, "pricePerKg": 1.15, "label": "200 kg" },
+        { "minKg": 500, "pricePerKg": 1.05, "label": "500 kg" },
+        { "minKg": 1000, "pricePerKg": 0.95, "label": "1 000 kg" }
+      ]
+    }
+  },
+  "products": [
+    {
+      "id": "uhlie-solo",
+      "slug": "uhlie-25kg",
+      "channel": "solo",
+      "fuelId": "uhlie",
+      "name": "Kováčske čierne uhlie – 25 kg s doručením",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Kováčske čierne uhlie v 25 kg balení. Zrnitosť 10–30 mm."
+    },
+    {
+      "id": "antracit-solo",
+      "slug": "antracit-25kg",
+      "channel": "solo",
+      "fuelId": "antracit",
+      "name": "Kováčsky antracit – 25 kg s doručením",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Antracit v 25 kg balení. Zrnitosť 10–20 mm."
+    },
+    {
+      "id": "koks-solo",
+      "slug": "koks-20kg",
+      "channel": "solo",
+      "fuelId": "koks",
+      "name": "Kováčsky koks – 20 kg s doručením",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Kováčsky koks v 20 kg balení. Zrnitosť 10–20 mm."
+    },
+    {
+      "id": "uhlie-bulk",
+      "slug": "uhlie",
+      "channel": "bulk",
+      "fuelId": "uhlie",
+      "name": "Kováčske čierne uhlie – od 100 kg",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Tovar na objednávku, nie do košíka. Od 4 vriec (100 kg)."
+    },
+    {
+      "id": "antracit-bulk",
+      "slug": "antracit",
+      "channel": "bulk",
+      "fuelId": "antracit",
+      "name": "Kováčsky antracit – od 100 kg",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Tovar na objednávku, nie do košíka. Od 4 vriec (100 kg)."
+    },
+    {
+      "id": "koks-bulk",
+      "slug": "koks",
+      "channel": "bulk",
+      "fuelId": "koks",
+      "name": "Kováčsky koks – od 100 kg",
+      "eyebrow": "Kováčske palivá",
+      "lead": "Tovar na objednávku, nie do košíka. Od 5 vriec (100 kg)."
+    }
+  ],
+  "freightPerPalletEur": [
+    { "belowKg": 250, "eur": 39 },
+    { "belowKg": 500, "eur": 55 },
+    { "belowKg": 1000, "eur": 72 },
+    { "belowKg": null, "eur": 89 }
+  ]
+}

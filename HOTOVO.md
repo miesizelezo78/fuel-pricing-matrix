@@ -4,7 +4,14 @@
 
 GitHub: https://github.com/miesizelezo78/fuel-pricing-matrix
 
-Grok: vymeň celý `bulk-paleta/` na stagingi. Woo vrecia nemente.
+**browser_download_url:**
+https://github.com/miesizelezo78/fuel-pricing-matrix/releases/download/v2.3.11/vulcanus-bulk-paleta-2.3.11.zip
+
+Release: https://github.com/miesizelezo78/fuel-pricing-matrix/releases/tag/v2.3.11
+
+Unzipnuté súbory: [`dist/vulcanus-bulk-paleta/`](dist/vulcanus-bulk-paleta/)
+
+Grok: vymeň celý `wp-content/plugins/vulcanus-bulk-paleta/` (nie `bulk-paleta/`). Woo vrecia nemente. Repo je private — zip sťahuj prihlásený (`gh release download v2.3.11 --repo miesizelezo78/fuel-pricing-matrix`).
 
 Po nasadení musí platiť:
 
