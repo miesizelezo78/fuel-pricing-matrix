@@ -4,7 +4,13 @@
 
 GitHub: https://github.com/miesizelezo78/fuel-pricing-matrix
 
-Grok: vymeň celý `bulk-paleta/` na stagingi. Woo vrecia nemente.
+Zip pre Local + staging:
+
+https://github.com/miesizelezo78/fuel-pricing-matrix/raw/refs/heads/cursor/dist-plugin-2.3.11-d871/dist/vulcanus-bulk-paleta-2.3.11.zip
+
+Unzipnuté súbory: [`dist/vulcanus-bulk-paleta/`](dist/vulcanus-bulk-paleta/)
+
+Grok: vymeň celý `wp-content/plugins/vulcanus-bulk-paleta/` (nie `bulk-paleta/`). Woo vrecia nemente.
 
 Po nasadení musí platiť:
 
