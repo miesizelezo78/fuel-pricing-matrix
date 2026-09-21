@@ -1,18 +1,16 @@
 # HOTOVO — Palivá / Paleta
 
-**PLUGIN-VERSION: 2.3.10** (pravda tohto GitHub repo)
+**PLUGIN-VERSION: 2.3.11**
 
-Plugin: `bulk-paleta/`  
-Shortcode na `/objednavka-paleta/`: `[vulcanus_paleta]`  
-Karty od 100 kg: `[vulcanus_paleta_karty]`
+GitHub: https://github.com/miesizelezo78/fuel-pricing-matrix
 
-Plugin kreslí **iba** shortcody. Žiadny vlastný dokument, menu, Figtree, druhá pätička. `/paliva/` na webe nie je ostrý obchod (redirect do Woo filtra). Woo vrecia s doručením **nemeniť**.
+Grok: vymeň celý `bulk-paleta/` na stagingi. Woo vrecia nemente.
 
 Po nasadení musí platiť:
 
-- `site.css?ver=2.3.10` a `configurator.js?ver=2.3.10`
-- šírka konfigurátora = e-shop (1400 px, padding 70px 5 %)
-- desktop súhrn: klasický CSS `position: sticky` na aside/live — **bez** magnetického JS, **bez** `translate` follow
-- riadok: `100 kg · 4 × 25 kg · 0,89 €/kg` — **bez** druhého „100 kg“
-
-Mapa ciest: [`UX-MAPA.md`](UX-MAPA.md). Kanál: [`KANAL.md`](KANAL.md).
+- `site.css?ver=2.3.11` a `configurator.js?ver=2.3.11`
+- šírka = e-shop (1400 px, padding 70px 5 %)
+- pravý rámik súhrnu **pevná výška** = štyri dlaždice; rámik sa nehýbe a nerastie s obsahom
+- hýbe sa len obsah k aktívnemu oknu (bližšie k stredu)
+- **nie** CSS sticky z 2.3.10
+- riadok: `100 kg · 4 × 25 kg · 0,89 €/kg` — bez druhého „100 kg“
