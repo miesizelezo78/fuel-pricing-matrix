@@ -2,7 +2,7 @@
 
 Ty si **prvý**. Tento web už staviaš ty (Codex → ty). Cursor vyriešil len ťažkú logiku kováčskych palív. **Nestoji druhý e-shop. Netež dizajn webu.** Vezmi súbory a zapoj ich do svojho stagingu. Klient sa len prihlási a odobrí — REST, CSV, pluginy rieš ty.
 
-Najprv si prečítaj v koreni repa `UX-MAPA.md` a `GROK.md`. Kým klient nepovie „kreslite“, staging neprepisuj. Sprievodca je `/kovacske-paliva/`. Nákup je `/?ukazka=obchod&rodina=kovacske-paliva`. Paleta je `/objednavka-paleta/` v G3 chrome. `/paliva/` je ostrov — po schválení redirect.
+Najprv si prečítaj v koreni repa `UX-MAPA.md`. Kým klient nepovie „kreslite“, staging neprepisuj. Sprievodca je `/kovacske-paliva/`. Nákup je `/?ukazka=obchod&rodina=kovacske-paliva`. Paleta je `/objednavka-paleta/` v G3 chrome. `/paliva/` je ostrov — po schválení redirect.
 
 Pripojte k správe `SPOLUPRACA.md`, `katalog.json` a `woocommerce-produkty.csv`. Max. **6 príloh**. Ak súbory nie sú v prílohe, hľadaj `/workspace/handoff/`.
 
