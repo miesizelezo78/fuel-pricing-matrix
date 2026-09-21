@@ -185,24 +185,7 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 .grid-2 { display: grid; gap: 1.5rem; min-width: 0; }
 .grid-2 > * { min-width: 0; }
 @media (min-width: 1100px) {
-  .grid-2 { grid-template-columns: minmax(0, 1.25fr) minmax(22rem, 0.75fr); align-items: stretch; }
-  .live-track { position: relative; align-self: stretch; }
-  .live-track .live {
-    position: relative;
-    height: 100%;
-    min-height: 100%;
-    overflow: hidden;
-    padding: 0;
-  }
-  .live-track .live-body {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    padding: 1.4rem;
-    will-change: transform;
-  }
+  .grid-2 { grid-template-columns: minmax(0, 1.25fr) minmax(22rem, 0.75fr); }
 }
 .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0 1rem; }
 .chips button, .stepper button {
@@ -243,7 +226,7 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 }
 .radio label { display: flex; align-items: flex-start; gap: 0.55rem; cursor: pointer; }
 .live-track { min-width: 0; }
-.live { position: relative; z-index: 2; }
+.live { position: sticky; top: 5rem; z-index: 2; }
 .live.card { padding: 0; }
 .live-body { padding: 1.4rem; }
 .live dl { margin: 0.6rem 0 0; }
@@ -402,7 +385,8 @@ body:has(.vulcanus-config) {
   gap: 1.25rem;
 }
 .vulcanus-config .live {
-  position: relative;
+  position: static;
+  top: auto;
 }
 .vulcanus-config .live.card {
   padding: 0;
@@ -536,24 +520,12 @@ body:has(.vulcanus-config) {
     align-items: stretch;
   }
   .vulcanus-config .live-track {
-    position: relative;
     align-self: stretch;
+    min-width: 0;
   }
-  .vulcanus-config .live-track .live {
-    position: relative;
-    height: 100%;
-    min-height: 100%;
-    overflow: hidden;
-    padding: 0;
-    z-index: 2;
-  }
-  .vulcanus-config .live-track .live-body {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    will-change: transform;
+  .vulcanus-config .live {
+    position: sticky;
+    top: 6.75rem;
   }
   .vulcanus-config .ladder {
     display: table;

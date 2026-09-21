@@ -129,12 +129,4 @@
     font-family: var(--font-heading), ui-serif, Georgia, serif;
     font-weight: 560;
   }
-  aside.is-traveling {
-    transition: none;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    aside.is-traveling {
-      transition: none;
-    }
-  }
 }

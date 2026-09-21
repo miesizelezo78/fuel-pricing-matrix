@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { BulkCalculator } from "@/components/bulk-calculator";
@@ -26,7 +26,6 @@ import {
   type Fulfillment,
   type PalletOrderInput,
 } from "@/lib/superfaktura";
-import { useWorkWindowAside } from "@/hooks/use-work-window-aside";
 
 const STORAGE_KEY = "kovacske-paliva-pallet-order";
 
@@ -83,8 +82,6 @@ export function PalletOrderForm({
   );
   const vatPayer = isVatPayer(buyerType, form.icDph);
   const goodsVat = vatSplit(quote.goods);
-  const formRef = useRef<HTMLFormElement>(null);
-  useWorkWindowAside(formRef);
 
   function setFuelKg(fuelId: FuelId, kg: number) {
     setKgByFuel((current) => ({ ...current, [fuelId]: kg }));
@@ -158,9 +155,8 @@ export function PalletOrderForm({
 
   return (
     <form
-      ref={formRef}
       onSubmit={submit}
-      className="grid items-stretch gap-6 min-[960px]:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] min-[960px]:gap-8"
+      className="grid gap-6 min-[960px]:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] min-[960px]:gap-8"
     >
       <div className="min-w-0 space-y-6" data-work-stack>
         {BULK_PRODUCTS.map((item) => {
@@ -321,12 +317,7 @@ export function PalletOrderForm({
         </section>
       </div>
 
-      <div className="live-track min-w-0 max-[959px]:contents min-[960px]:relative min-[960px]:self-stretch">
-      <aside className="live z-[2] min-[960px]:h-full min-[960px]:min-h-full min-[960px]:overflow-hidden rounded-2xl bg-card ring-1 ring-foreground/10">
-      <div
-        data-live-panel
-        className="live-body space-y-4 p-6 min-[960px]:absolute min-[960px]:inset-x-0 min-[960px]:top-0 min-[960px]:p-8"
-      >
+      <aside className="live h-fit space-y-4 rounded-2xl bg-card p-6 ring-1 ring-foreground/10 min-[960px]:sticky min-[960px]:top-24 min-[960px]:p-8">
         <h2 className="font-heading text-2xl">Súhrn objednávky</h2>
         {quote.lines.length === 0 ? (
           <p className="text-sm text-muted-foreground">
@@ -452,9 +443,7 @@ export function PalletOrderForm({
             Dva režimy predaja
           </Link>
         </p>
-      </div>
       </aside>
-      </div>
     </form>
   );
 }
