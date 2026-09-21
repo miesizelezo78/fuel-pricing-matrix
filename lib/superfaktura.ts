@@ -21,6 +21,10 @@ export type PalletOrderInput = {
   fulfillment: Fulfillment;
   buyerType: BuyerType;
   name: string;
+  firstName?: string;
+  lastName?: string;
+  contactFirstName?: string;
+  contactLastName?: string;
   email: string;
   phone: string;
   street: string;
@@ -107,6 +111,10 @@ export function readPalletOrder(raw: unknown): PalletOrderInput {
     fulfillment: body.fulfillment as Fulfillment,
     buyerType,
     name: asText(body.name),
+    firstName: asText(body.firstName) || undefined,
+    lastName: asText(body.lastName) || undefined,
+    contactFirstName: asText(body.contactFirstName) || undefined,
+    contactLastName: asText(body.contactLastName) || undefined,
     email: asText(body.email),
     phone: asText(body.phone),
     street: asText(body.street),
@@ -131,7 +139,22 @@ export function validatePalletOrder(input: PalletOrderInput) {
   if (input.buyerType !== "person" && input.buyerType !== "company") {
     errors.buyerType = "Zvoľte fyzickú osobu alebo firmu.";
   }
-  if (input.name.trim().length < 3) errors.name = "Zadajte meno / názov firmy.";
+  if (input.buyerType === "company") {
+    if (input.name.trim().length < 2) errors.name = "Zadajte názov firmy.";
+    if ((input.contactFirstName ?? "").trim().length < 2) {
+      errors.contactFirstName = "Zadajte meno kontaktnej osoby.";
+    }
+    if ((input.contactLastName ?? "").trim().length < 2) {
+      errors.contactLastName = "Zadajte priezvisko kontaktnej osoby.";
+    }
+    const ico = (input.ico ?? "").replace(/\s/g, "");
+    if (ico.length < 6) errors.ico = "Zadajte IČO.";
+  } else {
+    if ((input.firstName ?? "").trim().length < 2) errors.firstName = "Zadajte meno.";
+    if ((input.lastName ?? "").trim().length < 2) errors.lastName = "Zadajte priezvisko.";
+    const full = `${input.firstName ?? ""} ${input.lastName ?? ""}`.trim();
+    if (full.length < 3) errors.name = "Zadajte meno a priezvisko.";
+  }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email)) {
     errors.email = "Zadajte platný e-mail.";
   }
@@ -139,10 +162,6 @@ export function validatePalletOrder(input: PalletOrderInput) {
   if (input.street.trim().length < 4) errors.street = "Zadajte ulicu a číslo.";
   if (input.city.trim().length < 2) errors.city = "Zadajte mesto.";
   if (!/^\d{3}\s?\d{2}$/.test(input.zip.trim())) errors.zip = "PSČ v tvare 000 00.";
-  if (input.buyerType === "company") {
-    const ico = (input.ico ?? "").replace(/\s/g, "");
-    if (ico.length < 6) errors.ico = "Zadajte IČO.";
-  }
   if (input.lines.length === 0) {
     errors.fuelId = "Vyberte aspoň jedno palivo od 100 kg.";
   } else {
@@ -195,8 +214,18 @@ export function buildSuperfakturaPayload(input: PalletOrderInput) {
       ? "Osobný odber. Paletovú dopravu neúčtujeme."
       : "Paletová preprava. Dopravu naceníme zvlášť a doplníme do dokladu.";
 
+  const fullName =
+    input.buyerType === "company"
+      ? input.name.trim()
+      : `${input.firstName ?? ""} ${input.lastName ?? ""}`.trim() || input.name.trim();
+  const contactName = [input.contactFirstName, input.contactLastName]
+    .map((part) => (part ?? "").trim())
+    .filter(Boolean)
+    .join(" ");
+  const greeting = input.buyerType === "person" ? (input.lastName ?? "").trim() : contactName;
+
   const client = {
-    name: input.name.trim(),
+    name: fullName,
     email: input.email.trim(),
     phone: input.phone.trim(),
     address: input.street.trim(),
@@ -207,7 +236,9 @@ export function buildSuperfakturaPayload(input: PalletOrderInput) {
     dic: input.dic?.replace(/\s/g, "") || undefined,
     ic_dph: input.icDph?.replace(/\s/g, "") || undefined,
     update_addressbook: 1,
-    comment: input.note?.trim() || undefined,
+    comment: [input.note?.trim(), contactName ? `Kontakt: ${contactName}` : ""]
+      .filter(Boolean)
+      .join(" · ") || undefined,
   };
 
   const invoice = {
@@ -215,12 +246,12 @@ export function buildSuperfakturaPayload(input: PalletOrderInput) {
     type: "order",
     order_no: orderId,
     invoice_currency: "EUR",
-    header_comment: `Záväzná paletová objednávka, nie e-shopový košík. Každé palivo má vlastnú sadzbu z vlastných kíl. ${quote.shipment?.note ? `${quote.shipment.note} ` : ""}${fulfillmentLabel}`,
+    header_comment: `Záväzná paletová objednávka, nie e-shopový košík. Každé palivo má vlastnú sadzbu z vlastných kíl. ${quote.shipment?.note ? `${quote.shipment.note} ` : ""}${fulfillmentLabel}${greeting ? ` Oslovenie: ${greeting}.` : ""}`,
     internal_comment: quote.lines
       .map((line) => `${line.fuel.id}=${line.kg}kg/${line.bags}v`)
       .concat(`fulfillment=${input.fulfillment}`)
       .join("; "),
-    delivery_name: input.name.trim(),
+    delivery_name: fullName,
     delivery_address: input.street.trim(),
     delivery_city: input.city.trim(),
     delivery_zip: input.zip.trim(),

@@ -408,26 +408,39 @@
     }
     const fulfillmentInput = root.querySelector("[name=fulfillment]");
     if (fulfillmentInput) fulfillmentInput.value = state.fulfillment;
+    const isCompany = state.buyerType === "company";
+    const personFields = root.querySelector("[data-person-fields]");
+    if (personFields) personFields.classList.toggle("hidden", isCompany);
+    const companyName = root.querySelector("[data-company-name]");
+    if (companyName) {
+      companyName.classList.toggle("hidden", !isCompany);
+      if ("hidden" in companyName) companyName.hidden = !isCompany;
+    }
     const company = root.querySelector("[data-company-fields]");
-    if (company) company.classList.toggle("hidden", state.buyerType !== "company");
-    const nameLabel = root.querySelector("[data-name-label]");
-    if (nameLabel) {
-      nameLabel.textContent =
-        state.buyerType === "company" ? "Názov firmy" : "Meno a priezvisko";
+    if (company) {
+      company.classList.toggle("hidden", !isCompany);
+      if ("hidden" in company) company.hidden = !isCompany;
     }
+    const contact = root.querySelector("[data-contact-fields]");
+    if (contact) {
+      contact.classList.toggle("hidden", !isCompany);
+      if ("hidden" in contact) contact.hidden = !isCompany;
+    }
+    const firstName = root.querySelector("[name=firstName]");
+    const lastName = root.querySelector("[name=lastName]");
     const nameInput = root.querySelector("[name=name]");
-    if (nameInput) {
-      nameInput.setAttribute(
-        "autocomplete",
-        state.buyerType === "company" ? "organization" : "name"
-      );
-    }
+    const contactFirst = root.querySelector("[name=contactFirstName]");
+    const contactLast = root.querySelector("[name=contactLastName]");
+    if (firstName) firstName.required = !isCompany;
+    if (lastName) lastName.required = !isCompany;
+    if (nameInput) nameInput.required = isCompany;
+    if (contactFirst) contactFirst.required = isCompany;
+    if (contactLast) contactLast.required = isCompany;
     const hint = root.querySelector("[data-buyer-hint]");
     if (hint) {
-      hint.textContent =
-        state.buyerType === "company"
-          ? "Firma alebo živnosť: názov firmy a IČO. DIČ je voliteľné. IČ DPH len ak ste platca DPH."
-          : "Fyzická osoba: meno a priezvisko. Ceny v súhrne sú konečné, vrátane DPH, bez rozpisu dane.";
+      hint.textContent = isCompany
+        ? "Firma alebo živnosť: názov firmy, IČO a kontaktná osoba (meno + priezvisko). DIČ voliteľné. IČ DPH len ak ste platca DPH."
+        : "Fyzická osoba: meno a priezvisko zvlášť — priezvisko na oslovenie v maili. Ceny v súhrne sú konečné, vrátane DPH.";
     }
     root.dispatchEvent(new Event("vulcanus-render"));
   }
@@ -503,10 +516,22 @@
       body.lines = [];
     }
     body.binding = root.querySelector("[name=binding]").checked;
-    if (state.buyerType !== "company") {
+    if (state.buyerType === "company") {
+      body.firstName = "";
+      body.lastName = "";
+      body.name = String(body.name || "").trim();
+    } else {
       body.ico = "";
       body.dic = "";
       body.icDph = "";
+      body.contactFirstName = "";
+      body.contactLastName = "";
+      body.name = [body.firstName, body.lastName]
+        .map(function (part) {
+          return String(part || "").trim();
+        })
+        .filter(Boolean)
+        .join(" ");
     }
     try {
       const response = await fetch(root.getAttribute("data-order-url"), {

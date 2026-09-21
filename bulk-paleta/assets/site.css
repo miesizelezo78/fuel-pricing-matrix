@@ -108,7 +108,7 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  border: 2px solid var(--fire);
+  border: 1px solid var(--fire);
   background: #fff;
   color: var(--fg);
 }
@@ -227,7 +227,7 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 }
 .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0 1rem; }
 .chips button, .stepper button {
-  border: 2px solid var(--fire);
+  border: 1px solid var(--fire);
   background: #fff;
   color: var(--fg);
   border-radius: 0.6rem;
@@ -304,7 +304,7 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
   margin-top: 0.5rem;
   background: var(--fire);
   color: #fff;
-  border: 2px solid var(--fire-deep);
+  border: 1px solid var(--fire-deep);
   border-radius: 0.7rem;
   padding: 0.75rem;
   font: inherit;
@@ -318,10 +318,8 @@ body.vulcanus-site .vulcanus-main { padding: 2rem 0 3rem; max-width: none; }
 .ladder th { color: var(--muted); font-weight: 600; }
 .ladder tbody tr { cursor: default; }
 .ladder .is-on {
-  background: color-mix(in srgb, var(--fg) 5%, var(--card));
-  box-shadow: inset 3px 0 0 var(--fire);
+  background: color-mix(in srgb, var(--fire) 10%, transparent);
   font-weight: 600;
-  color: var(--fg);
 }
 .ladder .right { text-align: right; }
 .ladder .save {
@@ -520,7 +518,7 @@ body:has(.vulcanus-config) {
 .vulcanus-config .btn,
 .vulcanus-config .chips button,
 .vulcanus-config .stepper button {
-  border: 2px solid var(--fire);
+  border: 1px solid var(--fire);
 }
 .vulcanus-config .submit,
 .vulcanus-config .btn-primary,
@@ -535,11 +533,12 @@ body:has(.vulcanus-config) {
   padding: 0.9rem 1rem;
   min-height: 2.85rem;
   font-weight: 700;
+  border-color: var(--fire-deep);
 }
 .vulcanus-config .ladder .is-on {
-  background: color-mix(in srgb, var(--fg) 5%, var(--card));
-  box-shadow: inset 3px 0 0 var(--fire);
-  color: var(--fg);
+  background: color-mix(in srgb, var(--fire) 10%, transparent);
+  box-shadow: none;
+  font-weight: 600;
 }
 .vulcanus-config .live .total {
   font-size: clamp(1.85rem, 4vw, 2.55rem);

@@ -61,16 +61,24 @@ $asset_js = htmlspecialchars($asset_js, ENT_QUOTES, 'UTF-8');
             <label><input type="radio" name="buyerType" value="company"> Firma / živnosť</label>
           </div>
           <p class="muted" data-buyer-hint style="font-size:.8rem">
-            Fyzická osoba: meno a priezvisko. IČO sa tu nezobrazuje.
+            Fyzická osoba: meno a priezvisko zvlášť. Pri firme aj kontaktná osoba.
           </p>
           <div class="vulcanus-fields">
-            <label><span data-name-label>Meno a priezvisko</span> <input name="name" required autocomplete="name"></label>
+            <div data-person-fields class="fields-2">
+              <label>Meno <input name="firstName" required autocomplete="given-name"></label>
+              <label>Priezvisko <input name="lastName" required autocomplete="family-name"></label>
+            </div>
+            <label data-company-name hidden>Názov firmy <input name="name" autocomplete="organization"></label>
             <label>E-mail <input type="email" name="email" required autocomplete="email"></label>
             <label>Telefón <input name="phone" required autocomplete="tel"></label>
             <div data-company-fields hidden>
               <label>IČO <input name="ico" autocomplete="off"></label>
               <label>DIČ <input name="dic" autocomplete="off"></label>
               <label>IČ DPH <input name="icDph" autocomplete="off"></label>
+            </div>
+            <div data-contact-fields class="fields-2" hidden>
+              <label>Meno kontaktnej osoby <input name="contactFirstName" autocomplete="given-name"></label>
+              <label>Priezvisko kontaktnej osoby <input name="contactLastName" autocomplete="family-name"></label>
             </div>
             <label>Ulica a číslo <input name="street" required autocomplete="street-address"></label>
             <div class="fields-city">

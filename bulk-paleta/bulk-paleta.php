@@ -2,7 +2,7 @@
 /**
  * Plugin Name: VULCANUS Bulk Paleta
  * Description: Konfigurátor paletovej objednávky od 100 kg. Shortcode [vulcanus_paleta] do existujúceho G3 chrome. Vrecia s doručením (Woo) nemení.
- * Version: 2.3.12
+ * Version: 2.3.13
  * Author: VULCANUS
  * Text Domain: vulcanus-bulk-paleta
  */
@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 define('VULCANUS_BULK_DIR', plugin_dir_path(__FILE__));
 define('VULCANUS_BULK_URL', plugin_dir_url(__FILE__));
-define('VULCANUS_BULK_VERSION', '2.3.12');
+define('VULCANUS_BULK_VERSION', '2.3.13');
 
 require_once VULCANUS_BULK_DIR . 'includes/pricing.php';
 require_once VULCANUS_BULK_DIR . 'includes/order.php';

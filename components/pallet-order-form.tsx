@@ -57,6 +57,10 @@ export function PalletOrderForm({
   const [formError, setFormError] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: "",
+    firstName: "",
+    lastName: "",
+    contactFirstName: "",
+    contactLastName: "",
     email: "",
     phone: "",
     street: "",
@@ -88,19 +92,27 @@ export function PalletOrderForm({
   }
 
   function payload(): PalletOrderInput {
+    const company = buyerType === "company";
+    const fullName = company
+      ? form.name
+      : `${form.firstName} ${form.lastName}`.trim();
     return {
       lines,
       fulfillment,
       buyerType,
-      name: form.name,
+      name: fullName,
+      firstName: company ? undefined : form.firstName,
+      lastName: company ? undefined : form.lastName,
+      contactFirstName: company ? form.contactFirstName : undefined,
+      contactLastName: company ? form.contactLastName : undefined,
       email: form.email,
       phone: form.phone,
       street: form.street,
       city: form.city,
       zip: form.zip,
-      ico: buyerType === "company" ? form.ico : undefined,
-      dic: buyerType === "company" ? form.dic : undefined,
-      icDph: buyerType === "company" ? form.icDph : undefined,
+      ico: company ? form.ico : undefined,
+      dic: company ? form.dic : undefined,
+      icDph: company ? form.icDph : undefined,
       note: form.note,
       binding,
     };
@@ -234,16 +246,35 @@ export function PalletOrderForm({
           </RadioGroup>
           <p className="text-xs text-muted-foreground">
             {buyerType === "company"
-              ? "Firma alebo živnosť: názov firmy a IČO. DIČ je voliteľné. IČ DPH len ak ste platca DPH."
-              : "Fyzická osoba: meno a priezvisko. Ceny v súhrne sú konečné, vrátane DPH, bez rozpisu dane."}
+              ? "Firma alebo živnosť: názov firmy, IČO a kontaktná osoba. DIČ voliteľné. IČ DPH len ak ste platca DPH."
+              : "Fyzická osoba: meno a priezvisko zvlášť — priezvisko na oslovenie v maili. Ceny v súhrne sú konečné, vrátane DPH."}
           </p>
-          <Field
-            label={buyerType === "company" ? "Názov firmy" : "Meno a priezvisko"}
-            value={form.name}
-            autoComplete={buyerType === "company" ? "organization" : "name"}
-            error={fieldErrors.name}
-            onChange={(value) => setForm((current) => ({ ...current, name: value }))}
-          />
+          {buyerType === "company" ? (
+            <Field
+              label="Názov firmy"
+              value={form.name}
+              autoComplete="organization"
+              error={fieldErrors.name}
+              onChange={(value) => setForm((current) => ({ ...current, name: value }))}
+            />
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field
+                label="Meno"
+                value={form.firstName}
+                autoComplete="given-name"
+                error={fieldErrors.firstName}
+                onChange={(value) => setForm((current) => ({ ...current, firstName: value }))}
+              />
+              <Field
+                label="Priezvisko"
+                value={form.lastName}
+                autoComplete="family-name"
+                error={fieldErrors.lastName}
+                onChange={(value) => setForm((current) => ({ ...current, lastName: value }))}
+              />
+            </div>
+          )}
           <div className="grid gap-4 sm:grid-cols-2">
             <Field
               label="E-mail"
@@ -260,25 +291,47 @@ export function PalletOrderForm({
             />
           </div>
           {buyerType === "company" ? (
-            <div className="grid gap-4 sm:grid-cols-3">
-              <Field
-                label="IČO"
-                value={form.ico}
-                error={fieldErrors.ico}
-                onChange={(value) => setForm((current) => ({ ...current, ico: value }))}
-              />
-              <Field
-                label="DIČ"
-                value={form.dic}
-                onChange={(value) => setForm((current) => ({ ...current, dic: value }))}
-              />
-              <Field
-                label="IČ DPH"
-                hint="Len ak ste platca DPH"
-                value={form.icDph}
-                onChange={(value) => setForm((current) => ({ ...current, icDph: value }))}
-              />
-            </div>
+            <>
+              <div className="grid gap-4 sm:grid-cols-3">
+                <Field
+                  label="IČO"
+                  value={form.ico}
+                  error={fieldErrors.ico}
+                  onChange={(value) => setForm((current) => ({ ...current, ico: value }))}
+                />
+                <Field
+                  label="DIČ"
+                  value={form.dic}
+                  onChange={(value) => setForm((current) => ({ ...current, dic: value }))}
+                />
+                <Field
+                  label="IČ DPH"
+                  hint="Len ak ste platca DPH"
+                  value={form.icDph}
+                  onChange={(value) => setForm((current) => ({ ...current, icDph: value }))}
+                />
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field
+                  label="Meno kontaktnej osoby"
+                  value={form.contactFirstName}
+                  autoComplete="given-name"
+                  error={fieldErrors.contactFirstName}
+                  onChange={(value) =>
+                    setForm((current) => ({ ...current, contactFirstName: value }))
+                  }
+                />
+                <Field
+                  label="Priezvisko kontaktnej osoby"
+                  value={form.contactLastName}
+                  autoComplete="family-name"
+                  error={fieldErrors.contactLastName}
+                  onChange={(value) =>
+                    setForm((current) => ({ ...current, contactLastName: value }))
+                  }
+                />
+              </div>
+            </>
           ) : null}
           <Field
             label="Ulica a číslo"

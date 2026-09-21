@@ -8,9 +8,33 @@ function vulcanus_bulk_validate_order($input) {
     if (empty($input['binding'])) {
         $errors['binding'] = 'Potvrďte, že ide o záväznú objednávku.';
     }
-    $name = trim((string) ($input['name'] ?? ''));
-    if (strlen($name) < 3) {
-        $errors['name'] = 'Zadajte meno / názov firmy.';
+    $buyer_type = ($input['buyerType'] ?? 'person') === 'company' ? 'company' : 'person';
+    $first_name = trim((string) ($input['firstName'] ?? ''));
+    $last_name = trim((string) ($input['lastName'] ?? ''));
+    $contact_first = trim((string) ($input['contactFirstName'] ?? ''));
+    $contact_last = trim((string) ($input['contactLastName'] ?? ''));
+    if ($buyer_type === 'company') {
+        $name = trim((string) ($input['name'] ?? ''));
+        if (strlen($name) < 2) {
+            $errors['name'] = 'Zadajte názov firmy.';
+        }
+        if (strlen($contact_first) < 2) {
+            $errors['contactFirstName'] = 'Zadajte meno kontaktnej osoby.';
+        }
+        if (strlen($contact_last) < 2) {
+            $errors['contactLastName'] = 'Zadajte priezvisko kontaktnej osoby.';
+        }
+    } else {
+        if (strlen($first_name) < 2) {
+            $errors['firstName'] = 'Zadajte meno.';
+        }
+        if (strlen($last_name) < 2) {
+            $errors['lastName'] = 'Zadajte priezvisko.';
+        }
+        $name = trim($first_name . ' ' . $last_name);
+        if (strlen($name) < 3) {
+            $errors['name'] = 'Zadajte meno a priezvisko.';
+        }
     }
     $email = trim((string) ($input['email'] ?? ''));
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -64,7 +88,13 @@ function vulcanus_bulk_create_order($input) {
         'orderId' => $order_id,
         'quote' => $quote,
         'client' => array(
-            'name' => trim((string) $input['name']),
+            'name' => $company
+                ? trim((string) ($input['name'] ?? ''))
+                : trim(trim((string) ($input['firstName'] ?? '')) . ' ' . trim((string) ($input['lastName'] ?? ''))),
+            'firstName' => $company ? '' : trim((string) ($input['firstName'] ?? '')),
+            'lastName' => $company ? '' : trim((string) ($input['lastName'] ?? '')),
+            'contactFirstName' => $company ? trim((string) ($input['contactFirstName'] ?? '')) : '',
+            'contactLastName' => $company ? trim((string) ($input['contactLastName'] ?? '')) : '',
             'email' => trim((string) $input['email']),
             'phone' => trim((string) $input['phone']),
             'street' => trim((string) $input['street']),
@@ -140,7 +170,7 @@ function vulcanus_bulk_push_superfaktura($email, $api_key, $payload) {
             'type' => 'order',
             'order_no' => $payload['orderId'],
             'invoice_currency' => 'EUR',
-            'header_comment' => 'Záväzná paletová objednávka, nie e-shopový košík. Každé palivo má vlastnú sadzbu z vlastných kíl. ' . (!empty($quote['shipment']['note']) ? $quote['shipment']['note'] . ' ' : '') . $fulfillment_label,
+            'header_comment' => 'Záväzná paletová objednávka, nie e-shopový košík. Každé palivo má vlastnú sadzbu z vlastných kíl. ' . (!empty($quote['shipment']['note']) ? $quote['shipment']['note'] . ' ' : '') . $fulfillment_label . (!empty($client['contactFirstName']) || !empty($client['contactLastName']) ? ' Kontakt: ' . trim($client['contactFirstName'] . ' ' . $client['contactLastName']) . '.' : '') . (!empty($client['lastName']) && empty($client['contactLastName']) ? ' Oslovenie: ' . $client['lastName'] . '.' : ''),
         ),
         'InvoiceItem' => $items,
         'Client' => array(

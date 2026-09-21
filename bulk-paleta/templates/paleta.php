@@ -103,10 +103,14 @@ ob_start();
           <label><input type="radio" name="buyerType" value="company"> Firma / živnosť</label>
         </div>
         <p class="muted" data-buyer-hint style="margin:-.35rem 0 .7rem">
-          Fyzická osoba: meno a priezvisko. Ceny v súhrne sú konečné, vrátane DPH, bez rozpisu dane.
+          Fyzická osoba: meno a priezvisko zvlášť (priezvisko na oslovenie v maili). Ceny v súhrne sú konečné, vrátane DPH, bez rozpisu dane.
         </p>
         <div class="fields">
-          <label><span data-name-label>Meno a priezvisko</span> <input name="name" required autocomplete="name"></label>
+          <div data-person-fields class="fields-2">
+            <label>Meno <input name="firstName" required autocomplete="given-name"></label>
+            <label>Priezvisko <input name="lastName" required autocomplete="family-name"></label>
+          </div>
+          <label data-company-name class="hidden">Názov firmy <input name="name" autocomplete="organization"></label>
           <div class="fields-2">
             <label>E-mail <input type="email" name="email" required autocomplete="email"></label>
             <label>Telefón <input name="phone" required autocomplete="tel"></label>
@@ -115,6 +119,10 @@ ob_start();
             <label>IČO <input name="ico" autocomplete="off"></label>
             <label>DIČ <input name="dic" autocomplete="off"></label>
             <label>IČ DPH <span class="field-hint">(len platca DPH)</span> <input name="icDph" placeholder="SK…" autocomplete="off"></label>
+          </div>
+          <div data-contact-fields class="hidden fields-2">
+            <label>Meno kontaktnej osoby <input name="contactFirstName" autocomplete="given-name"></label>
+            <label>Priezvisko kontaktnej osoby <input name="contactLastName" autocomplete="family-name"></label>
           </div>
           <label>Ulica a číslo <input name="street" required autocomplete="street-address"></label>
           <div class="fields-city">

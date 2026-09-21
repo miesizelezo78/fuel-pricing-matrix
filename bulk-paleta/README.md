@@ -1,6 +1,6 @@
 # VULCANUS Bulk Paleta
 
-WordPress modul **2.3.12**: shortcode `[vulcanus_paleta]` do Bricks / G3. Paleta je jednorazová, nevratná a v cene tovaru. Šírka = e-shop (1400 px). Svetlé dlaždice, ohnivý okraj tlačidiel, pevný rámik súhrnu.
+WordPress modul **2.3.13**: shortcode `[vulcanus_paleta]` do Bricks / G3. Paleta je jednorazová, nevratná a v cene tovaru. Šírka = e-shop (1400 px). Svetlé dlaždice, ohnivý okraj tlačidiel, pevný rámik súhrnu.
 
 - `[vulcanus_paleta]` — konfigurátor (`?palivo=uhlie|antracit|koks`)
 - `[vulcanus_paleta_karty]` — tri karty od 100 kg v jazyku `vd-card`
